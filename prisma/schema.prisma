@@ -1,0 +1,153 @@
+// The Distribution Lab — Client OS data model
+//
+// Provider is SQLite for local dev. To deploy on Postgres, change
+// `provider` to "postgresql" and point DATABASE_URL at your database.
+// The model is written to be portable (no SQLite-only or PG-only features).
+
+generator client {
+  provider      = "prisma-client-js"
+  output        = "../src/generated/prisma"
+  // "native" for local dev; rhel target is the runtime Vercel uses.
+  binaryTargets = ["native", "rhel-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Roles: "admin" | "intern" | "client"
+// Statuses are stored as strings (see src/lib/constants.ts) to stay
+// portable across databases and easy to extend.
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String
+  initials     String
+  role         String // admin | intern | client
+  subtitle     String? // e.g. "Founder · Admin"
+
+  // Intern-only: may this intern edit client deliverables?
+  canEdit Boolean @default(false)
+
+  // role=client → the client record this user signs in to
+  clientProfile Client? @relation("ClientPortalUser")
+
+  // role=intern → clients this intern may access + tasks assigned
+  internAccess InternClientAccess[]
+  tasks        Task[]
+
+  authoredNotes Note[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([role])
+}
+
+model Client {
+  id       String @id @default(cuid())
+  name     String
+  initials String
+  service  String
+  tenure   String
+
+  // Optional portal login for this client
+  portalUserId String? @unique
+  portalUser   User?   @relation("ClientPortalUser", fields: [portalUserId], references: [id], onDelete: SetNull)
+
+  deliverables Deliverable[]
+  notes        Note[]
+  prospects    Prospect[]
+  tasks        Task[]
+  internAccess InternClientAccess[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Deliverable {
+  id       String @id @default(cuid())
+  clientId String
+  client   Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
+
+  name   String
+  due    String @default("Due —")
+  status String @default("Not Started") // Not Started | In Progress | Done | Delayed
+
+  createdAt DateTime @default(now())
+
+  @@index([clientId])
+}
+
+model Note {
+  id       String @id @default(cuid())
+  clientId String
+  client   Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
+
+  // Author is denormalised so notes survive author deletion / system authors.
+  authorUserId   String?
+  authorUser     User?   @relation(fields: [authorUserId], references: [id], onDelete: SetNull)
+  authorName     String
+  authorInitials String
+
+  text      String
+  timeLabel String @default("") // human label shown in UI (e.g. "Jun 18", "Just now")
+
+  createdAt DateTime @default(now())
+
+  @@index([clientId])
+}
+
+model Task {
+  id       String @id @default(cuid())
+  internId String
+  intern   User   @relation(fields: [internId], references: [id], onDelete: Cascade)
+
+  // null = personal task (not tied to a client)
+  clientId String?
+  client   Client? @relation(fields: [clientId], references: [id], onDelete: SetNull)
+
+  title  String
+  due    String @default("—")
+  status String @default("Not Started") // Not Started | In Progress | Done | Delayed
+
+  createdAt DateTime @default(now())
+
+  @@index([internId])
+}
+
+model InternClientAccess {
+  id       String @id @default(cuid())
+  internId String
+  clientId String
+
+  intern User   @relation(fields: [internId], references: [id], onDelete: Cascade)
+  client Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
+
+  @@unique([internId, clientId])
+  @@index([clientId])
+}
+
+model Prospect {
+  id       String @id @default(cuid())
+  clientId String
+  client   Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
+
+  channel String @default("linkedin") // linkedin | email
+  name    String @default("")
+  url     String @default("")
+  email   String @default("")
+  role    String @default("")
+  company String @default("")
+  status  String @default("Connection Request Sent")
+  notes   String @default("")
+  dateLabel String @default("")
+
+  createdAt DateTime @default(now())
+
+  @@index([clientId])
+  @@index([channel])
+}

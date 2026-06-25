@@ -1,36 +1,93 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# The Distribution Lab
 
-## Getting Started
+Marketing site **and** internal client-management system (Client OS) for The
+Distribution Lab, in one Next.js app.
 
-First, run the development server:
+- **`/`** — the marketing landing page (public, SEO-friendly).
+- **`/cms`** — the role-based client management system (auth-gated).
+
+## Tech stack
+
+| Concern   | Choice                                                        |
+| --------- | ------------------------------------------------------------- |
+| Framework | Next.js 16 (App Router) + React 19 + TypeScript               |
+| Styling   | Tailwind CSS v4 (+ Manrope / JetBrains Mono / Inter via next/font) |
+| Database  | Prisma ORM — **SQLite in dev**, PostgreSQL-ready for prod     |
+| Auth      | bcrypt password hashing + signed JWT session cookies (`jose`) |
+| Access    | Role-based (admin / intern / client), enforced server-side    |
+
+## Getting started
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run db:migrate      # apply migrations (creates prisma/dev.db)
+npm run db:seed         # load demo accounts + sample data
+npm run dev             # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open <http://localhost:3000> for the landing page, or
+<http://localhost:3000/cms> for the Client OS.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Demo logins (password: `demo1234`)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Role   | Email                                                  |
+| ------ | ------------------------------------------------------ |
+| Admin  | `maya@thedistributionlab.com`                          |
+| Intern | `dev@thedistributionlab.com`, `alex@thedistributionlab.com` |
+| Client | `northwind@portal.tdl.com` … `cedar@portal.tdl.com`    |
 
-## Learn More
+## What each role sees
 
-To learn more about Next.js, take a look at the following resources:
+- **Admin** — overview KPIs, outreach tracker, every client dashboard, client &
+  intern account management, access control.
+- **Intern** — only their assigned tasks and the outreach campaigns for the
+  clients they've been granted access to.
+- **Client** — a read-only dashboard of their own deliverables, progress and
+  team updates.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Configuration
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Edit `src/config/site.ts` for the landing page's booking link, contact email and
+social handles. Environment variables live in `.env`:
 
-## Deploy on Vercel
+- `DATABASE_URL` — database connection string.
+- `AUTH_SECRET` — secret for signing session cookies. **Change this in production.**
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Project structure
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+src/
+  app/
+    page.tsx                 # landing page
+    cms/
+      login/                 # sign-in
+      (app)/                 # authenticated shell + feature pages
+      actions/               # server actions (CRUD, per domain)
+  components/
+    landing/                 # landing-page sections
+    cms/                     # CMS UI components
+  lib/                       # auth, prisma, access control, constants
+prisma/
+  schema.prisma              # data model
+  seed.ts                    # demo data
+```
+
+## Going to production (PostgreSQL)
+
+1. In `prisma/schema.prisma`, change the datasource provider to `postgresql`.
+2. Set `DATABASE_URL` to your Postgres connection string (e.g. Neon / Supabase).
+3. Run `npx prisma migrate deploy` (or `migrate dev` to regenerate migrations).
+4. Set a strong `AUTH_SECRET`.
+
+The data model uses no SQLite- or Postgres-specific features, so it ports cleanly.
+
+## Useful scripts
+
+| Script              | Purpose                          |
+| ------------------- | -------------------------------- |
+| `npm run dev`       | Start the dev server             |
+| `npm run build`     | Production build                 |
+| `npm run db:migrate`| Create/apply a migration         |
+| `npm run db:seed`   | Reset to demo data               |
+| `npm run db:studio` | Open Prisma Studio (DB browser)  |
+| `npm run db:reset`  | Drop, re-migrate and re-seed     |

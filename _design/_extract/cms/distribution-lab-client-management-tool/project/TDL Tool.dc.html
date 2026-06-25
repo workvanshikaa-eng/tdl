@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  body{margin:0;}
+  ::-webkit-scrollbar{width:10px;height:10px;}
+  ::-webkit-scrollbar-thumb{background:#d4dad7;border-radius:6px;border:2px solid transparent;background-clip:content-box;}
+  input::placeholder,textarea::placeholder{color:#9aa3a0;}
+  select{appearance:none;}
+  .delx{opacity:0;transition:.12s;}
+  .row:hover .delx{opacity:1;}
+</style>
+</helmet>
+<div style="height:100vh;width:100%;font-family:Inter,sans-serif;color:#0f1f1a;overflow:hidden;">
+
+  <!-- ===================== LOGIN ===================== -->
+  <sc-if value="{{ loggedOut }}" hint-placeholder-val="{{ true }}">
+    <div style="height:100vh;width:100%;display:flex;align-items:center;justify-content:center;background:#064e3b;position:relative;">
+      <div style="position:absolute;inset:0;background:radial-gradient(900px 500px at 80% -10%, rgba(255,255,255,0.06), transparent);"></div>
+      <div style="position:relative;width:392px;background:#fff;border-radius:18px;padding:34px;box-shadow:0 24px 60px rgba(0,0,0,0.28);">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:22px;">
+          <div style="width:40px;height:40px;border-radius:11px;background:#064e3b;color:#dff0e9;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;letter-spacing:-0.5px;">TD</div>
+          <div>
+            <div style="font-weight:700;font-size:16px;letter-spacing:-0.3px;">The Distribution Lab</div>
+            <div style="font-size:12px;color:#71807a;">Sign in to your portal</div>
+          </div>
+        </div>
+        <label style="font-size:11.5px;font-weight:600;color:#4a5752;">Email</label>
+        <input value="{{ emailVal }}" onChange="{{ onEmail }}" placeholder="you@company.com" style="width:100%;margin:6px 0 14px;border:1px solid #e0e5e3;border-radius:10px;padding:11px 13px;font-family:inherit;font-size:13.5px;outline:none;" style-focus="border-color:#064e3b;" />
+        <label style="font-size:11.5px;font-weight:600;color:#4a5752;">Password</label>
+        <input type="password" value="{{ pwVal }}" onChange="{{ onPw }}" placeholder="••••••••" style="width:100%;margin:6px 0 6px;border:1px solid #e0e5e3;border-radius:10px;padding:11px 13px;font-family:inherit;font-size:13.5px;outline:none;" style-focus="border-color:#064e3b;" />
+        <sc-if value="{{ loginError }}" hint-placeholder-val="{{ false }}">
+          <div style="font-size:12px;color:#c64242;margin-top:4px;">Email or password not recognized.</div>
+        </sc-if>
+        <div onClick="{{ doLogin }}" style="margin-top:16px;background:#064e3b;color:#fff;text-align:center;font-weight:600;font-size:14px;padding:12px;border-radius:10px;cursor:pointer;">Sign in</div>
+        <div onClick="{{ toggleDemo }}" style="text-align:center;font-size:11.5px;color:#71807a;margin-top:16px;cursor:pointer;">{{ demoToggleLabel }}</div>
+        <sc-if value="{{ showDemo }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-top:10px;background:#f8faf9;border:1px solid #eef2f0;border-radius:10px;padding:12px 13px;">
+            <div style="font-size:10.5px;font-weight:600;letter-spacing:0.4px;text-transform:uppercase;color:#9aa3a0;margin-bottom:8px;">Demo logins · password: demo1234</div>
+            <div style="display:flex;flex-direction:column;gap:6px;">
+              <sc-for list="{{ demoAccounts }}" as="a" hint-placeholder-count="3">
+                <div onClick="{{ a.onClick }}" style="display:flex;justify-content:space-between;gap:10px;cursor:pointer;font-size:11.5px;" style-hover="color:#064e3b;">
+                  <span style="color:#4a5752;">{{ a.email }}</span>
+                  <span style="color:#9aa3a0;">{{ a.tag }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ===================== APP ===================== -->
+  <sc-if value="{{ loggedIn }}" hint-placeholder-val="{{ false }}">
+    <div style="display:flex;height:100vh;width:100%;background:#f4f6f5;">
+
+      <!-- SIDEBAR -->
+      <aside style="width:248px;flex-shrink:0;background:#064e3b;color:#dff0e9;display:flex;flex-direction:column;padding:22px 16px;">
+        <div style="display:flex;align-items:center;gap:11px;padding:0 8px 22px;">
+          <div style="width:34px;height:34px;border-radius:9px;background:#dff0e9;color:#064e3b;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;letter-spacing:-0.5px;">TD</div>
+          <div>
+            <div style="font-weight:600;font-size:14.5px;color:#fff;line-height:1.1;">The Distribution Lab</div>
+            <div style="font-size:11px;color:#7fb6a0;margin-top:2px;">Client OS</div>
+          </div>
+        </div>
+        <div style="font-size:10.5px;font-weight:600;letter-spacing:0.7px;color:#5e9b84;padding:6px 8px;">NAVIGATION</div>
+        <nav style="display:flex;flex-direction:column;gap:3px;margin-top:4px;">
+          <sc-for list="{{ navItems }}" as="item" hint-placeholder-count="3">
+            <div onClick="{{ item.onClick }}" style="{{ item.style }}">
+              <span style="width:16px;text-align:center;font-size:14px;opacity:0.95;">{{ item.icon }}</span>
+              <span>{{ item.label }}</span>
+            </div>
+          </sc-for>
+        </nav>
+        <div style="margin-top:auto;border-top:1px solid rgba(255,255,255,0.1);padding-top:14px;">
+          <div style="display:flex;align-items:center;gap:10px;padding:0 8px 12px;">
+            <div style="width:34px;height:34px;border-radius:50%;background:#dff0e9;color:#064e3b;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:13px;flex-shrink:0;">{{ userInitials }}</div>
+            <div style="line-height:1.2;min-width:0;">
+              <div style="font-size:13px;font-weight:500;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ userName }}</div>
+              <div style="font-size:11px;color:#7fb6a0;">{{ userSub }}</div>
+            </div>
+          </div>
+          <div onClick="{{ signOut }}" style="display:flex;align-items:center;justify-content:center;gap:7px;padding:9px;border-radius:9px;cursor:pointer;font-size:12.5px;font-weight:600;color:#bfe0d3;border:1px solid rgba(255,255,255,0.14);" style-hover="background:rgba(255,255,255,0.08);">
+            <span style="font-size:13px;">⏻</span> Sign out
+          </div>
+        </div>
+      </aside>
+
+      <!-- MAIN -->
+      <main style="flex:1;min-width:0;display:flex;flex-direction:column;overflow:hidden;">
+        <header style="height:66px;flex-shrink:0;background:#fff;border-bottom:1px solid #e6eae8;display:flex;align-items:center;justify-content:space-between;padding:0 30px;">
+          <div>
+            <div style="font-size:18px;font-weight:600;letter-spacing:-0.3px;">{{ pageTitle }}</div>
+            <div style="font-size:12.5px;color:#71807a;margin-top:1px;">{{ pageSub }}</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div style="font-size:12px;color:#71807a;">June 2026</div>
+            <div style="height:18px;width:1px;background:#e6eae8;"></div>
+            <div style="background:#ecf3f0;color:#064e3b;font-weight:600;font-size:11.5px;padding:6px 12px;border-radius:7px;">{{ roleBadge }}</div>
+          </div>
+        </header>
+
+        <div style="flex:1;overflow-y:auto;padding:28px 30px 44px;">
+
+          <!-- ===== ADMIN OVERVIEW ===== -->
+          <sc-if value="{{ showOverview }}" hint-placeholder-val="{{ false }}">
+            <div>
+              <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;">
+                <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="4">
+                  <div style="background:#fff;border:1px solid #e6eae8;border-radius:13px;padding:18px 18px 16px;">
+                    <div style="font-size:12px;color:#71807a;font-weight:500;">{{ k.label }}</div>
+                    <div style="font-size:30px;font-weight:700;letter-spacing:-1px;margin-top:8px;color:#064e3b;">{{ k.value }}</div>
+                    <div style="font-size:11.5px;color:#71807a;margin-top:4px;">{{ k.sub }}</div>
+                  </div>
+                </sc-for>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between;margin:30px 0 14px;">
+                <div style="font-size:15px;font-weight:600;">Active Clients</div>
+                <div style="font-size:12.5px;color:#71807a;">{{ clientCount }} accounts · monthly deliverables</div>
+              </div>
+              <div style="background:#fff;border:1px solid #e6eae8;border-radius:13px;overflow:hidden;">
+                <div style="display:grid;grid-template-columns:2fr 1.4fr 2.6fr 1fr;gap:12px;padding:13px 20px;background:#f8faf9;border-bottom:1px solid #e6eae8;font-size:11px;font-weight:600;letter-spacing:0.4px;color:#71807a;text-transform:uppercase;">
+                  <div>Client</div><div>Service</div><div>Monthly Progress</div><div style="text-align:right;">Replies</div>
+                </div>
+                <sc-for list="{{ overviewRows }}" as="c" hint-placeholder-count="4">
+                  <div onClick="{{ c.onClick }}" style="display:grid;grid-template-columns:2fr 1.4fr 2.6fr 1fr;gap:12px;padding:15px 20px;border-bottom:1px solid #eef2f0;align-items:center;cursor:pointer;">
+                    <div style="display:flex;align-items:center;gap:11px;">
+                      <div style="width:34px;height:34px;border-radius:8px;background:#ecf3f0;color:#064e3b;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:13px;flex-shrink:0;">{{ c.initials }}</div>
+                      <div style="font-weight:600;font-size:13.5px;">{{ c.name }}</div>
+                    </div>
+                    <div style="font-size:12.5px;color:#4a5752;">{{ c.service }}</div>
+                    <div>
+                      <div style="display:flex;justify-content:space-between;font-size:11.5px;color:#71807a;margin-bottom:5px;"><span>{{ c.doneLabel }}</span><span style="font-weight:600;color:#064e3b;">{{ c.pct }}%</span></div>
+                      <div style="height:7px;background:#eef2f0;border-radius:5px;overflow:hidden;"><div style="{{ c.barStyle }}"></div></div>
+                    </div>
+                    <div style="text-align:right;font-size:12.5px;color:#4a5752;"><span style="font-weight:600;color:#0f1f1a;">{{ c.replies }}</span></div>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </sc-if>
+
+          <!-- ===== TEAM (admin) ===== -->
+          <sc-if value="{{ showTeam }}" hint-placeholder-val="{{ false }}">
+            <div>
+              <div style="font-size:12.5px;color:#71807a;margin-bottom:16px;">Create intern logins, decide which clients each can access, and assign their tasks. Interns only ever see what you grant here.</div>
+              <div style="display:flex;flex-direction:column;gap:18px;">
+                <sc-for list="{{ teamCards }}" as="t" hint-placeholder-count="2">
+                  <div style="background:#fff;border:1px solid #e6eae8;border-radius:14px;padding:20px 22px;">
+                    <div style="display:flex;align-items:center;gap:12px;">
+                      <div style="width:42px;height:42px;border-radius:11px;background:#ecf3f0;color:#064e3b;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;flex-shrink:0;">{{ t.initials }}</div>
+                      <div style="flex:1;">
+                        <div style="font-size:15px;font-weight:600;">{{ t.name }}</div>
+                        <div style="font-size:12px;color:#71807a;">{{ t.email }} · {{ t.summary }}</div>
+                      </div>
+                      <div onClick="{{ t.onToggleEdit }}" style="{{ t.editToggleStyle }}"><span style="{{ t.editKnobStyle }}"></span></div>
+                      <div style="font-size:12px;color:#4a5752;width:118px;">Can edit deliverables</div>
+                      <div onClick="{{ t.onDelete }}" style="margin-left:6px;width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#c64242;font-size:18px;" style-hover="background:#fdeaea;">×</div>
+                    </div>
+                    <div style="font-size:11px;font-weight:600;letter-spacing:0.5px;color:#71807a;text-transform:uppercase;margin:18px 0 9px;">Client Access</div>
+                    <div style="display:flex;flex-wrap:wrap;gap:8px;">
+                      <sc-for list="{{ t.clientChips }}" as="ch" hint-placeholder-count="4">
+                        <div onClick="{{ ch.onClick }}" style="{{ ch.style }}"><span style="font-size:13px;">{{ ch.mark }}</span> {{ ch.name }}</div>
+                      </sc-for>
+                    </div>
+                    <div style="font-size:11px;font-weight:600;letter-spacing:0.5px;color:#71807a;text-transform:uppercase;margin:20px 0 9px;">Assigned Tasks</div>
+                    <div style="display:flex;flex-direction:column;gap:7px;">
+                      <sc-for list="{{ t.tasks }}" as="tk" hint-placeholder-count="3">
+                        <div class="row" style="display:flex;align-items:center;gap:12px;padding:10px 13px;background:#f8faf9;border:1px solid #eef2f0;border-radius:10px;">
+                          <div style="flex:1;font-size:13px;font-weight:500;">{{ tk.title }}</div>
+                          <div style="font-size:11.5px;color:#71807a;width:120px;">{{ tk.clientName }}</div>
+                          <div style="font-size:11.5px;color:#9aa3a0;width:64px;">{{ tk.due }}</div>
+                          <div onClick="{{ tk.onClick }}" style="{{ tk.tagStyle }}">{{ tk.status }}</div>
+                          <div onClick="{{ tk.onDelete }}" class="delx" style="cursor:pointer;color:#c64242;font-size:16px;width:18px;text-align:center;">×</div>
+                        </div>
+                      </sc-for>
+                    </div>
+                    <div style="display:flex;gap:8px;margin-top:11px;">
+                      <input value="{{ t.draftTitle }}" onChange="{{ t.onDraftTitle }}" placeholder="New task for this intern…" style="flex:1;border:1px solid #e0e5e3;border-radius:9px;padding:9px 11px;font-family:inherit;font-size:12.5px;outline:none;" />
+                      <select value="{{ t.draftClient }}" onChange="{{ t.onDraftClient }}" style="border:1px solid #e0e5e3;border-radius:9px;padding:9px 11px;font-family:inherit;font-size:12.5px;outline:none;background:#fff;color:#4a5752;width:150px;">
+                        <option value="personal">Personal task</option>
+                        <sc-for list="{{ t.assignOptions }}" as="op" hint-placeholder-count="2">
+                          <option value="{{ op.value }}">{{ op.name }}</option>
+                        </sc-for>
+                      </select>
+                      <div onClick="{{ t.onAddTask }}" style="background:#064e3b;color:#fff;font-weight:600;font-size:12.5px;padding:9px 16px;border-radius:9px;cursor:pointer;white-space:nowrap;">Assign</div>
+                    </div>
+                  </div>
+                </sc-for>
+
+                <!-- add intern -->
+                <div style="background:#fff;border:1px dashed #cdd6d2;border-radius:14px;padding:18px 22px;">
+                  <div style="font-size:13px;font-weight:600;margin-bottom:10px;">Create a new intern login</div>
+                  <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                    <input value="{{ newInternName }}" onChange="{{ onNewInternName }}" placeholder="Full name" style="flex:1;min-width:160px;border:1px solid #e0e5e3;border-radius:9px;padding:9px 11px;font-family:inherit;font-size:12.5px;outline:none;" />
+                    <input value="{{ newInternEmail }}" onChange="{{ onNewInternEmail }}" placeholder="Login email" style="flex:1;min-width:160px;border:1px solid #e0e5e3;border-radius:9px;padding:9px 11px;font-family:inherit;font-size:12.5px;outline:none;" />
+                    <div onClick="{{ addIntern }}" style="background:#064e3b;color:#fff;font-weight:600;font-size:12.5px;padding:9px 18px;border-radius:9px;cursor:pointer;white-space:nowrap;">Add intern</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </sc-if>
+
+          <!-- ===== CLIENTS & ACCESS (admin) ===== -->
+          <sc-if value="{{ showClients }}" hint-placeholder-val="{{ false }}">
+            <div>
+              <div style="font-size:12.5px;color:#71807a;margin-bottom:16px;">Create client portal logins, set their service and remove access. Each client signs in to see only their own dashboard, progress and updates.</div>
+              <div style="display:flex;flex-direction:column;gap:14px;">
+                <sc-for list="{{ clientCards }}" as="c" hint-placeholder-count="3">
+                  <div style="background:#fff;border:1px solid #e6eae8;border-radius:14px;padding:18px 22px;">
+                    <div style="display:flex;align-items:center;gap:13px;">
+                      <div style="width:42px;height:42px;border-radius:11px;background:#064e3b;color:#dff0e9;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;flex-shrink:0;">{{ c.initials }}</div>
+                      <div style="flex:1;min-width:0;">
+                        <div style="font-size:15px;font-weight:600;">{{ c.name }}</div>
+                        <div style="font-size:12px;color:#71807a;">{{ c.tenure }}</div>
+                      </div>
+                      <div style="text-align:right;margin-right:6px;">
+                        <div style="font-size:19px;font-weight:700;letter-spacing:-0.5px;color:#064e3b;">{{ c.pct }}%</div>
+                        <div style="font-size:11px;color:#71807a;">complete</div>
+                      </div>
+                      <div onClick="{{ c.onDelete }}" style="width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#c64242;font-size:18px;" style-hover="background:#fdeaea;">×</div>
+                    </div>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px;">
+                      <div>
+                        <label style="font-size:11px;font-weight:600;letter-spacing:0.5px;color:#71807a;text-transform:uppercase;">Service</label>
+                        <input value="{{ c.service }}" onChange="{{ c.onService }}" placeholder="Service" style="width:100%;margin-top:6px;border:1px solid #e0e5e3;border-radius:9px;padding:9px 11px;font-family:inherit;font-size:12.5px;outline:none;" style-focus="border-color:#064e3b;" />
+                      </div>
+                      <div>
+                        <label style="font-size:11px;font-weight:600;letter-spacing:0.5px;color:#71807a;text-transform:uppercase;">Login email</label>
+                        <input value="{{ c.email }}" onChange="{{ c.onEmail }}" placeholder="login@portal.tdl.com" style="width:100%;margin-top:6px;border:1px solid #e0e5e3;border-radius:9px;padding:9px 11px;font-family:inherit;font-size:12.5px;color:#0a7a5a;outline:none;" style-focus="border-color:#064e3b;" />
+                      </div>
+                    </div>
+                    <div style="display:flex;align-items:center;justify-content:space-between;margin-top:14px;">
+                      <div style="font-size:11.5px;color:#9aa3a0;">Password: <span style="font-family:monospace;color:#71807a;">demo1234</span></div>
+                      <div onClick="{{ c.onOpen }}" style="font-size:12.5px;font-weight:600;color:#064e3b;cursor:pointer;" style-hover="text-decoration:underline;">Open dashboard →</div>
+                    </div>
+                  </div>
+                </sc-for>
+
+                <!-- add client -->
+                <div style="background:#fff;border:1px dashed #cdd6d2;border-radius:14px;padding:18px 22px;">
+                  <div style="font-size:13px;font-weight:600;margin-bottom:10px;">Create a new client login</div>
+                  <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                    <input value="{{ newClientName }}" onChange="{{ onNewClientName }}" placeholder="Client name" style="flex:1;min-width:150px;border:1px solid #e0e5e3;border-radius:9px;padding:9px 11px;font-family:inherit;font-size:12.5px;outline:none;" />
+                    <input value="{{ newClientService }}" onChange="{{ onNewClientService }}" placeholder="Service (e.g. SEO Retainer)" style="flex:1;min-width:150px;border:1px solid #e0e5e3;border-radius:9px;padding:9px 11px;font-family:inherit;font-size:12.5px;outline:none;" />
+                    <input value="{{ newClientEmail }}" onChange="{{ onNewClientEmail }}" placeholder="Login email" style="flex:1;min-width:150px;border:1px solid #e0e5e3;border-radius:9px;padding:9px 11px;font-family:inherit;font-size:12.5px;outline:none;" />
+                    <div onClick="{{ addClient }}" style="background:#064e3b;color:#fff;font-weight:600;font-size:12.5px;padding:9px 18px;border-radius:9px;cursor:pointer;white-space:nowrap;">Add client</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </sc-if>
+
+          <!-- ===== MY TASKS (intern) ===== -->
+          <sc-if value="{{ showTasks }}" hint-placeholder-val="{{ false }}">
+            <div>
+              <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px;">
+                <sc-for list="{{ taskKpis }}" as="k" hint-placeholder-count="3">
+                  <div style="background:#fff;border:1px solid #e6eae8;border-radius:13px;padding:16px 18px;">
+                    <div style="font-size:12px;color:#71807a;font-weight:500;">{{ k.label }}</div>
+                    <div style="font-size:27px;font-weight:700;letter-spacing:-1px;margin-top:6px;color:#064e3b;">{{ k.value }}</div>
+                  </div>
+                </sc-for>
+              </div>
+              <div style="font-size:15px;font-weight:600;margin-bottom:12px;">My Tasks</div>
+              <div style="background:#fff;border:1px solid #e6eae8;border-radius:13px;overflow:hidden;">
+                <sc-for list="{{ myTasks }}" as="tk" hint-placeholder-count="4">
+                  <div style="display:flex;align-items:center;gap:14px;padding:14px 20px;border-bottom:1px solid #eef2f0;">
+                    <div style="flex:1;">
+                      <div style="font-size:13.5px;font-weight:500;">{{ tk.title }}</div>
+                      <div style="font-size:11.5px;color:#9aa3a0;margin-top:2px;">{{ tk.clientName }} · {{ tk.due }}</div>
+                    </div>
+                    <div onClick="{{ tk.onClick }}" style="{{ tk.tagStyle }}">{{ tk.status }}</div>
+                  </div>
+                </sc-for>
+              </div>
+              <div style="font-size:11.5px;color:#9aa3a0;margin-top:8px;">Click a status to advance it. Tasks are assigned by your admin.</div>
+            </div>
+          </sc-if>
+
+          <!-- ===== OUTREACH TRACKER ===== -->
+          <sc-if value="{{ showOutreach }}" hint-placeholder-val="{{ false }}">
+            <div>
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:14px;flex-wrap:wrap;">
+                <div style="display:flex;background:#eef2f0;border-radius:10px;padding:3px;gap:3px;">
+                  <sc-for list="{{ channelTabs }}" as="t" hint-placeholder-count="2">
+                    <div onClick="{{ t.onClick }}" style="{{ t.style }}"><span style="font-size:13px;">{{ t.icon }}</span> {{ t.label }}</div>
+                  </sc-for>
+                </div>
+                <div onClick="{{ addProspect }}" style="background:#064e3b;color:#fff;font-weight:600;font-size:12.5px;padding:8px 15px;border-radius:9px;cursor:pointer;white-space:nowrap;">{{ addLabel }}</div>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:16px;">
+                <sc-for list="{{ campaignFilters }}" as="f" hint-placeholder-count="3">
+                  <div onClick="{{ f.onClick }}" style="{{ f.style }}">{{ f.label }}</div>
+                </sc-for>
+              </div>
+              <div style="background:#fff;border:1px solid #e6eae8;border-radius:13px;overflow:hidden;">
+                <div style="overflow-x:auto;">
+                  <div style="min-width:1140px;">
+                    <div style="display:grid;grid-template-columns:1.4fr 1fr 1.2fr 1fr 1.6fr 1.1fr 0.7fr 0.3fr;gap:12px;padding:13px 22px;background:#f8faf9;border-bottom:1px solid #e6eae8;font-size:11px;font-weight:600;letter-spacing:0.4px;color:#71807a;text-transform:uppercase;">
+                      <div>{{ profileHeader }}</div><div>Role</div><div>Company</div><div>Client</div><div>Status</div><div>Notes</div><div>Last</div><div></div>
+                    </div>
+                    <sc-for list="{{ outreachRows }}" as="row" hint-placeholder-count="6">
+                      <div class="row" style="display:grid;grid-template-columns:1.4fr 1fr 1.2fr 1fr 1.6fr 1.1fr 0.7fr 0.3fr;gap:12px;padding:9px 22px;border-bottom:1px solid #eef2f0;align-items:center;">
+                        <div>
+                          <input value="{{ row.name }}" onChange="{{ row.onName }}" placeholder="Name" style="width:100%;border:1px solid transparent;background:transparent;border-radius:6px;padding:4px 6px;font-family:inherit;font-size:13px;font-weight:600;color:#0f1f1a;outline:none;" style-hover="border-color:#e0e5e3;" style-focus="border-color:#064e3b;background:#fff;" />
+                          <input value="{{ row.subVal }}" onChange="{{ row.onSub }}" placeholder="{{ row.subPlaceholder }}" style="width:100%;border:1px solid transparent;background:transparent;border-radius:6px;padding:2px 6px;font-family:inherit;font-size:11px;color:#0a7a5a;outline:none;" style-hover="border-color:#e0e5e3;" style-focus="border-color:#064e3b;background:#fff;" />
+                        </div>
+                        <input value="{{ row.role }}" onChange="{{ row.onRole }}" placeholder="Role" style="width:100%;border:1px solid transparent;background:transparent;border-radius:6px;padding:5px 6px;font-family:inherit;font-size:12.5px;color:#4a5752;outline:none;" style-hover="border-color:#e0e5e3;" style-focus="border-color:#064e3b;background:#fff;" />
+                        <input value="{{ row.company }}" onChange="{{ row.onCompany }}" placeholder="Company" style="width:100%;border:1px solid transparent;background:transparent;border-radius:6px;padding:5px 6px;font-family:inherit;font-size:12.5px;color:#4a5752;outline:none;" style-hover="border-color:#e0e5e3;" style-focus="border-color:#064e3b;background:#fff;" />
+                        <div style="font-size:11.5px;color:#71807a;">{{ row.clientName }}</div>
+                        <select value="{{ row.status }}" onChange="{{ row.onStatus }}" style="{{ row.selectStyle }}">
+                          <sc-for list="{{ row.statusOptions }}" as="o" hint-placeholder-count="7">
+                            <option value="{{ o }}">{{ o }}</option>
+                          </sc-for>
+                        </select>
+                        <input value="{{ row.notes }}" onChange="{{ row.onNotes }}" placeholder="Notes" style="width:100%;border:1px solid transparent;background:transparent;border-radius:6px;padding:5px 6px;font-family:inherit;font-size:12px;color:#71807a;outline:none;" style-hover="border-color:#e0e5e3;" style-focus="border-color:#064e3b;background:#fff;" />
+                        <div style="font-size:12px;color:#71807a;">{{ row.date }}</div>
+                        <div onClick="{{ row.onDelete }}" class="delx" style="cursor:pointer;color:#c64242;font-size:17px;text-align:center;">×</div>
+                      </div>
+                    </sc-for>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </sc-if>
+
+          <!-- ===== CLIENT DASHBOARD ===== -->
+          <sc-if value="{{ showClient }}" hint-placeholder-val="{{ false }}">
+            <div>
+              <sc-if value="{{ showClientPicker }}" hint-placeholder-val="{{ false }}">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:18px;flex-wrap:wrap;">
+                  <span style="font-size:12px;color:#71807a;margin-right:2px;">Account:</span>
+                  <sc-for list="{{ clientPicker }}" as="p" hint-placeholder-count="4">
+                    <div onClick="{{ p.onClick }}" style="{{ p.style }}">{{ p.label }}</div>
+                  </sc-for>
+                  <div onClick="{{ toggleAddClient }}" style="padding:6px 12px;border-radius:20px;cursor:pointer;font-size:12px;font-weight:600;border:1px dashed #cdd6d2;color:#71807a;">＋ New client</div>
+                </div>
+                <sc-if value="{{ showAddClient }}" hint-placeholder-val="{{ false }}">
+                  <div style="background:#fff;border:1px solid #e6eae8;border-radius:12px;padding:14px 16px;margin-bottom:18px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+                    <input value="{{ newClientName }}" onChange="{{ onNewClientName }}" placeholder="Client name" style="flex:1;min-width:150px;border:1px solid #e0e5e3;border-radius:9px;padding:9px 11px;font-family:inherit;font-size:12.5px;outline:none;" />
+                    <input value="{{ newClientService }}" onChange="{{ onNewClientService }}" placeholder="Service (e.g. SEO Retainer)" style="flex:1;min-width:150px;border:1px solid #e0e5e3;border-radius:9px;padding:9px 11px;font-family:inherit;font-size:12.5px;outline:none;" />
+                    <input value="{{ newClientEmail }}" onChange="{{ onNewClientEmail }}" placeholder="Login email" style="flex:1;min-width:150px;border:1px solid #e0e5e3;border-radius:9px;padding:9px 11px;font-family:inherit;font-size:12.5px;outline:none;" />
+                    <div onClick="{{ addClient }}" style="background:#064e3b;color:#fff;font-weight:600;font-size:12.5px;padding:9px 18px;border-radius:9px;cursor:pointer;white-space:nowrap;">Create account</div>
+                  </div>
+                </sc-if>
+              </sc-if>
+
+              <div style="display:flex;align-items:center;gap:16px;background:#fff;border:1px solid #e6eae8;border-radius:13px;padding:20px 22px;">
+                <div style="width:58px;height:58px;border-radius:13px;background:#064e3b;color:#dff0e9;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:21px;letter-spacing:-0.5px;flex-shrink:0;">{{ activeClient.initials }}</div>
+                <div style="flex:1;">
+                  <div style="font-size:19px;font-weight:700;letter-spacing:-0.4px;">{{ activeClient.name }}</div>
+                  <div style="display:flex;align-items:center;gap:8px;margin-top:5px;">
+                    <span style="background:#ecf3f0;color:#064e3b;font-weight:600;font-size:11.5px;padding:4px 10px;border-radius:6px;">{{ activeClient.service }}</span>
+                    <span style="font-size:12px;color:#71807a;">{{ activeClient.tenure }}</span>
+                  </div>
+                </div>
+                <div style="text-align:right;">
+                  <div style="font-size:34px;font-weight:700;letter-spacing:-1.5px;color:#064e3b;">{{ activeClient.pct }}%</div>
+                  <div style="font-size:11.5px;color:#71807a;">deliverables done</div>
+                </div>
+              </div>
+              <div style="margin:14px 0 6px;">
+                <div style="height:9px;background:#eef2f0;border-radius:6px;overflow:hidden;"><div style="{{ activeClient.barStyle }}"></div></div>
+              </div>
+
+              <div style="display:grid;grid-template-columns:1.7fr 1fr;gap:20px;margin-top:22px;align-items:start;">
+                <div>
+                  <div style="font-size:14.5px;font-weight:600;margin-bottom:12px;">Monthly Deliverables</div>
+                  <div style="background:#fff;border:1px solid #e6eae8;border-radius:13px;overflow:hidden;">
+                    <sc-for list="{{ activeClient.deliverables }}" as="d" hint-placeholder-count="5">
+                      <div class="row" style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 18px;border-bottom:1px solid #eef2f0;">
+                        <div style="flex:1;min-width:0;">
+                          <input value="{{ d.name }}" disabled="{{ d.locked }}" onChange="{{ d.onName }}" style="width:100%;border:1px solid transparent;background:transparent;border-radius:6px;padding:4px 6px;font-family:inherit;font-size:13.5px;font-weight:500;color:#0f1f1a;outline:none;" style-hover="border-color:#e0e5e3;" style-focus="border-color:#064e3b;background:#fff;" />
+                          <input value="{{ d.due }}" disabled="{{ d.locked }}" onChange="{{ d.onDue }}" style="width:100%;border:1px solid transparent;background:transparent;border-radius:6px;padding:1px 6px;font-family:inherit;font-size:11.5px;color:#9aa3a0;outline:none;" style-hover="border-color:#e0e5e3;" style-focus="border-color:#064e3b;background:#fff;" />
+                        </div>
+                        <div onClick="{{ d.onCycle }}" style="{{ d.tagStyle }}">{{ d.status }}</div>
+                        <sc-if value="{{ d.canDelete }}" hint-placeholder-val="{{ false }}">
+                          <div onClick="{{ d.onDelete }}" class="delx" style="cursor:pointer;color:#c64242;font-size:17px;width:18px;text-align:center;">×</div>
+                        </sc-if>
+                      </div>
+                    </sc-for>
+                    <sc-if value="{{ canEditDeliverables }}" hint-placeholder-val="{{ false }}">
+                      <div style="display:flex;gap:8px;padding:12px 16px;">
+                        <input value="{{ newDelivName }}" onChange="{{ onNewDelivName }}" placeholder="Add a deliverable…" style="flex:1;border:1px solid #e0e5e3;border-radius:8px;padding:9px 11px;font-family:inherit;font-size:12.5px;outline:none;" />
+                        <div onClick="{{ addDeliv }}" style="background:#064e3b;color:#fff;font-weight:600;font-size:12.5px;padding:9px 15px;border-radius:8px;cursor:pointer;white-space:nowrap;">Add</div>
+                      </div>
+                    </sc-if>
+                  </div>
+                  <sc-if value="{{ canEditDeliverables }}" hint-placeholder-val="{{ false }}">
+                    <div style="font-size:11.5px;color:#9aa3a0;margin-top:8px;">Click a status tag to advance it · click any field to edit.</div>
+                  </sc-if>
+                </div>
+                <div>
+                  <div style="font-size:14.5px;font-weight:600;margin-bottom:12px;">{{ notesTitle }}</div>
+                  <div style="background:#fff;border:1px solid #e6eae8;border-radius:13px;padding:16px;">
+                    <div style="display:flex;flex-direction:column;gap:14px;">
+                      <sc-for list="{{ activeClient.notes }}" as="n" hint-placeholder-count="3">
+                        <div class="row" style="display:flex;gap:11px;">
+                          <div style="width:28px;height:28px;border-radius:50%;background:#ecf3f0;color:#064e3b;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:11px;flex-shrink:0;">{{ n.initials }}</div>
+                          <div style="flex:1;">
+                            <div style="font-size:12px;display:flex;justify-content:space-between;"><span><span style="font-weight:600;">{{ n.author }}</span> <span style="color:#9aa3a0;">· {{ n.time }}</span></span>
+                              <sc-if value="{{ n.canDelete }}" hint-placeholder-val="{{ false }}"><span onClick="{{ n.onDelete }}" class="delx" style="cursor:pointer;color:#c64242;">×</span></sc-if>
+                            </div>
+                            <div style="font-size:12.5px;color:#4a5752;margin-top:2px;line-height:1.45;">{{ n.text }}</div>
+                          </div>
+                        </div>
+                      </sc-for>
+                    </div>
+                    <sc-if value="{{ canAddNote }}" hint-placeholder-val="{{ false }}">
+                      <div style="display:flex;gap:8px;margin-top:16px;border-top:1px solid #eef2f0;padding-top:14px;">
+                        <input value="{{ noteVal }}" onChange="{{ onNote }}" placeholder="Add an internal note…" style="flex:1;border:1px solid #e0e5e3;border-radius:8px;padding:9px 11px;font-family:inherit;font-size:12.5px;outline:none;" />
+                        <div onClick="{{ addNote }}" style="background:#064e3b;color:#fff;font-weight:600;font-size:12.5px;padding:9px 15px;border-radius:8px;cursor:pointer;white-space:nowrap;">Post</div>
+                      </div>
+                    </sc-if>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </sc-if>
+
+        </div>
+      </main>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = {
+    user: null,
+    view: null,
+    selectedClient: 0,
+    campaign: "all",
+    outChannel: "linkedin",
+    loginError: false,
+    showDemo: false,
+    showAddClient: false,
+    drafts: { email:"", pw:"", note:"", newDeliv:{}, taskTitle:{}, taskClient:{}, internName:"", internEmail:"", clientName:"", clientService:"", clientEmail:"" },
+    adminEmail: "maya@thedistributionlab.com",
+    clients: [
+      { name:"Northwind SaaS", initials:"NW", email:"northwind@portal.tdl.com", service:"LinkedIn Lead Gen", tenure:"Client since Jan 2026",
+        deliverables:[
+          {name:"Campaign strategy refresh",due:"Due Jun 5",status:"Done"},
+          {name:"300 prospect list build",due:"Due Jun 8",status:"Done"},
+          {name:"Connection sequence (wk 1-2)",due:"Due Jun 14",status:"In Progress"},
+          {name:"Mid-month performance report",due:"Due Jun 20",status:"Not Started"},
+          {name:"Reply handling & booking",due:"Ongoing",status:"In Progress"} ],
+        notes:[
+          {author:"Maya Chen",initials:"MC",time:"Jun 18",text:"Client wants to skew messaging toward RevOps titles next batch."},
+          {author:"Dev Patel",initials:"DP",time:"Jun 16",text:"Reply rate up to 14% after subject line tweak."} ] },
+      { name:"Atlas Robotics", initials:"AR", email:"atlas@portal.tdl.com", service:"SEO Retainer", tenure:"Client since Sep 2025",
+        deliverables:[
+          {name:"Keyword gap analysis",due:"Due Jun 4",status:"Done"},
+          {name:"2x pillar articles",due:"Due Jun 12",status:"Done"},
+          {name:"Technical audit fixes",due:"Due Jun 15",status:"Delayed"},
+          {name:"Backlink outreach (10)",due:"Due Jun 22",status:"In Progress"},
+          {name:"Monthly ranking report",due:"Due Jun 28",status:"Not Started"} ],
+        notes:[{author:"Alex Kim",initials:"AK",time:"Jun 19",text:"Dev resource delay on audit fixes — flagged to client, new ETA Jun 24."}] },
+      { name:"Brightwave Health", initials:"BH", email:"brightwave@portal.tdl.com", service:"LinkedIn Lead Gen", tenure:"Client since Mar 2026",
+        deliverables:[
+          {name:"ICP & list build",due:"Due Jun 3",status:"Done"},
+          {name:"Outreach copy v2",due:"Due Jun 9",status:"Done"},
+          {name:"Connection sequence",due:"Due Jun 14",status:"Done"},
+          {name:"Follow-up sequence",due:"Due Jun 21",status:"In Progress"},
+          {name:"Performance report",due:"Due Jun 30",status:"Not Started"} ],
+        notes:[{author:"Dev Patel",initials:"DP",time:"Jun 20",text:"2 meetings booked this week with Director-level prospects."}] },
+      { name:"Cedar Financial", initials:"CF", email:"cedar@portal.tdl.com", service:"SEO Retainer", tenure:"Client since Nov 2025",
+        deliverables:[
+          {name:"Content calendar",due:"Due Jun 2",status:"Done"},
+          {name:"3x blog posts",due:"Due Jun 16",status:"In Progress"},
+          {name:"On-page optimization",due:"Due Jun 18",status:"Not Started"},
+          {name:"Monthly report",due:"Due Jun 30",status:"Not Started"} ],
+        notes:[{author:"Alex Kim",initials:"AK",time:"Jun 15",text:"Awaiting client SME review on draft #2."}] }
+    ],
+    interns: [
+      { name:"Dev Patel", initials:"DP", email:"dev@thedistributionlab.com", clients:[0,2], canEdit:true,
+        tasks:[
+          {title:"Send wk-2 connection batch",client:0,due:"Jun 24",status:"In Progress"},
+          {title:"Build follow-up list (50)",client:2,due:"Jun 25",status:"Not Started"},
+          {title:"Clean CRM duplicate records",client:null,due:"Jun 26",status:"Not Started"},
+          {title:"Log replies & book meetings",client:0,due:"Ongoing",status:"In Progress"} ] },
+      { name:"Alex Kim", initials:"AK", email:"alex@thedistributionlab.com", clients:[1], canEdit:false,
+        tasks:[
+          {title:"Draft 2x pillar articles",client:1,due:"Jun 22",status:"Done"},
+          {title:"Backlink prospect research",client:1,due:"Jun 24",status:"In Progress"},
+          {title:"Weekly standup notes",client:null,due:"Jun 23",status:"Not Started"} ] }
+    ],
+    outreach: [
+      {client:0,channel:"linkedin",name:"Sarah Okafor",url:"https://linkedin.com/in/sarah-okafor",email:"",role:"VP Marketing",company:"Loom Systems",status:"Reply Received",notes:"Warm, wants deck",date:"Jun 20"},
+      {client:0,channel:"linkedin",name:"James Liu",url:"https://linkedin.com/in/james-liu",email:"",role:"Head of Growth",company:"Parable",status:"Message 1 Sent",notes:"—",date:"Jun 19"},
+      {client:2,channel:"linkedin",name:"Priya Nair",url:"https://linkedin.com/in/priya-nair",email:"",role:"Director, Demand",company:"Vitality Co",status:"Meet Booked",notes:"Thu 2pm",date:"Jun 21"},
+      {client:0,channel:"linkedin",name:"Tomás Reyes",url:"https://linkedin.com/in/tomas-reyes",email:"",role:"CMO",company:"Northstar",status:"Connection Accepted",notes:"—",date:"Jun 18"},
+      {client:2,channel:"linkedin",name:"Hannah Webb",url:"https://linkedin.com/in/hannah-webb",email:"",role:"RevOps Lead",company:"Clearway",status:"Follow-up 1 Sent",notes:"No reply yet",date:"Jun 17"},
+      {client:0,channel:"linkedin",name:"Marcus Bell",url:"https://linkedin.com/in/marcus-bell",email:"",role:"VP Sales",company:"Tidemark",status:"Connection Request Sent",notes:"—",date:"Jun 22"},
+      {client:2,channel:"linkedin",name:"Elena Fischer",url:"https://linkedin.com/in/elena-fischer",email:"",role:"Marketing Dir.",company:"Aperture",status:"Not Interested",notes:"Using agency",date:"Jun 16"},
+      {client:0,channel:"linkedin",name:"Kofi Mensah",url:"https://linkedin.com/in/kofi-mensah",email:"",role:"Founder",company:"Stacks",status:"Reply Received",notes:"Asked pricing",date:"Jun 21"},
+      {client:0,channel:"email",name:"Dana Holt",url:"",email:"dana.holt@brightpath.io",role:"VP Marketing",company:"Brightpath",status:"Replied",notes:"Wants case study",date:"Jun 21"},
+      {client:0,channel:"email",name:"Raj Anand",url:"",email:"raj@northstar.com",role:"Head of Demand",company:"Northstar",status:"Email 2 Sent",notes:"Opened 3x",date:"Jun 20"},
+      {client:2,channel:"email",name:"Lena Cole",url:"",email:"lena.cole@vitality.co",role:"Growth Lead",company:"Vitality Co",status:"Meeting Booked",notes:"Tue 11am",date:"Jun 22"},
+      {client:2,channel:"email",name:"Owen Pierce",url:"",email:"owen.p@clearway.com",role:"RevOps",company:"Clearway",status:"Email 1 Sent",notes:"—",date:"Jun 19"},
+      {client:0,channel:"email",name:"Mara Voss",url:"",email:"mara@tidemark.com",role:"VP Sales",company:"Tidemark",status:"Bounced",notes:"Bad address",date:"Jun 18"},
+      {client:2,channel:"email",name:"Felix Wu",url:"",email:"felix.wu@aperture.com",role:"Marketing Dir.",company:"Aperture",status:"Email 3 Sent",notes:"No reply",date:"Jun 17"}
+    ]
+  };
+
+  STATUS=["Connection Request Sent","Connection Accepted","Message 1 Sent","Follow-up 1 Sent","Reply Received","Meet Booked","Not Interested"];
+  EMAIL_STATUS=["Email 1 Sent","Email 2 Sent","Email 3 Sent","Replied","Meeting Booked","Bounced","Not Interested"];
+  DSTATES=["Not Started","In Progress","Done","Delayed"];
+
+  dColor(s){ if(s==="Done")return{bg:"#e3f3ea",fg:"#0a7a4f"}; if(s==="In Progress")return{bg:"#e6f0fb",fg:"#1f6fc4"}; if(s==="Delayed")return{bg:"#fdeaea",fg:"#c64242"}; return{bg:"#eef1f0",fg:"#71807a"}; }
+  sColor(s){ if(s==="Meet Booked"||s==="Meeting Booked")return{bg:"#e3f3ea",fg:"#0a7a4f",bd:"#bfe3cf"}; if(s==="Reply Received"||s==="Replied")return{bg:"#fff4e0",fg:"#b27400",bd:"#f0dcaf"}; if(s==="Bounced")return{bg:"#fdeaea",fg:"#c64242",bd:"#f2cdcd"}; if(s==="Not Interested")return{bg:"#f6efef",fg:"#a06a6a",bd:"#e3d3d3"}; if(s==="Connection Accepted")return{bg:"#e6f0fb",fg:"#1f6fc4",bd:"#cfe0f4"}; return{bg:"#f4f6f5",fg:"#4a5752",bd:"#dde3e0"}; }
+  pct(c){ const d=c.deliverables; return d.length?Math.round(d.filter(x=>x.status==="Done").length/d.length*100):0; }
+  tagStyle(s,click){ const c=this.dColor(s); return `font-size:11.5px;font-weight:600;padding:5px 11px;border-radius:20px;background:${c.bg};color:${c.fg};white-space:nowrap;text-align:center;min-width:88px;${click?"cursor:pointer;":""}`; }
+  initialsOf(n){ const p=n.trim().split(/\s+/); return ((p[0]||"")[0]||"")+((p[1]||"")[0]||""); }
+
+  setD(patch){ this.setState(s=>({drafts:{...s.drafts,...patch}})); }
+  setDMap(key,idx,val){ this.setState(s=>({drafts:{...s.drafts,[key]:{...s.drafts[key],[idx]:val}}})); }
+
+  doLogin(){
+    const {email,pw}=this.state.drafts;
+    const e=(email||"").trim().toLowerCase();
+    let u=null;
+    if(e===this.state.adminEmail) u={type:"admin",id:0};
+    else { const ii=this.state.interns.findIndex(n=>n.email.toLowerCase()===e); if(ii>=0)u={type:"intern",id:ii};
+      else { const ci=this.state.clients.findIndex(c=>c.email.toLowerCase()===e); if(ci>=0)u={type:"client",id:ci}; } }
+    if(!u || !pw){ this.setState({loginError:true}); return; }
+    const v=u.type==="admin"?"overview":u.type==="intern"?"tasks":"client";
+    this.setState({user:u,view:v,selectedClient:u.type==="client"?u.id:0,campaign:"all",loginError:false});
+  }
+  fillDemo(email){ this.setD({email,pw:"demo1234"}); }
+  signOut(){ this.setState({user:null,view:null,drafts:{...this.state.drafts,email:"",pw:""}}); }
+  setView(v){ this.setState({view:v}); }
+
+  cycleDeliv(ci,di){ if(this.state.user.type==="client")return; this.setState(s=>({clients:s.clients.map((c,i)=>i!==ci?c:{...c,deliverables:c.deliverables.map((d,j)=>j!==di?d:{...d,status:this.DSTATES[(this.DSTATES.indexOf(d.status)+1)%4]})})})); }
+  editDeliv(ci,di,field,val){ this.setState(s=>({clients:s.clients.map((c,i)=>i!==ci?c:{...c,deliverables:c.deliverables.map((d,j)=>j!==di?d:{...d,[field]:val})})})); }
+  delDeliv(ci,di){ this.setState(s=>({clients:s.clients.map((c,i)=>i!==ci?c:{...c,deliverables:c.deliverables.filter((_,j)=>j!==di)})})); }
+  addDeliv(ci){ const n=(this.state.drafts.newDeliv[ci]||"").trim(); if(!n)return; this.setState(s=>({clients:s.clients.map((c,i)=>i!==ci?c:{...c,deliverables:[...c.deliverables,{name:n,due:"Due —",status:"Not Started"}]})})); this.setDMap("newDeliv",ci,""); }
+
+  setStatus(idx,val){ this.setState(s=>({outreach:s.outreach.map((r,i)=>i!==idx?r:{...r,status:val,date:"Jun 24"})})); }
+  editOut(idx,field,val){ this.setState(s=>({outreach:s.outreach.map((r,i)=>i!==idx?r:{...r,[field]:val})})); }
+  delOut(idx){ this.setState(s=>({outreach:s.outreach.filter((_,i)=>i!==idx)})); }
+  addProspect(){ const S=this.state,u=S.user; const allowed=u.type==="admin"?S.clients.map((_,i)=>i):S.interns[u.id].clients; if(!allowed.length)return; const cl=S.campaign!=="all"?parseInt(S.campaign,10):allowed[0];
+    const isEmail=S.outChannel==="email"; const status=isEmail?"Email 1 Sent":"Connection Request Sent";
+    this.setState(s=>({outreach:[{client:cl,channel:s.outChannel,name:"",url:"",email:"",role:"",company:"",status,notes:"",date:"Jun 24"},...s.outreach]})); }
+
+  cycleTask(ii,ti){ this.setState(s=>({interns:s.interns.map((n,i)=>i!==ii?n:{...n,tasks:n.tasks.map((t,j)=>j!==ti?t:{...t,status:this.DSTATES[(this.DSTATES.indexOf(t.status)+1)%4]})})})); }
+  delTask(ii,ti){ this.setState(s=>({interns:s.interns.map((n,i)=>i!==ii?n:{...n,tasks:n.tasks.filter((_,j)=>j!==ti)})})); }
+  addTask(ii){ const title=(this.state.drafts.taskTitle[ii]||"").trim(); if(!title)return; const cv=this.state.drafts.taskClient[ii]||"personal"; const client=cv==="personal"?null:parseInt(cv,10);
+    this.setState(s=>({interns:s.interns.map((n,i)=>i!==ii?n:{...n,tasks:[...n.tasks,{title,client,due:"Jun 28",status:"Not Started"}]})})); this.setDMap("taskTitle",ii,""); }
+  toggleClient(ii,ci){ this.setState(s=>({interns:s.interns.map((n,i)=>{if(i!==ii)return n;const has=n.clients.includes(ci);return{...n,clients:has?n.clients.filter(x=>x!==ci):[...n.clients,ci]};})})); }
+  toggleEdit(ii){ this.setState(s=>({interns:s.interns.map((n,i)=>i!==ii?n:{...n,canEdit:!n.canEdit})})); }
+  delIntern(ii){ this.setState(s=>({interns:s.interns.filter((_,i)=>i!==ii)})); }
+  addIntern(){ const name=(this.state.drafts.internName||"").trim(); if(!name)return; const email=(this.state.drafts.internEmail||"").trim()||name.toLowerCase().split(/\s+/)[0]+"@thedistributionlab.com";
+    this.setState(s=>({interns:[...s.interns,{name,initials:this.initialsOf(name).toUpperCase(),email,clients:[],canEdit:false,tasks:[]}],drafts:{...s.drafts,internName:"",internEmail:""}})); }
+
+  addClient(){ const name=(this.state.drafts.clientName||"").trim(); if(!name)return; const service=(this.state.drafts.clientService||"").trim()||"Retainer"; const email=(this.state.drafts.clientEmail||"").trim()||name.toLowerCase().split(/\s+/)[0]+"@portal.tdl.com";
+    this.setState(s=>({clients:[...s.clients,{name,initials:this.initialsOf(name).toUpperCase(),email,service,tenure:"New client · Jun 2026",deliverables:[],notes:[]}],showAddClient:false,selectedClient:s.clients.length,drafts:{...s.drafts,clientName:"",clientService:"",clientEmail:""}})); }
+  editClient(ci,field,val){ this.setState(s=>({clients:s.clients.map((c,i)=>i!==ci?c:{...c,[field]:val})})); }
+  delClient(ci){ this.setState(s=>{ const remap=idx=>idx==null?null:(idx>ci?idx-1:idx);
+    const clients=s.clients.filter((_,i)=>i!==ci);
+    const outreach=s.outreach.filter(o=>o.client!==ci).map(o=>({...o,client:remap(o.client)}));
+    const interns=s.interns.map(n=>({...n,clients:n.clients.filter(x=>x!==ci).map(x=>remap(x)),tasks:n.tasks.filter(t=>t.client!==ci).map(t=>({...t,client:remap(t.client)}))}));
+    let selectedClient=s.selectedClient; if(selectedClient>ci)selectedClient--; if(selectedClient>=clients.length)selectedClient=Math.max(0,clients.length-1);
+    return {clients,outreach,interns,selectedClient}; }); }
+
+  delNote(ci,ni){ this.setState(s=>({clients:s.clients.map((c,i)=>i!==ci?c:{...c,notes:c.notes.filter((_,j)=>j!==ni)})})); }
+  addNote(){ const t=(this.state.drafts.note||"").trim(); if(!t)return; const u=this.state.user;
+    const who=u.type==="client"?{author:"You",initials:"YOU"}:u.type==="intern"?{author:this.state.interns[u.id].name,initials:this.state.interns[u.id].initials}:{author:"Maya Chen",initials:"MC"};
+    this.setState(s=>({clients:s.clients.map((c,i)=>i!==s.selectedClient?c:{...c,notes:[{...who,time:"Just now",text:t},...c.notes]}),drafts:{...s.drafts,note:""}})); }
+
+  renderVals(){
+    const S=this.state,u=S.user,D=S.drafts;
+
+    if(!u){
+      const demo=[{email:S.adminEmail,tag:"Admin"},...S.interns.map(n=>({email:n.email,tag:"Intern"})),...S.clients.map(c=>({email:c.email,tag:"Client"}))]
+        .map(a=>({...a,onClick:()=>this.fillDemo(a.email)}));
+      return { loggedOut:true, loggedIn:false, loginError:S.loginError, showDemo:S.showDemo,
+        emailVal:D.email, pwVal:D.pw, onEmail:e=>this.setD({email:e.target.value}), onPw:e=>this.setD({pw:e.target.value}),
+        doLogin:()=>this.doLogin(), toggleDemo:()=>this.setState({showDemo:!S.showDemo}),
+        demoToggleLabel:S.showDemo?"Hide demo logins":"View demo logins", demoAccounts:demo };
+    }
+
+    const role=u.type;
+    const navOf=(k,l,ic)=>({onClick:()=>this.setView(k),icon:ic,label:l,style:`display:flex;align-items:center;gap:11px;padding:9px 10px;border-radius:9px;cursor:pointer;font-size:13.5px;font-weight:500;${S.view===k?"background:rgba(255,255,255,0.13);color:#fff;":"color:#bfe0d3;"}`});
+    let navItems;
+    if(role==="admin")navItems=[navOf("overview","Admin Overview","◧"),navOf("outreach","Outreach Tracker","◎"),navOf("client","Client Dashboards","▣"),navOf("clients","Clients & Access","▤"),navOf("team","Team & Access","◐")];
+    else if(role==="intern")navItems=[navOf("tasks","My Tasks","✓"),navOf("outreach","Outreach Tracker","◎")];
+    else navItems=[navOf("client","My Dashboard","▣")];
+
+    const um=role==="admin"?{name:"Maya Chen",sub:"Founder · Admin",ini:"MC"}:role==="intern"?{name:S.interns[u.id].name,sub:"Intern",ini:S.interns[u.id].initials}:{name:S.clients[u.id].name,sub:"Client account",ini:S.clients[u.id].initials};
+
+    const showOverview=role==="admin"&&S.view==="overview";
+    const showTeam=role==="admin"&&S.view==="team";
+    const showClients=role==="admin"&&S.view==="clients";
+    const showTasks=role==="intern"&&S.view==="tasks";
+    const showOutreach=(role==="admin"||role==="intern")&&S.view==="outreach";
+    const showClient=S.view==="client";
+
+    const titles={overview:["Admin Overview","Everything across every account this month"],outreach:["Outreach Tracker","LinkedIn & email campaigns"],client:["Client Dashboard","Deliverables, progress & internal notes"],clients:["Clients & Access","Manage client accounts, logins & team access"],team:["Team & Access","Manage intern logins, access & tasks"],tasks:["My Tasks","Work assigned to you by the admin"]};
+    let [pageTitle,pageSub]=titles[S.view]||["",""];
+    if(role==="client"){pageTitle="Your Dashboard";pageSub="This month's progress on your account.";}
+    if(role==="intern"&&S.view==="outreach")pageSub="Update, add or remove prospects on your assigned campaigns.";
+
+    const base={ loggedOut:false, loggedIn:true, navItems, userName:um.name, userSub:um.sub, userInitials:um.ini, signOut:()=>this.signOut(),
+      pageTitle, pageSub, roleBadge:role[0].toUpperCase()+role.slice(1),
+      showOverview, showTeam, showClients, showTasks, showOutreach, showClient, statusOptions:this.STATUS };
+
+    if(showOverview){
+      const reps=S.outreach.filter(r=>r.status==="Reply Received").length, meet=S.outreach.filter(r=>r.status==="Meet Booked").length;
+      const avg=S.clients.length?Math.round(S.clients.reduce((a,c)=>a+this.pct(c),0)/S.clients.length):0;
+      base.kpis=[{label:"Active Clients",value:String(S.clients.length),sub:"All retainers current"},{label:"Avg. Completion",value:avg+"%",sub:"Across all accounts"},{label:"Connections Sent",value:String(S.outreach.length),sub:"This month"},{label:"Replies / Meetings",value:reps+" / "+meet,sub:"Received / booked"}];
+      base.clientCount=S.clients.length;
+      base.overviewRows=S.clients.map((c,i)=>{const p=this.pct(c),done=c.deliverables.filter(x=>x.status==="Done").length;return{name:c.name,initials:c.initials,service:c.service,pct:p,doneLabel:done+" of "+c.deliverables.length+" done",replies:String(S.outreach.filter(o=>o.client===i&&o.status==="Reply Received").length)+" replies",barStyle:`height:100%;width:${p}%;background:#064e3b;border-radius:5px;`,onClick:()=>this.setState({view:"client",selectedClient:i})};});
+    }
+
+    if(showTeam){
+      base.teamCards=S.interns.map((n,ii)=>({
+        name:n.name,initials:n.initials,email:n.email,
+        summary:`${n.clients.length} client${n.clients.length===1?"":"s"} · ${n.tasks.length} tasks · ${n.canEdit?"can":"can't"} edit deliverables`,
+        editToggleStyle:`width:40px;height:23px;border-radius:14px;cursor:pointer;flex-shrink:0;position:relative;background:${n.canEdit?"#064e3b":"#d4dad7"};`,
+        editKnobStyle:`position:absolute;top:3px;left:${n.canEdit?"20px":"3px"};width:17px;height:17px;border-radius:50%;background:#fff;transition:.15s;`,
+        onToggleEdit:()=>this.toggleEdit(ii), onDelete:()=>this.delIntern(ii),
+        clientChips:S.clients.map((c,ci)=>{const on=n.clients.includes(ci);return{name:c.name,mark:on?"✓":"+",style:`display:flex;align-items:center;gap:6px;padding:7px 13px;border-radius:9px;cursor:pointer;font-size:12.5px;font-weight:600;border:1px solid ${on?"#064e3b":"#e0e5e3"};${on?"background:#064e3b;color:#fff;":"background:#fff;color:#71807a;"}`,onClick:()=>this.toggleClient(ii,ci)};}),
+        tasks:n.tasks.map((t,ti)=>({title:t.title,clientName:t.client==null?"Personal task":S.clients[t.client].name,due:t.due,status:t.status,tagStyle:this.tagStyle(t.status,true),onClick:()=>this.cycleTask(ii,ti),onDelete:()=>this.delTask(ii,ti)})),
+        assignOptions:S.clients.map((c,ci)=>({value:String(ci),name:c.name})),
+        draftTitle:D.taskTitle[ii]||"", draftClient:D.taskClient[ii]||"personal",
+        onDraftTitle:e=>this.setDMap("taskTitle",ii,e.target.value), onDraftClient:e=>this.setDMap("taskClient",ii,e.target.value), onAddTask:()=>this.addTask(ii)
+      }));
+      base.newInternName=D.internName; base.newInternEmail=D.internEmail;
+      base.onNewInternName=e=>this.setD({internName:e.target.value}); base.onNewInternEmail=e=>this.setD({internEmail:e.target.value}); base.addIntern=()=>this.addIntern();
+    }
+
+    if(showClients){
+      base.clientCards=S.clients.map((c,ci)=>({
+        initials:c.initials, name:c.name, tenure:c.tenure, service:c.service, email:c.email, pct:this.pct(c),
+        onService:e=>this.editClient(ci,"service",e.target.value),
+        onEmail:e=>this.editClient(ci,"email",e.target.value),
+        onDelete:()=>this.delClient(ci),
+        onOpen:()=>this.setState({view:"client",selectedClient:ci})
+      }));
+      base.newClientName=D.clientName; base.newClientService=D.clientService; base.newClientEmail=D.clientEmail;
+      base.onNewClientName=e=>this.setD({clientName:e.target.value}); base.onNewClientService=e=>this.setD({clientService:e.target.value}); base.onNewClientEmail=e=>this.setD({clientEmail:e.target.value}); base.addClient=()=>this.addClient();
+    }
+
+    if(showTasks){
+      const n=S.interns[u.id];
+      base.taskKpis=[{label:"Assigned Tasks",value:String(n.tasks.length)},{label:"In Progress",value:String(n.tasks.filter(t=>t.status==="In Progress").length)},{label:"Completed",value:String(n.tasks.filter(t=>t.status==="Done").length)}];
+      base.myTasks=n.tasks.map((t,ti)=>({title:t.title,clientName:t.client==null?"Personal":S.clients[t.client].name,due:t.due,status:t.status,tagStyle:this.tagStyle(t.status,true),onClick:()=>this.cycleTask(u.id,ti)}));
+    }
+
+    if(showOutreach){
+      const allowed=role==="admin"?S.clients.map((_,i)=>i):S.interns[u.id].clients;
+      const ch=S.outChannel, isEmail=ch==="email";
+      const chDefs=[{k:"linkedin",l:"LinkedIn",ic:"in"},{k:"email",l:"Email",ic:"✉"}];
+      base.channelTabs=chDefs.map(t=>({label:t.l,icon:t.ic,onClick:()=>this.setState({outChannel:t.k}),style:`display:flex;align-items:center;gap:6px;padding:7px 15px;border-radius:8px;cursor:pointer;font-size:12.5px;font-weight:600;${S.outChannel===t.k?"background:#fff;color:#064e3b;box-shadow:0 1px 3px rgba(0,0,0,0.08);":"color:#71807a;"}`}));
+      base.profileHeader=isEmail?"Name / Email":"Name / Profile";
+      base.addLabel=isEmail?"＋ Add contact":"＋ Add prospect";
+      const defs=[{k:"all",l:"All campaigns"}].concat(allowed.map(i=>({k:String(i),l:S.clients[i].name})));
+      base.campaignFilters=defs.map(f=>({label:f.l,onClick:()=>this.setState({campaign:f.k}),style:`padding:7px 13px;border-radius:8px;cursor:pointer;font-size:12.5px;font-weight:500;border:1px solid ${S.campaign===f.k?"#064e3b":"#e0e5e3"};${S.campaign===f.k?"background:#064e3b;color:#fff;":"background:#fff;color:#4a5752;"}`}));
+      base.addProspect=()=>this.addProspect();
+      const opts=isEmail?this.EMAIL_STATUS:this.STATUS;
+      base.outreachRows=S.outreach.map((r,i)=>({...r,_i:i})).filter(r=>(r.channel||"linkedin")===ch).filter(r=>allowed.includes(r.client)).filter(r=>S.campaign==="all"||String(r.client)===S.campaign).map(r=>{const c=this.sColor(r.status);return{name:r.name,subVal:isEmail?r.email:r.url,subPlaceholder:isEmail?"name@company.com":"LinkedIn URL",statusOptions:opts,role:r.role,company:r.company,status:r.status,notes:r.notes,date:r.date,clientName:S.clients[r.client].name,selectStyle:`width:100%;font-family:inherit;font-size:11.5px;font-weight:600;padding:6px 8px;border-radius:7px;border:1px solid ${c.bd};background:${c.bg};color:${c.fg};outline:none;cursor:pointer;`,onStatus:e=>this.setStatus(r._i,e.target.value),onName:e=>this.editOut(r._i,"name",e.target.value),onSub:e=>this.editOut(r._i,isEmail?"email":"url",e.target.value),onRole:e=>this.editOut(r._i,"role",e.target.value),onCompany:e=>this.editOut(r._i,"company",e.target.value),onNotes:e=>this.editOut(r._i,"notes",e.target.value),onDelete:()=>this.delOut(r._i)};});
+    }
+
+    if(showClient){
+      const ci=role==="client"?u.id:S.selectedClient;
+      const c=S.clients[ci],p=this.pct(c),editable=role!=="client";
+      base.activeClient={name:c.name,initials:c.initials,service:c.service,tenure:c.tenure,pct:p,barStyle:`height:100%;width:${p}%;background:#064e3b;border-radius:6px;`,
+        deliverables:c.deliverables.map((d,j)=>({name:d.name,due:d.due,status:d.status,locked:!editable,canDelete:editable,tagStyle:this.tagStyle(d.status,editable),onCycle:()=>this.cycleDeliv(ci,j),onName:e=>this.editDeliv(ci,j,"name",e.target.value),onDue:e=>this.editDeliv(ci,j,"due",e.target.value),onDelete:()=>this.delDeliv(ci,j)})),
+        notes:c.notes.map((n,j)=>({author:n.author,initials:n.initials,time:n.time,text:n.text,canDelete:editable,onDelete:()=>this.delNote(ci,j)}))};
+      base.showClientPicker=role==="admin";
+      base.clientPicker=S.clients.map((cl,i)=>({label:cl.name,onClick:()=>this.setState({selectedClient:i}),style:`padding:6px 12px;border-radius:20px;cursor:pointer;font-size:12px;font-weight:600;border:1px solid ${S.selectedClient===i?"#064e3b":"#e0e5e3"};${S.selectedClient===i?"background:#064e3b;color:#fff;":"background:#fff;color:#4a5752;"}`}));
+      base.showAddClient=S.showAddClient; base.toggleAddClient=()=>this.setState({showAddClient:!S.showAddClient});
+      base.newClientName=D.clientName; base.newClientService=D.clientService; base.newClientEmail=D.clientEmail;
+      base.onNewClientName=e=>this.setD({clientName:e.target.value}); base.onNewClientService=e=>this.setD({clientService:e.target.value}); base.onNewClientEmail=e=>this.setD({clientEmail:e.target.value}); base.addClient=()=>this.addClient();
+      base.canEditDeliverables=editable; base.canAddNote=editable;
+      base.notesTitle=role==="client"?"Updates from your team":"Internal Notes & Updates";
+      base.noteVal=D.note; base.onNote=e=>this.setD({note:e.target.value}); base.addNote=()=>this.addNote();
+      base.newDelivName=D.newDeliv[ci]||""; base.onNewDelivName=e=>this.setDMap("newDeliv",ci,e.target.value); base.addDeliv=()=>this.addDeliv(ci);
+    }
+
+    return base;
+  }
+}
+</script>
+</body>
+</html>

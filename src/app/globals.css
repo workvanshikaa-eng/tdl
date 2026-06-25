@@ -1,26 +1,156 @@
 @import "tailwindcss";
 
+/* ============================================================
+   The Distribution Lab — design tokens
+   ============================================================ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Brand palette (shared by landing + CMS) */
+  --tdl-green: #064e3b; /* primary deep green */
+  --tdl-green-2: #0a6b54; /* accent green */
+  --tdl-green-3: #0a7a5a;
+  --tdl-mint: #6ee7b7; /* mint highlight */
+  --tdl-emerald: #10b981;
+  --tdl-cream: #faf8f4; /* landing background */
+  --tdl-sand: #e8f2ee; /* tinted section background */
+  --tdl-ink: #0f2e25; /* primary text */
+  --tdl-ink-2: #08382b;
+  --tdl-muted: #56685f; /* body text */
+  --tdl-muted-2: #7c8c85;
+  --tdl-line: #ece6dc; /* hairline on cream */
+  --tdl-card-border: #d3e6dc;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-tdl-green: var(--tdl-green);
+  --color-tdl-green-2: var(--tdl-green-2);
+  --color-tdl-mint: var(--tdl-mint);
+  --color-tdl-cream: var(--tdl-cream);
+  --color-tdl-sand: var(--tdl-sand);
+  --color-tdl-ink: var(--tdl-ink);
+  --color-tdl-muted: var(--tdl-muted);
+
+  --font-sans: var(--font-manrope);
+  --font-mono: var(--font-jetbrains);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--tdl-cream);
+  color: var(--tdl-ink);
+  font-family: var(--font-manrope), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--tdl-green);
+  color: #fff;
+}
+
+/* ============================================================
+   Landing page keyframes
+   ============================================================ */
+@keyframes tdl-rise {
+  from {
+    opacity: 0;
+    transform: translateY(34px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes tdl-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes tdl-pulse {
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+@keyframes tdl-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Marquee track — pause on hover of the parent .tdl-mq */
+.tdl-mq:hover .tdl-mq-track {
+  animation-play-state: paused;
+}
+
+/* Scroll-reveal: elements start hidden, JS adds .is-revealed */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(30px);
+  transition:
+    opacity 0.8s cubic-bezier(0.16, 0.84, 0.44, 1),
+    transform 0.8s cubic-bezier(0.16, 0.84, 0.44, 1);
+}
+[data-reveal].is-revealed {
+  opacity: 1;
+  transform: none;
+}
+
+/* ============================================================
+   CMS helpers
+   ============================================================ */
+/* Delete affordances reveal on row hover */
+.delx {
+  opacity: 0;
+  transition: opacity 0.12s;
+}
+.row:hover .delx {
+  opacity: 1;
+}
+
+/* Slimmer scrollbars inside the CMS */
+.cms-scroll::-webkit-scrollbar,
+main ::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+.cms-scroll::-webkit-scrollbar-thumb,
+main ::-webkit-scrollbar-thumb {
+  background: #d4dad7;
+  border-radius: 6px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
 }
