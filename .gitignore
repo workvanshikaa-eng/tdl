@@ -47,3 +47,5 @@ next-env.d.ts
 
 # design handoff archives (extracted HTML kept for reference)
 *.zip
+
+.vercel

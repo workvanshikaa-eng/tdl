@@ -13,7 +13,10 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  // Pooled connection (Supabase transaction pooler, port 6543) for the app.
+  url       = env("DATABASE_URL")
+  // Direct connection (port 5432) used by `prisma migrate`.
+  directUrl = env("DIRECT_URL")
 }
 
 // Roles: "admin" | "intern" | "client"
