@@ -5,21 +5,31 @@ export const metadata = {
   title: "Sign in",
 };
 
+// Render per-request (never prerendered at build), so it doesn't touch the
+// database during `next build`.
+export const dynamic = "force-dynamic";
+
 export default async function LoginPage() {
-  // Build the demo-login list straight from the database.
-  const users = await prisma.user.findMany({
-    orderBy: { createdAt: "asc" },
-    select: { email: true, role: true },
-  });
-  const rank: Record<string, number> = { admin: 0, intern: 1, client: 2 };
-  const demoAccounts: DemoAccount[] = users
-    .map((u) => ({
-      email: u.email,
-      tag: u.role.charAt(0).toUpperCase() + u.role.slice(1),
-      rank: rank[u.role] ?? 9,
-    }))
-    .sort((a, b) => a.rank - b.rank)
-    .map(({ email, tag }) => ({ email, tag }));
+  // Build the demo-login list from the database. If the DB is unreachable,
+  // the login form still renders (without the demo shortcuts).
+  let demoAccounts: DemoAccount[] = [];
+  try {
+    const users = await prisma.user.findMany({
+      orderBy: { createdAt: "asc" },
+      select: { email: true, role: true },
+    });
+    const rank: Record<string, number> = { admin: 0, intern: 1, client: 2 };
+    demoAccounts = users
+      .map((u) => ({
+        email: u.email,
+        tag: u.role.charAt(0).toUpperCase() + u.role.slice(1),
+        rank: rank[u.role] ?? 9,
+      }))
+      .sort((a, b) => a.rank - b.rank)
+      .map(({ email, tag }) => ({ email, tag }));
+  } catch {
+    demoAccounts = [];
+  }
 
   return (
     <div
