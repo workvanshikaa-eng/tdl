@@ -11,6 +11,7 @@ import Testimonials from "@/components/landing/Testimonials";
 import Faq from "@/components/landing/Faq";
 import CtaFooter from "@/components/landing/CtaFooter";
 import LandingScripts from "@/components/landing/LandingScripts";
+import CalendlyLoader from "@/components/landing/CalendlyLoader";
 
 export default function LandingPage() {
   return (
@@ -41,6 +42,7 @@ export default function LandingPage() {
       <CtaFooter />
 
       <LandingScripts />
+      <CalendlyLoader />
     </div>
   );
 }
