@@ -1,5 +1,6 @@
 import { siteConfig } from "@/config/site";
-import { Check, LogoMark } from "./icons";
+import { Check } from "./icons";
+import TdlLogo from "@/components/TdlLogo";
 import BookingPreview from "./BookingPreview";
 
 const bullets = [
@@ -119,7 +120,7 @@ export default function CtaFooter() {
         }}
       >
         <div className="flex items-center gap-2.5 text-white">
-          <LogoMark size={24} inner={10} />
+          <TdlLogo size={24} inverted />
           <span className="text-[15px] font-extrabold tracking-[-0.02em]">
             {siteConfig.name}
           </span>

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { Role } from "@/lib/constants";
 import { logout } from "@/app/cms/actions";
+import TdlLogo from "@/components/TdlLogo";
 
 type NavItem = { href: string; label: string; icon: string };
 
@@ -39,9 +40,7 @@ export default function Sidebar({
   return (
     <aside className="flex w-[248px] flex-shrink-0 flex-col bg-[#064e3b] px-4 py-[22px] text-[#dff0e9]">
       <div className="flex items-center gap-[11px] px-2 pb-[22px]">
-        <div className="flex h-[34px] w-[34px] items-center justify-center rounded-[9px] bg-[#dff0e9] text-[15px] font-bold tracking-[-0.5px] text-[#064e3b]">
-          TD
-        </div>
+        <TdlLogo size={34} inverted radius={0.26} />
         <div>
           <div className="text-[14.5px] font-semibold leading-[1.1] text-white">
             The Distribution Lab

@@ -3,6 +3,7 @@
 import { useActionState, useState } from "react";
 import { useFormStatus } from "react-dom";
 import { login, type LoginState } from "./actions";
+import TdlLogo from "@/components/TdlLogo";
 
 export type DemoAccount = { email: string; tag: string };
 
@@ -42,9 +43,7 @@ export default function LoginForm({
       style={{ boxShadow: "0 24px 60px rgba(0,0,0,0.28)" }}
     >
       <div className="mb-[22px] flex items-center gap-3">
-        <div className="flex h-10 w-10 items-center justify-center rounded-[11px] bg-[#064e3b] text-[16px] font-bold tracking-[-0.5px] text-[#dff0e9]">
-          TD
-        </div>
+        <TdlLogo size={40} radius={0.27} />
         <div>
           <div className="text-[16px] font-bold tracking-[-0.3px]">
             The Distribution Lab

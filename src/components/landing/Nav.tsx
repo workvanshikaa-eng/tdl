@@ -1,5 +1,5 @@
 import { siteConfig } from "@/config/site";
-import { LogoMark } from "./icons";
+import TdlLogo from "@/components/TdlLogo";
 
 const links = [
   { href: "#services", label: "Services" },
@@ -30,7 +30,7 @@ export default function Nav() {
           className="flex items-center gap-2.5 no-underline"
           style={{ color: "inherit" }}
         >
-          <LogoMark />
+          <TdlLogo size={28} />
           <span className="text-[16px] font-extrabold tracking-[-0.02em]">
             {siteConfig.name}
           </span>
