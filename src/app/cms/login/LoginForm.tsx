@@ -86,14 +86,16 @@ export default function LoginForm({
         <SubmitButton />
       </form>
 
-      <div
-        onClick={() => setShowDemo((v) => !v)}
-        className="mt-4 cursor-pointer text-center text-[11.5px] text-[#71807a]"
-      >
-        {showDemo ? "Hide demo logins" : "View demo logins"}
-      </div>
+      {demoAccounts.length > 0 && (
+        <div
+          onClick={() => setShowDemo((v) => !v)}
+          className="mt-4 cursor-pointer text-center text-[11.5px] text-[#71807a]"
+        >
+          {showDemo ? "Hide demo logins" : "View demo logins"}
+        </div>
+      )}
 
-      {showDemo && (
+      {showDemo && demoAccounts.length > 0 && (
         <div className="mt-2.5 rounded-[10px] border border-[#eef2f0] bg-[#f8faf9] px-[13px] py-3">
           <div className="mb-2 text-[10.5px] font-semibold uppercase tracking-[0.4px] text-[#9aa3a0]">
             Demo logins · password: demo1234

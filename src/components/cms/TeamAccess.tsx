@@ -1,14 +1,16 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import StatusPill from "./StatusPill";
 import {
   addIntern,
   toggleInternEdit,
   deleteIntern,
   toggleInternClientAccess,
+  resetInternPassword,
 } from "@/app/cms/actions/interns";
 import { addTask, deleteTask, cycleTask } from "@/app/cms/actions/tasks";
+import { randomPassword } from "@/lib/password";
 
 export type TeamTaskDTO = {
   id: string;
@@ -78,6 +80,13 @@ function InternCard({
     intern.canEdit ? "can" : "can't"
   } edit deliverables`;
 
+  const [resetPw, setResetPw] = useState<string | null>(null);
+  const doReset = () =>
+    run(async () => {
+      const res = await resetInternPassword(intern.id);
+      if (res.password) setResetPw(res.password);
+    });
+
   return (
     <div className="rounded-[14px] border border-[#e6eae8] bg-white px-[22px] py-5">
       <div className="flex items-center gap-3">
@@ -113,6 +122,23 @@ function InternCard({
         >
           ×
         </button>
+      </div>
+
+      <div className="mt-3 flex flex-wrap items-center gap-2 text-[11.5px]">
+        <button
+          type="button"
+          onClick={doReset}
+          className="cursor-pointer rounded-[7px] border border-[#e0e5e3] bg-white px-2.5 py-1.5 font-semibold text-[#4a5752] hover:border-[#cdd6d2]"
+        >
+          Reset password
+        </button>
+        {resetPw && (
+          <span className="text-[#71807a]">
+            New password:{" "}
+            <span className="select-all font-mono text-[#0a7a4f]">{resetPw}</span>{" "}
+            — share with {intern.name.split(/\s+/)[0]}
+          </span>
+        )}
       </div>
 
       <div className="mb-[9px] mt-[18px] text-[11px] font-semibold uppercase tracking-[0.5px] text-[#71807a]">
@@ -236,21 +262,37 @@ function AddInternCard({
 }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [created, setCreated] = useState<{ email: string; password: string } | null>(
+    null,
+  );
+
+  useEffect(() => setPassword(randomPassword()), []);
 
   const submit = () => {
     if (!name.trim()) return;
     setError(null);
+    setCreated(null);
+    const usedEmail =
+      email.trim().toLowerCase() ||
+      `${name.trim().toLowerCase().split(/\s+/)[0]}@thedistributionlab.com`;
+    const usedPassword = password;
     run(async () => {
-      const res = await addIntern(name, email);
+      const res = await addIntern(name, email, password);
       if (res?.error) {
         setError(res.error);
         return;
       }
+      setCreated({ email: usedEmail, password: usedPassword });
       setName("");
       setEmail("");
+      setPassword(randomPassword());
     });
   };
+
+  const field =
+    "min-w-[160px] flex-1 rounded-[9px] border border-[#e0e5e3] px-[11px] py-[9px] font-[inherit] text-[12.5px] outline-none focus:border-[#064e3b]";
 
   return (
     <div className="rounded-[14px] border border-dashed border-[#cdd6d2] bg-white px-[22px] py-[18px]">
@@ -262,14 +304,29 @@ function AddInternCard({
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="Full name"
-          className="min-w-[160px] flex-1 rounded-[9px] border border-[#e0e5e3] px-[11px] py-[9px] font-[inherit] text-[12.5px] outline-none focus:border-[#064e3b]"
+          className={field}
         />
         <input
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="Login email"
-          className="min-w-[160px] flex-1 rounded-[9px] border border-[#e0e5e3] px-[11px] py-[9px] font-[inherit] text-[12.5px] outline-none focus:border-[#064e3b]"
+          className={field}
         />
+      </div>
+      <div className="mt-2 flex flex-wrap items-center gap-2">
+        <input
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="Password"
+          className={`${field} font-mono`}
+        />
+        <button
+          type="button"
+          onClick={() => setPassword(randomPassword())}
+          className="cursor-pointer whitespace-nowrap rounded-[9px] border border-[#e0e5e3] bg-white px-3 py-[9px] text-[12.5px] font-semibold text-[#4a5752] hover:border-[#cdd6d2]"
+        >
+          ↻ Generate
+        </button>
         <button
           type="button"
           onClick={submit}
@@ -280,6 +337,14 @@ function AddInternCard({
         </button>
       </div>
       {error && <div className="mt-2 text-[12px] text-[#c64242]">{error}</div>}
+      {created && (
+        <div className="mt-2.5 rounded-[9px] border border-[#cfe7da] bg-[#f1f9f5] px-3 py-2 text-[12px] text-[#0a5e47]">
+          ✓ Intern created. Share these login details:
+          <div className="mt-1 font-mono text-[12px] text-[#0a7a4f]">
+            {created.email} &nbsp;·&nbsp; {created.password}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

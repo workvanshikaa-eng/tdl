@@ -10,25 +10,27 @@ export const metadata = {
 export const dynamic = "force-dynamic";
 
 export default async function LoginPage() {
-  // Build the demo-login list from the database. If the DB is unreachable,
-  // the login form still renders (without the demo shortcuts).
+  // The demo-login shortcuts list every account, so it's DEVELOPMENT-ONLY —
+  // showing it in production would expose real client/intern/admin emails.
   let demoAccounts: DemoAccount[] = [];
-  try {
-    const users = await prisma.user.findMany({
-      orderBy: { createdAt: "asc" },
-      select: { email: true, role: true },
-    });
-    const rank: Record<string, number> = { admin: 0, intern: 1, client: 2 };
-    demoAccounts = users
-      .map((u) => ({
-        email: u.email,
-        tag: u.role.charAt(0).toUpperCase() + u.role.slice(1),
-        rank: rank[u.role] ?? 9,
-      }))
-      .sort((a, b) => a.rank - b.rank)
-      .map(({ email, tag }) => ({ email, tag }));
-  } catch {
-    demoAccounts = [];
+  if (process.env.NODE_ENV !== "production") {
+    try {
+      const users = await prisma.user.findMany({
+        orderBy: { createdAt: "asc" },
+        select: { email: true, role: true },
+      });
+      const rank: Record<string, number> = { admin: 0, intern: 1, client: 2 };
+      demoAccounts = users
+        .map((u) => ({
+          email: u.email,
+          tag: u.role.charAt(0).toUpperCase() + u.role.slice(1),
+          rank: rank[u.role] ?? 9,
+        }))
+        .sort((a, b) => a.rank - b.rank)
+        .map(({ email, tag }) => ({ email, tag }));
+    } catch {
+      demoAccounts = [];
+    }
   }
 
   return (

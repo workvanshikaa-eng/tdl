@@ -5,14 +5,14 @@ import { prisma } from "@/lib/prisma";
 import { requireRole } from "@/lib/access";
 import { hashPassword } from "@/lib/auth";
 import { initialsOf } from "@/lib/constants";
-
-const DEFAULT_PASSWORD = "demo1234";
+import { randomPassword } from "@/lib/password";
 
 /** Create a client + its portal login. Admin only. */
 export async function addClient(
   name: string,
   service: string,
   email: string,
+  password?: string,
 ): Promise<{ error?: string }> {
   await requireRole("admin");
   const cleanName = name.trim();
@@ -23,12 +23,16 @@ export async function addClient(
     email.trim().toLowerCase() ||
     `${cleanName.toLowerCase().split(/\s+/)[0]}@portal.tdl.com`;
 
+  const cleanPassword = (password ?? "").trim();
+  if (cleanPassword && cleanPassword.length < 6)
+    return { error: "Password must be at least 6 characters" };
+
   const existing = await prisma.user.findUnique({
     where: { email: cleanEmail },
   });
   if (existing) return { error: "That login email is already in use" };
 
-  const passwordHash = await hashPassword(DEFAULT_PASSWORD);
+  const passwordHash = await hashPassword(cleanPassword || randomPassword());
   const initials = initialsOf(cleanName);
 
   const portalUser = await prisma.user.create({
@@ -76,6 +80,21 @@ export async function editClient(
     }
   }
   revalidatePath("/cms", "layout");
+}
+
+/** Reset a client's portal password to a new generated one. Returns it once. */
+export async function resetClientPassword(
+  clientId: string,
+): Promise<{ password?: string; error?: string }> {
+  await requireRole("admin");
+  const client = await prisma.client.findUnique({ where: { id: clientId } });
+  if (!client?.portalUserId) return { error: "No login for this client" };
+  const password = randomPassword();
+  await prisma.user.update({
+    where: { id: client.portalUserId },
+    data: { passwordHash: await hashPassword(password) },
+  });
+  return { password };
 }
 
 export async function deleteClient(id: string) {

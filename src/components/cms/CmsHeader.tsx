@@ -7,6 +7,9 @@ function titleFor(
   pathname: string,
   role: Role,
 ): { title: string; sub: string } {
+  if (pathname.startsWith("/cms/account"))
+    return { title: "Account", sub: "Your profile and password" };
+
   if (role === "client") {
     return {
       title: "Your Dashboard",

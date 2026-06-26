@@ -88,6 +88,17 @@ export default function Sidebar({
             <div className="text-[11px] text-[#7fb6a0]">{userSubtitle}</div>
           </div>
         </div>
+        <Link
+          href="/cms/account"
+          className="mb-2 flex w-full items-center justify-center gap-[7px] rounded-[9px] border border-white/[0.14] bg-transparent py-[9px] text-[12.5px] font-semibold text-[#bfe0d3] no-underline transition-colors hover:bg-white/[0.08]"
+          style={
+            pathname.startsWith("/cms/account")
+              ? { background: "rgba(255,255,255,0.08)", color: "#fff" }
+              : undefined
+          }
+        >
+          <span className="text-[13px]">⚙</span> Account &amp; password
+        </Link>
         <form action={logout}>
           <button
             type="submit"

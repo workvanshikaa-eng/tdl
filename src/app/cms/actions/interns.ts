@@ -5,13 +5,13 @@ import { prisma } from "@/lib/prisma";
 import { requireRole } from "@/lib/access";
 import { hashPassword } from "@/lib/auth";
 import { initialsOf } from "@/lib/constants";
-
-const DEFAULT_PASSWORD = "demo1234";
+import { randomPassword } from "@/lib/password";
 
 /** Create a new intern login. Admin only. */
 export async function addIntern(
   name: string,
   email: string,
+  password?: string,
 ): Promise<{ error?: string }> {
   await requireRole("admin");
   const cleanName = name.trim();
@@ -21,12 +21,16 @@ export async function addIntern(
     email.trim().toLowerCase() ||
     `${cleanName.toLowerCase().split(/\s+/)[0]}@thedistributionlab.com`;
 
+  const cleanPassword = (password ?? "").trim();
+  if (cleanPassword && cleanPassword.length < 6)
+    return { error: "Password must be at least 6 characters" };
+
   const existing = await prisma.user.findUnique({
     where: { email: cleanEmail },
   });
   if (existing) return { error: "That login email is already in use" };
 
-  const passwordHash = await hashPassword(DEFAULT_PASSWORD);
+  const passwordHash = await hashPassword(cleanPassword || randomPassword());
   await prisma.user.create({
     data: {
       email: cleanEmail,
@@ -40,6 +44,21 @@ export async function addIntern(
   });
   revalidatePath("/cms", "layout");
   return {};
+}
+
+/** Reset an intern's password to a new generated one. Returns it once. */
+export async function resetInternPassword(
+  internId: string,
+): Promise<{ password?: string; error?: string }> {
+  await requireRole("admin");
+  const intern = await prisma.user.findUnique({ where: { id: internId } });
+  if (!intern || intern.role !== "intern") return { error: "Intern not found" };
+  const password = randomPassword();
+  await prisma.user.update({
+    where: { id: internId },
+    data: { passwordHash: await hashPassword(password) },
+  });
+  return { password };
 }
 
 export async function toggleInternEdit(internId: string) {
