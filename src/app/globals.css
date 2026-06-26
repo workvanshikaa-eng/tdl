@@ -57,6 +57,23 @@ body {
   color: #fff;
 }
 
+/* Site-wide subtle grid backdrop for the landing page. Light sections sit
+   transparently on top of this so the grid runs continuously behind them. */
+.tdl-grid-bg {
+  background-color: var(--tdl-cream);
+  background-image:
+    linear-gradient(to right, rgba(6, 78, 59, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(6, 78, 59, 0.05) 1px, transparent 1px);
+  background-size: 62px 62px;
+}
+/* Faint light grid for the dark green sections, so the grid carries through. */
+.tdl-grid-on-dark {
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 62px 62px;
+}
+
 /* ============================================================
    Landing page keyframes
    ============================================================ */

@@ -25,7 +25,7 @@ function Track({ ariaHidden = false }: { ariaHidden?: boolean }) {
 
 export default function StackMarquee() {
   return (
-    <section className="tdl-mq overflow-hidden bg-[#FAF8F4] pb-2 pt-[30px]">
+    <section className="tdl-mq overflow-hidden bg-transparent pb-2 pt-[30px]">
       <p className="mb-5 mt-0 text-center font-mono text-[11.5px] uppercase tracking-[0.16em] text-[#9bb3a8]">
         The stack we run your distribution on
       </p>

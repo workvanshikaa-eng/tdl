@@ -71,7 +71,7 @@ export default function HowItWorks() {
   return (
     <section
       id="how"
-      className="bg-[#FAF8F4]"
+      className="bg-transparent"
       style={{ padding: "clamp(58px,7vw,92px) 28px" }}
     >
       <div className="mx-auto max-w-[1180px]">

@@ -13,7 +13,7 @@ export default function CtaFooter() {
 
   return (
     <footer
-      className="relative overflow-hidden bg-[#064e3b] text-white"
+      className="tdl-grid-on-dark relative overflow-hidden bg-[#064e3b] text-white"
       style={{ padding: "clamp(90px,12vw,150px) 28px 0" }}
     >
       <div

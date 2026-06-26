@@ -60,7 +60,7 @@ export default function Services() {
   return (
     <section
       id="services"
-      className="bg-[#FAF8F4]"
+      className="bg-transparent"
       style={{ padding: "clamp(20px,3vw,40px) 28px clamp(58px,7vw,92px)" }}
     >
       <div className="mx-auto max-w-[1180px]">

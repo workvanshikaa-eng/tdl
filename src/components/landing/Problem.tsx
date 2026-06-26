@@ -10,7 +10,7 @@ const chips = [
 export default function Problem() {
   return (
     <section
-      className="bg-[#FAF8F4]"
+      className="bg-transparent"
       style={{ padding: "clamp(80px,11vw,140px) 28px" }}
     >
       <div className="mx-auto max-w-[1000px]">

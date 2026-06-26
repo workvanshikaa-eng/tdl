@@ -9,28 +9,12 @@ export default function Hero() {
       id="top"
       className="relative"
       style={{
-        background: "#FAF8F4",
+        background: "transparent",
         color: "#0f2e25",
         padding: "clamp(150px,18vh,200px) 28px clamp(72px,10vh,110px)",
       }}
     >
-      {/* Subtle background grid — fades out toward the edges so it never
-          competes with the headline. */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0"
-        style={{
-          zIndex: 0,
-          backgroundImage:
-            "linear-gradient(to right, rgba(6,78,59,0.055) 1px, transparent 1px), linear-gradient(to bottom, rgba(6,78,59,0.055) 1px, transparent 1px)",
-          backgroundSize: "62px 62px",
-          maskImage:
-            "radial-gradient(ellipse 75% 65% at 50% 32%, #000 35%, transparent 80%)",
-          WebkitMaskImage:
-            "radial-gradient(ellipse 75% 65% at 50% 32%, #000 35%, transparent 80%)",
-        }}
-      />
-      <div className="relative z-[1] mx-auto max-w-[980px]">
+      <div className="mx-auto max-w-[980px]">
         <div
           className="inline-flex items-center gap-[9px] text-[12.5px] font-semibold uppercase"
           style={{

@@ -97,7 +97,7 @@ export default function Faq() {
   return (
     <section
       id="faq"
-      className="bg-[#FAF8F4]"
+      className="bg-transparent"
       style={{ padding: "clamp(58px,7vw,92px) 28px" }}
     >
       <div className="mx-auto max-w-[880px]">

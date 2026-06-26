@@ -11,7 +11,7 @@ export default function About() {
   return (
     <section
       id="about"
-      className="relative overflow-hidden bg-[#064e3b] text-white"
+      className="tdl-grid-on-dark relative overflow-hidden bg-[#064e3b] text-white"
       style={{ padding: "clamp(58px,7vw,92px) 28px" }}
     >
       <div

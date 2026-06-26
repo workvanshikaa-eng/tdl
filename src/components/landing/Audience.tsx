@@ -11,7 +11,7 @@ const points = [
 export default function Audience() {
   return (
     <section
-      className="bg-[#E8F2EE]"
+      className="bg-transparent"
       style={{ padding: "clamp(58px,7vw,92px) 28px" }}
     >
       <div className="mx-auto grid max-w-[1180px] grid-cols-1 gap-12">

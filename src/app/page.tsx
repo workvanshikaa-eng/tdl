@@ -15,10 +15,10 @@ import LandingScripts from "@/components/landing/LandingScripts";
 export default function LandingPage() {
   return (
     <div
+      className="tdl-grid-bg"
       style={{
         fontFamily: "var(--font-manrope), sans-serif",
         color: "#0f2e25",
-        background: "#FAF8F4",
         overflowX: "hidden",
       }}
     >

@@ -83,7 +83,7 @@ function Track({ ariaHidden = false }: { ariaHidden?: boolean }) {
 export default function Testimonials() {
   return (
     <section
-      className="tdl-mq overflow-hidden bg-[#E8F2EE]"
+      className="tdl-mq overflow-hidden bg-transparent"
       style={{ padding: "clamp(58px,7vw,92px) 0" }}
     >
       <div className="mx-auto max-w-[1180px] px-7">
