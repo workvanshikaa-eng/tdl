@@ -2,6 +2,7 @@
 
 import { useTransition } from "react";
 import StatusPill from "./StatusPill";
+import TaskProgress from "./TaskProgress";
 import { cycleTask } from "@/app/cms/actions/tasks";
 
 export type TaskDTO = {
@@ -10,6 +11,9 @@ export type TaskDTO = {
   clientName: string;
   due: string;
   status: string;
+  unit: string | null;
+  targetCount: number | null;
+  doneCount: number | null;
 };
 
 export default function MyTasksList({ tasks }: { tasks: TaskDTO[] }) {
@@ -31,6 +35,7 @@ export default function MyTasksList({ tasks }: { tasks: TaskDTO[] }) {
             <div className="mt-0.5 text-[11.5px] text-[#9aa3a0]">
               {t.clientName} · {t.due}
             </div>
+            <TaskProgress task={t} />
           </div>
           <StatusPill
             status={t.status}

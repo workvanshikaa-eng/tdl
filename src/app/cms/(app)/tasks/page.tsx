@@ -29,6 +29,9 @@ export default async function TasksPage() {
     clientName: t.client?.name ?? "Personal",
     due: t.due,
     status: t.status,
+    unit: t.unit,
+    targetCount: t.targetCount,
+    doneCount: t.doneCount,
   }));
 
   return (

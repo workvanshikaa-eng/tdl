@@ -11,6 +11,7 @@ import {
 } from "@/app/cms/actions/interns";
 import { addTask, deleteTask, cycleTask } from "@/app/cms/actions/tasks";
 import { randomPassword } from "@/lib/password";
+import TaskProgress from "./TaskProgress";
 
 export type TeamTaskDTO = {
   id: string;
@@ -18,6 +19,9 @@ export type TeamTaskDTO = {
   clientName: string;
   due: string;
   status: string;
+  unit: string | null;
+  targetCount: number | null;
+  doneCount: number | null;
 };
 export type InternDTO = {
   id: string;
@@ -172,25 +176,28 @@ function InternCard({
         {intern.tasks.map((t) => (
           <div
             key={t.id}
-            className="row flex items-center gap-3 rounded-[10px] border border-[#eef2f0] bg-[#f8faf9] px-[13px] py-2.5"
+            className="row rounded-[10px] border border-[#eef2f0] bg-[#f8faf9] px-[13px] py-2.5"
           >
-            <div className="flex-1 text-[13px] font-medium">{t.title}</div>
-            <div className="w-[120px] text-[11.5px] text-[#71807a]">
-              {t.clientName}
+            <div className="flex items-center gap-3">
+              <div className="flex-1 text-[13px] font-medium">{t.title}</div>
+              <div className="w-[120px] text-[11.5px] text-[#71807a]">
+                {t.clientName}
+              </div>
+              <div className="w-16 text-[11.5px] text-[#9aa3a0]">{t.due}</div>
+              <StatusPill
+                status={t.status}
+                pending={pending}
+                onClick={() => run(() => cycleTask(t.id))}
+              />
+              <button
+                type="button"
+                onClick={() => run(() => deleteTask(t.id))}
+                className="delx w-[18px] cursor-pointer border-none bg-transparent text-center text-[16px] text-[#c64242]"
+              >
+                ×
+              </button>
             </div>
-            <div className="w-16 text-[11.5px] text-[#9aa3a0]">{t.due}</div>
-            <StatusPill
-              status={t.status}
-              pending={pending}
-              onClick={() => run(() => cycleTask(t.id))}
-            />
-            <button
-              type="button"
-              onClick={() => run(() => deleteTask(t.id))}
-              className="delx w-[18px] cursor-pointer border-none bg-transparent text-center text-[16px] text-[#c64242]"
-            >
-              ×
-            </button>
+            <TaskProgress task={t} />
           </div>
         ))}
       </div>

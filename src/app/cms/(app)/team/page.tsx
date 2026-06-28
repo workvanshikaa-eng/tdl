@@ -36,6 +36,9 @@ export default async function TeamPage() {
       clientName: t.client?.name ?? "Personal task",
       due: t.due,
       status: t.status,
+      unit: t.unit,
+      targetCount: t.targetCount,
+      doneCount: t.doneCount,
     })),
   }));
 

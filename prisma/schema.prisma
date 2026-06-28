@@ -117,6 +117,12 @@ model Task {
   due    String @default("—")
   status String @default("Not Started") // Not Started | In Progress | Done | Delayed
 
+  // Optional quantitative target, e.g. 12 blogs / 30 comments.
+  // When targetCount is set, progress % = doneCount / targetCount.
+  unit        String? // label for the count, e.g. "blogs", "comments"
+  targetCount Int?
+  doneCount   Int?
+
   createdAt DateTime @default(now())
 
   @@index([internId])

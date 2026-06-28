@@ -19,6 +19,38 @@ export async function cycleTask(id: string) {
   revalidatePath("/cms", "layout");
 }
 
+/** Update a task's optional quantitative progress (target / done / unit). */
+export async function updateTaskProgress(
+  id: string,
+  patch: { unit?: string | null; targetCount?: number | null; doneCount?: number | null },
+) {
+  const task = await prisma.task.findUnique({ where: { id } });
+  if (!task) return;
+  const user = await requireUser();
+  if (user.role !== "admin" && task.internId !== user.id)
+    throw new Error("Not allowed");
+
+  const data: {
+    unit?: string | null;
+    targetCount?: number | null;
+    doneCount?: number | null;
+  } = {};
+  if ("unit" in patch) data.unit = patch.unit?.trim() ? patch.unit.trim() : null;
+  if ("targetCount" in patch)
+    data.targetCount =
+      patch.targetCount == null || Number.isNaN(patch.targetCount)
+        ? null
+        : Math.max(0, Math.floor(patch.targetCount));
+  if ("doneCount" in patch)
+    data.doneCount =
+      patch.doneCount == null || Number.isNaN(patch.doneCount)
+        ? null
+        : Math.max(0, Math.floor(patch.doneCount));
+
+  await prisma.task.update({ where: { id }, data });
+  revalidatePath("/cms", "layout");
+}
+
 /** Assign a task to an intern. Admin only. clientId null = personal task. */
 export async function addTask(
   internId: string,
