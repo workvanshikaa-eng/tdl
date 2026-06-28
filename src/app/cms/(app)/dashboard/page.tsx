@@ -29,6 +29,7 @@ export default async function ClientPortalPage() {
       client={client}
       canEditDeliverables={false}
       canAddNote={false}
+      canEditDaily={false}
     />
   );
 }

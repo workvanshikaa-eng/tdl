@@ -18,6 +18,7 @@ const NAV: Record<Role, NavItem[]> = {
   ],
   intern: [
     { href: "/cms/tasks", label: "My Tasks", icon: "✓" },
+    { href: "/cms/client", label: "Client Dashboards", icon: "▣" },
     { href: "/cms/outreach", label: "Outreach Tracker", icon: "◎" },
   ],
   client: [{ href: "/cms/dashboard", label: "My Dashboard", icon: "▣" }],

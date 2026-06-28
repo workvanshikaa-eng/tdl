@@ -15,13 +15,13 @@ export default async function ClientDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const user = await requireRole("admin");
+  const user = await requireRole("admin", "intern");
   await assertClientAccess(user, id);
 
   const client = await loadClientDTO(id);
   if (!client) notFound();
 
-  // Admins get a switcher across all clients; interns across their own.
+  // Switcher across the clients this user can access.
   const ids = await accessibleClientIds(user);
   const pickerClients = await prisma.client.findMany({
     where: { id: { in: ids } },
@@ -34,6 +34,7 @@ export default async function ClientDetailPage({
       client={client}
       canEditDeliverables={canEditDeliverables(user)}
       canAddNote={true}
+      canEditDaily={true}
       picker={pickerClients}
     />
   );

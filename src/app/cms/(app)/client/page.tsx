@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma";
 
 /** /cms/client → jump to the first accessible client dashboard. */
 export default async function ClientIndexPage() {
-  const user = await requireRole("admin");
+  const user = await requireRole("admin", "intern");
   const ids = await accessibleClientIds(user);
   if (ids.length === 0) {
     return (

@@ -12,6 +12,7 @@ import {
 } from "@/app/cms/actions/deliverables";
 import { addNote, deleteNote } from "@/app/cms/actions/notes";
 import { addClient } from "@/app/cms/actions/clients";
+import DailyActivities, { type DailyDTO } from "./DailyActivities";
 
 export type DeliverableDTO = {
   id: string;
@@ -33,19 +34,23 @@ export type ClientDTO = {
   service: string;
   tenure: string;
   pct: number;
+  headlineLabel: string;
   deliverables: DeliverableDTO[];
   notes: NoteDTO[];
+  daily: DailyDTO;
 };
 
 export default function ClientDashboard({
   client,
   canEditDeliverables,
   canAddNote,
+  canEditDaily,
   picker,
 }: {
   client: ClientDTO;
   canEditDeliverables: boolean;
   canAddNote: boolean;
+  canEditDaily: boolean;
   /** Admin client switcher; omit for intern/client views. */
   picker?: { id: string; name: string }[];
 }) {
@@ -83,7 +88,7 @@ export default function ClientDashboard({
           <div className="text-[34px] font-bold tracking-[-1.5px] text-[#064e3b]">
             {client.pct}%
           </div>
-          <div className="text-[11.5px] text-[#71807a]">deliverables done</div>
+          <div className="text-[11.5px] text-[#71807a]">{client.headlineLabel}</div>
         </div>
       </div>
       <div className="mb-1.5 mt-3.5">
@@ -204,6 +209,12 @@ export default function ClientDashboard({
           </div>
         </div>
       </div>
+
+      <DailyActivities
+        clientId={client.id}
+        daily={client.daily}
+        canEdit={canEditDaily}
+      />
 
       {picker && (
         <NewClientInline

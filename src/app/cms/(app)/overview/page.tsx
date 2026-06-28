@@ -1,23 +1,32 @@
 import Link from "next/link";
 import { requireRole } from "@/lib/access";
 import { prisma } from "@/lib/prisma";
-import { completionPct } from "@/lib/constants";
+import { istMonthContext, headlinePct } from "@/lib/daily";
 
 export default async function OverviewPage() {
   await requireRole("admin");
+  const ctx = istMonthContext();
 
   const clients = await prisma.client.findMany({
     orderBy: { createdAt: "asc" },
-    include: { deliverables: true, prospects: true },
+    include: {
+      deliverables: true,
+      prospects: true,
+      dailyActivities: {
+        include: { logs: { where: { date: { startsWith: ctx.prefix } } } },
+      },
+    },
   });
+
+  const head = (c: (typeof clients)[number]) =>
+    headlinePct(c.deliverables, c.dailyActivities, ctx.todayDay);
 
   const allProspects = clients.flatMap((c) => c.prospects);
   const replies = allProspects.filter((p) => p.status === "Reply Received").length;
   const meets = allProspects.filter((p) => p.status === "Meet Booked").length;
   const avg = clients.length
     ? Math.round(
-        clients.reduce((a, c) => a + completionPct(c.deliverables), 0) /
-          clients.length,
+        clients.reduce((a, c) => a + head(c).pct, 0) / clients.length,
       )
     : 0;
 
@@ -60,8 +69,13 @@ export default async function OverviewPage() {
           <div className="text-right">Replies</div>
         </div>
         {clients.map((c) => {
-          const pct = completionPct(c.deliverables);
+          const h = head(c);
+          const pct = h.pct;
           const done = c.deliverables.filter((d) => d.status === "Done").length;
+          const progressLabel =
+            h.mode === "daily"
+              ? "daily tracking"
+              : `${done} of ${c.deliverables.length} done`;
           const rep = c.prospects.filter((p) => p.status === "Reply Received").length;
           return (
             <Link
@@ -78,9 +92,7 @@ export default async function OverviewPage() {
               <div className="text-[12.5px] text-[#4a5752]">{c.service}</div>
               <div>
                 <div className="mb-[5px] flex justify-between text-[11.5px] text-[#71807a]">
-                  <span>
-                    {done} of {c.deliverables.length} done
-                  </span>
+                  <span>{progressLabel}</span>
                   <span className="font-semibold text-[#064e3b]">{pct}%</span>
                 </div>
                 <div className="h-[7px] overflow-hidden rounded-[5px] bg-[#eef2f0]">

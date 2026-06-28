@@ -61,14 +61,44 @@ model Client {
   portalUserId String? @unique
   portalUser   User?   @relation("ClientPortalUser", fields: [portalUserId], references: [id], onDelete: SetNull)
 
-  deliverables Deliverable[]
-  notes        Note[]
-  prospects    Prospect[]
-  tasks        Task[]
-  internAccess InternClientAccess[]
+  deliverables   Deliverable[]
+  notes          Note[]
+  prospects      Prospect[]
+  tasks          Task[]
+  internAccess   InternClientAccess[]
+  dailyActivities DailyActivity[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+/** A recurring daily quota for a client (e.g. "Comments" · 20/day). */
+model DailyActivity {
+  id       String @id @default(cuid())
+  clientId String
+  client   Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
+
+  name        String
+  unit        String? // e.g. "comments", "posts", "connections"
+  dailyTarget Int     @default(1)
+
+  logs      DailyLog[]
+  createdAt DateTime @default(now())
+
+  @@index([clientId])
+}
+
+/** How many of an activity were done on a given day ('YYYY-MM-DD'). */
+model DailyLog {
+  id         String        @id @default(cuid())
+  activityId String
+  activity   DailyActivity @relation(fields: [activityId], references: [id], onDelete: Cascade)
+
+  date  String // 'YYYY-MM-DD'
+  count Int    @default(0)
+
+  @@unique([activityId, date])
+  @@index([activityId])
 }
 
 model Deliverable {
