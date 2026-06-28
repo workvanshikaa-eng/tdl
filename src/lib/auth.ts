@@ -1,4 +1,5 @@
 import "server-only";
+import { cache } from "react";
 import { cookies } from "next/headers";
 import { SignJWT, jwtVerify } from "jose";
 import bcrypt from "bcryptjs";
@@ -77,8 +78,11 @@ export async function getSessionPayload(): Promise<SessionPayload | null> {
   return verifySession(token);
 }
 
-/** The currently signed-in user (or null), loaded fresh from the DB. */
-export async function getCurrentUser() {
+/**
+ * The currently signed-in user (or null). Wrapped in React's request cache so
+ * the layout + page + server action in one request share a single DB lookup.
+ */
+export const getCurrentUser = cache(async () => {
   const payload = await getSessionPayload();
   if (!payload) return null;
   const user = await prisma.user.findUnique({
@@ -86,7 +90,7 @@ export async function getCurrentUser() {
     include: { clientProfile: true },
   });
   return user;
-}
+});
 
 export type CurrentUser = NonNullable<Awaited<ReturnType<typeof getCurrentUser>>>;
 
