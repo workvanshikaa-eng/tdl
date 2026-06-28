@@ -67,9 +67,46 @@ model Client {
   tasks          Task[]
   internAccess   InternClientAccess[]
   dailyActivities DailyActivity[]
+  finance        ClientFinance?
+  invoices       Invoice[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+/** Admin-only money ledger for a client (never shown to interns/clients). */
+model ClientFinance {
+  id       String @id @default(cuid())
+  clientId String @unique
+  client   Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
+
+  currency  String  @default("USD")
+  projected Float   @default(0) // total contract value
+  received  Float   @default(0) // how much has come in
+  startDate String? // 'YYYY-MM-DD'
+  endDate   String?
+  notes     String?
+
+  updatedAt DateTime @updatedAt
+}
+
+/** A stored, generatable invoice (admin-only). items = [{description, qty, rate}]. */
+model Invoice {
+  id       String @id @default(cuid())
+  clientId String
+  client   Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
+
+  number    String
+  issueDate String // 'YYYY-MM-DD'
+  dueDate   String?
+  status    String  @default("Draft") // Draft | Sent | Paid
+  currency  String  @default("USD")
+  items     Json
+  notes     String?
+
+  createdAt DateTime @default(now())
+
+  @@index([clientId])
 }
 
 /** A recurring daily quota for a client (e.g. "Comments" · 20/day). */

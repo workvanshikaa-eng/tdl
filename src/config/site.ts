@@ -18,6 +18,15 @@ export const siteConfig = {
   /** Social. */
   instagramHandle: "@thedistributionlab",
   instagramUrl: "https://instagram.com/thedistributionlab",
+
+  /** "From" details auto-filled onto generated invoices. Edit these freely. */
+  invoiceFrom: {
+    companyName: "The Distribution Lab",
+    email: "thedistributionlab@gmail.com",
+    line1: "", // e.g. street / city
+    line2: "", // e.g. GST / tax id
+    defaultCurrency: "USD",
+  },
 } as const;
 
 export type SiteConfig = typeof siteConfig;

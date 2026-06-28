@@ -4,6 +4,9 @@ import type { Role } from "@/lib/constants";
 import Sidebar from "@/components/cms/Sidebar";
 import CmsHeader from "@/components/cms/CmsHeader";
 
+// Run these functions in Singapore, next to the Supabase database.
+export const preferredRegion = "sin1";
+
 export default async function CmsAppLayout({
   children,
 }: {

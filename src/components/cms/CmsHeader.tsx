@@ -37,6 +37,8 @@ function titleFor(
     };
   if (pathname.startsWith("/cms/team"))
     return { title: "Team & Access", sub: "Manage intern logins, access & tasks" };
+  if (pathname.startsWith("/cms/finance"))
+    return { title: "Finance", sub: "Private money tracker & invoices" };
   if (pathname.startsWith("/cms/tasks"))
     return { title: "My Tasks", sub: "Work assigned to you by the admin" };
   if (pathname.startsWith("/cms/client"))

@@ -8,6 +8,7 @@ export const metadata = {
 // Render per-request (never prerendered at build), so it doesn't touch the
 // database during `next build`.
 export const dynamic = "force-dynamic";
+export const preferredRegion = "sin1";
 
 export default async function LoginPage() {
   // The demo-login shortcuts list every account, so it's DEVELOPMENT-ONLY —
