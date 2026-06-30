@@ -97,7 +97,7 @@ export default function FinanceSheet({
         Only you (admin) can see this.
       </div>
 
-      <ProfitSummary invoices={invoices} expenses={expenses} />
+      <ProfitSummary ledger={ledger} expenses={expenses} />
 
       <ExpensesSection expenses={expenses} pending={pending} run={run} />
 
@@ -633,45 +633,33 @@ function NewInvoiceForm({
   );
 }
 
-const monthLabel = (m: string) => {
-  if (!m) return "";
-  const [y, mo] = m.split("-");
-  return new Date(Number(y), Number(mo) - 1, 1).toLocaleDateString("en-US", {
-    month: "long",
-    year: "numeric",
-  });
-};
+/** Whole months from an expense's start month through the current month. */
+function monthsActive(dateStr: string): number {
+  const [y, m] = dateStr.split("-").map(Number);
+  if (!y || !m) return 1;
+  const now = new Date();
+  const nowIdx = now.getFullYear() * 12 + (now.getMonth() + 1);
+  return Math.max(1, nowIdx - (y * 12 + m) + 1);
+}
 
 function ProfitSummary({
-  invoices,
+  ledger,
   expenses,
 }: {
-  invoices: InvoiceRow[];
+  ledger: LedgerRow[];
   expenses: ExpenseRow[];
 }) {
-  const monthOptions = useMemo(() => {
-    const set = new Set<string>();
-    const now = new Date();
-    set.add(`${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`);
-    invoices.forEach((i) => i.issueDate && set.add(i.issueDate.slice(0, 7)));
-    expenses.forEach((e) => e.date && set.add(e.date.slice(0, 7)));
-    return [...set].filter(Boolean).sort().reverse();
-  }, [invoices, expenses]);
-
-  const [month, setMonth] = useState(monthOptions[0] ?? "");
-
   const rows = useMemo(() => {
     const income: Record<string, number> = {};
+    for (const l of ledger)
+      income[l.currency] = (income[l.currency] ?? 0) + l.received;
+
     const expense: Record<string, number> = {};
-    for (const i of invoices) {
-      if (i.status === "Paid" && i.issueDate.slice(0, 7) === month)
-        income[i.currency] = (income[i.currency] ?? 0) + i.total;
-    }
     for (const e of expenses) {
-      const em = e.date.slice(0, 7);
-      const applies = e.recurring ? em <= month : em === month;
-      if (applies) expense[e.currency] = (expense[e.currency] ?? 0) + e.amount;
+      const amt = e.recurring ? e.amount * monthsActive(e.date) : e.amount;
+      expense[e.currency] = (expense[e.currency] ?? 0) + amt;
     }
+
     const curs = [...new Set([...Object.keys(income), ...Object.keys(expense)])];
     return curs.map((c) => ({
       currency: c,
@@ -679,28 +667,18 @@ function ProfitSummary({
       expense: expense[c] ?? 0,
       net: (income[c] ?? 0) - (expense[c] ?? 0),
     }));
-  }, [invoices, expenses, month]);
+  }, [ledger, expenses]);
 
   return (
     <div className="mb-7">
       <div className="mb-2 flex items-center justify-between">
         <div className="text-[15px] font-semibold">Profit &amp; loss</div>
-        <select
-          value={month}
-          onChange={(e) => setMonth(e.target.value)}
-          className="rounded-[8px] border border-[#e0e5e3] bg-white px-3 py-1.5 text-[12.5px] outline-none"
-        >
-          {monthOptions.map((m) => (
-            <option key={m} value={m}>
-              {monthLabel(m)}
-            </option>
-          ))}
-        </select>
+        <div className="text-[12px] text-[#71807a]">To date</div>
       </div>
       {rows.length === 0 ? (
         <div className="rounded-[12px] border border-[#e6eae8] bg-white px-4 py-5 text-[12.5px] text-[#9aa3a0]">
-          No income or expenses for {monthLabel(month)} yet. Mark invoices “Paid”
-          and add expenses below.
+          No income or expenses yet. Set “Received” on the client ledger and add
+          expenses below.
         </div>
       ) : (
         <div className="flex flex-wrap gap-3">
@@ -738,8 +716,8 @@ function ProfitSummary({
         </div>
       )}
       <div className="mt-2 text-[11.5px] text-[#9aa3a0]">
-        Income = invoices marked “Paid” issued this month. Expenses = this
-        month&apos;s entries + recurring (monthly) ones.
+        Income = total “Received” from the client ledger. Expenses = all logged
+        expenses (recurring ones counted for every month since they started).
       </div>
     </div>
   );
