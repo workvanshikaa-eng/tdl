@@ -126,6 +126,62 @@ export async function createInvoice(
   return { id: inv.id };
 }
 
+// ── Expenses ────────────────────────────────────────────────────
+export async function addExpense(data: {
+  label: string;
+  category: string;
+  amount: number;
+  currency: string;
+  date: string;
+  recurring: boolean;
+}) {
+  await requireRole("admin");
+  if (!data.label.trim()) return;
+  await prisma.expense.create({
+    data: {
+      label: data.label.trim(),
+      category: data.category.trim() || "Other",
+      amount: Math.max(0, Number(data.amount) || 0),
+      currency: data.currency || "INR",
+      date: /^\d{4}-\d{2}-\d{2}$/.test(data.date)
+        ? data.date
+        : new Date().toISOString().slice(0, 10),
+      recurring: !!data.recurring,
+    },
+  });
+  revalidatePath("/cms/finance");
+}
+
+export async function editExpense(
+  id: string,
+  patch: {
+    label?: string;
+    category?: string;
+    amount?: number;
+    currency?: string;
+    date?: string;
+    recurring?: boolean;
+  },
+) {
+  await requireRole("admin");
+  const data: Record<string, unknown> = {};
+  if (patch.label !== undefined && patch.label.trim()) data.label = patch.label.trim();
+  if (patch.category !== undefined) data.category = patch.category.trim() || "Other";
+  if (patch.amount !== undefined) data.amount = Math.max(0, Number(patch.amount) || 0);
+  if (patch.currency !== undefined) data.currency = patch.currency;
+  if (patch.date !== undefined && /^\d{4}-\d{2}-\d{2}$/.test(patch.date))
+    data.date = patch.date;
+  if (patch.recurring !== undefined) data.recurring = !!patch.recurring;
+  await prisma.expense.update({ where: { id }, data });
+  revalidatePath("/cms/finance");
+}
+
+export async function deleteExpense(id: string) {
+  await requireRole("admin");
+  await prisma.expense.delete({ where: { id } }).catch(() => {});
+  revalidatePath("/cms/finance");
+}
+
 export async function setInvoiceStatus(id: string, status: string) {
   await requireRole("admin");
   await prisma.invoice.update({ where: { id }, data: { status } });

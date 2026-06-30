@@ -6,6 +6,9 @@ import {
   createInvoice,
   setInvoiceStatus,
   deleteInvoice,
+  addExpense,
+  editExpense,
+  deleteExpense,
 } from "@/app/cms/actions/finance";
 import {
   CURRENCIES,
@@ -13,6 +16,17 @@ import {
   invoiceTotals,
   type InvoiceItem,
 } from "@/lib/money";
+
+const EXPENSE_CATEGORIES = [
+  "Subscription",
+  "Salary",
+  "Software",
+  "Tools",
+  "Office",
+  "Marketing",
+  "Taxes",
+  "Other",
+];
 
 type LedgerRow = {
   clientId: string;
@@ -33,17 +47,28 @@ type InvoiceRow = {
   currency: string;
   total: number;
 };
+type ExpenseRow = {
+  id: string;
+  label: string;
+  category: string;
+  amount: number;
+  currency: string;
+  date: string;
+  recurring: boolean;
+};
 
 const STATUSES = ["Draft", "Sent", "Paid"];
 
 export default function FinanceSheet({
   ledger,
   invoices,
+  expenses,
   clientOptions,
   defaultCurrency,
 }: {
   ledger: LedgerRow[];
   invoices: InvoiceRow[];
+  expenses: ExpenseRow[];
   clientOptions: { id: string; name: string; email: string; billingAddress: string; billingTaxId: string }[];
   defaultCurrency: string;
 }) {
@@ -68,9 +93,13 @@ export default function FinanceSheet({
   return (
     <div>
       <div className="mb-4 text-[12.5px] text-[#71807a]">
-        Your private money tracker — projected value, what&apos;s come in,
-        what&apos;s left, and generated invoices. Only you (admin) can see this.
+        Your private money tracker — profit, income, expenses and invoices.
+        Only you (admin) can see this.
       </div>
+
+      <ProfitSummary invoices={invoices} expenses={expenses} />
+
+      <ExpensesSection expenses={expenses} pending={pending} run={run} />
 
       {/* Totals */}
       <div className="mb-5 flex flex-wrap gap-3">
@@ -599,6 +628,310 @@ function NewInvoiceForm({
         className="mt-3 cursor-pointer rounded-[9px] border-none bg-[#064e3b] px-[18px] py-[10px] text-[13px] font-semibold text-white disabled:opacity-60"
       >
         Create invoice &amp; open PDF
+      </button>
+    </div>
+  );
+}
+
+const monthLabel = (m: string) => {
+  if (!m) return "";
+  const [y, mo] = m.split("-");
+  return new Date(Number(y), Number(mo) - 1, 1).toLocaleDateString("en-US", {
+    month: "long",
+    year: "numeric",
+  });
+};
+
+function ProfitSummary({
+  invoices,
+  expenses,
+}: {
+  invoices: InvoiceRow[];
+  expenses: ExpenseRow[];
+}) {
+  const monthOptions = useMemo(() => {
+    const set = new Set<string>();
+    const now = new Date();
+    set.add(`${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`);
+    invoices.forEach((i) => i.issueDate && set.add(i.issueDate.slice(0, 7)));
+    expenses.forEach((e) => e.date && set.add(e.date.slice(0, 7)));
+    return [...set].filter(Boolean).sort().reverse();
+  }, [invoices, expenses]);
+
+  const [month, setMonth] = useState(monthOptions[0] ?? "");
+
+  const rows = useMemo(() => {
+    const income: Record<string, number> = {};
+    const expense: Record<string, number> = {};
+    for (const i of invoices) {
+      if (i.status === "Paid" && i.issueDate.slice(0, 7) === month)
+        income[i.currency] = (income[i.currency] ?? 0) + i.total;
+    }
+    for (const e of expenses) {
+      const em = e.date.slice(0, 7);
+      const applies = e.recurring ? em <= month : em === month;
+      if (applies) expense[e.currency] = (expense[e.currency] ?? 0) + e.amount;
+    }
+    const curs = [...new Set([...Object.keys(income), ...Object.keys(expense)])];
+    return curs.map((c) => ({
+      currency: c,
+      income: income[c] ?? 0,
+      expense: expense[c] ?? 0,
+      net: (income[c] ?? 0) - (expense[c] ?? 0),
+    }));
+  }, [invoices, expenses, month]);
+
+  return (
+    <div className="mb-7">
+      <div className="mb-2 flex items-center justify-between">
+        <div className="text-[15px] font-semibold">Profit &amp; loss</div>
+        <select
+          value={month}
+          onChange={(e) => setMonth(e.target.value)}
+          className="rounded-[8px] border border-[#e0e5e3] bg-white px-3 py-1.5 text-[12.5px] outline-none"
+        >
+          {monthOptions.map((m) => (
+            <option key={m} value={m}>
+              {monthLabel(m)}
+            </option>
+          ))}
+        </select>
+      </div>
+      {rows.length === 0 ? (
+        <div className="rounded-[12px] border border-[#e6eae8] bg-white px-4 py-5 text-[12.5px] text-[#9aa3a0]">
+          No income or expenses for {monthLabel(month)} yet. Mark invoices “Paid”
+          and add expenses below.
+        </div>
+      ) : (
+        <div className="flex flex-wrap gap-3">
+          {rows.map((r) => (
+            <div
+              key={r.currency}
+              className="min-w-[230px] flex-1 rounded-[13px] border border-[#e6eae8] bg-white p-4"
+            >
+              <div className="text-[11px] font-semibold uppercase tracking-[0.4px] text-[#71807a]">
+                {r.currency}
+              </div>
+              <div className="mt-2 flex justify-between text-[13px]">
+                <span className="text-[#71807a]">Income</span>
+                <span className="font-semibold text-[#0a7a4f]">
+                  {formatMoney(r.income, r.currency)}
+                </span>
+              </div>
+              <div className="mt-1 flex justify-between text-[13px]">
+                <span className="text-[#71807a]">Expenses</span>
+                <span className="font-semibold text-[#c64242]">
+                  −{formatMoney(r.expense, r.currency)}
+                </span>
+              </div>
+              <div className="mt-2 flex justify-between border-t border-[#eef2f0] pt-2">
+                <span className="text-[13px] font-bold">Net profit</span>
+                <span
+                  className="text-[16px] font-extrabold"
+                  style={{ color: r.net >= 0 ? "#064e3b" : "#c64242" }}
+                >
+                  {formatMoney(r.net, r.currency)}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+      <div className="mt-2 text-[11.5px] text-[#9aa3a0]">
+        Income = invoices marked “Paid” issued this month. Expenses = this
+        month&apos;s entries + recurring (monthly) ones.
+      </div>
+    </div>
+  );
+}
+
+function ExpensesSection({
+  expenses,
+  pending,
+  run,
+}: {
+  expenses: ExpenseRow[];
+  pending: boolean;
+  run: (fn: () => Promise<unknown>) => void;
+}) {
+  const cols =
+    "grid grid-cols-[2fr_1.2fr_1fr_0.8fr_1.1fr_0.9fr_28px] items-center gap-2";
+  const input =
+    "rounded-[7px] border border-transparent bg-transparent px-2 py-1 font-[inherit] text-[12.5px] outline-none hover:border-[#e0e5e3] focus:border-[#064e3b] focus:bg-white";
+
+  return (
+    <div className="mb-7">
+      <div className="mb-2 text-[15px] font-semibold">Expenses</div>
+      <div className="overflow-hidden rounded-[13px] border border-[#e6eae8] bg-white">
+        <div className="overflow-x-auto">
+          <div className="min-w-[820px]">
+            <div
+              className={`${cols} border-b border-[#e6eae8] bg-[#f8faf9] px-4 py-2.5 text-[11px] font-semibold uppercase tracking-[0.4px] text-[#71807a]`}
+            >
+              <div>Item</div>
+              <div>Category</div>
+              <div>Amount</div>
+              <div>Cur</div>
+              <div>Date</div>
+              <div>Monthly</div>
+              <div />
+            </div>
+            {expenses.length === 0 && (
+              <div className="px-4 py-6 text-[12.5px] text-[#9aa3a0]">
+                No expenses yet. Add subscriptions, salaries, etc. below.
+              </div>
+            )}
+            {expenses.map((e) => (
+              <div
+                key={e.id}
+                className={`${cols} row border-b border-[#eef2f0] px-4 py-2 last:border-b-0`}
+              >
+                <input
+                  defaultValue={e.label}
+                  key={`l-${e.id}-${e.label}`}
+                  onBlur={(ev) =>
+                    ev.target.value.trim() !== e.label &&
+                    run(() => editExpense(e.id, { label: ev.target.value }))
+                  }
+                  className={`${input} font-semibold`}
+                />
+                <input
+                  defaultValue={e.category}
+                  list="exp-cats"
+                  key={`c-${e.id}-${e.category}`}
+                  onBlur={(ev) =>
+                    ev.target.value !== e.category &&
+                    run(() => editExpense(e.id, { category: ev.target.value }))
+                  }
+                  className={input}
+                />
+                <input
+                  type="number"
+                  min={0}
+                  defaultValue={e.amount || ""}
+                  key={`a-${e.id}-${e.amount}`}
+                  onBlur={(ev) =>
+                    Number(ev.target.value) !== e.amount &&
+                    run(() => editExpense(e.id, { amount: Number(ev.target.value) }))
+                  }
+                  className={input}
+                />
+                <select
+                  defaultValue={e.currency}
+                  onChange={(ev) =>
+                    run(() => editExpense(e.id, { currency: ev.target.value }))
+                  }
+                  className="rounded-[7px] border border-[#e0e5e3] bg-white px-1 py-1 text-[12px] outline-none"
+                >
+                  {CURRENCIES.map((c) => (
+                    <option key={c} value={c}>
+                      {c}
+                    </option>
+                  ))}
+                </select>
+                <input
+                  type="date"
+                  defaultValue={e.date}
+                  key={`d-${e.id}-${e.date}`}
+                  onBlur={(ev) =>
+                    ev.target.value !== e.date &&
+                    run(() => editExpense(e.id, { date: ev.target.value }))
+                  }
+                  className={input}
+                />
+                <label className="flex items-center gap-1.5 text-[11.5px] text-[#71807a]">
+                  <input
+                    type="checkbox"
+                    defaultChecked={e.recurring}
+                    onChange={(ev) =>
+                      run(() => editExpense(e.id, { recurring: ev.target.checked }))
+                    }
+                  />
+                  monthly
+                </label>
+                <button
+                  type="button"
+                  onClick={() => run(() => deleteExpense(e.id))}
+                  className="cursor-pointer border-none bg-transparent text-[16px] text-[#c64242]"
+                >
+                  ×
+                </button>
+              </div>
+            ))}
+            <AddExpenseRow cols={cols} pending={pending} run={run} />
+          </div>
+        </div>
+      </div>
+      <datalist id="exp-cats">
+        {EXPENSE_CATEGORIES.map((c) => (
+          <option key={c} value={c} />
+        ))}
+      </datalist>
+    </div>
+  );
+}
+
+function AddExpenseRow({
+  cols,
+  pending,
+  run,
+}: {
+  cols: string;
+  pending: boolean;
+  run: (fn: () => Promise<unknown>) => void;
+}) {
+  const today = new Date().toISOString().slice(0, 10);
+  const [label, setLabel] = useState("");
+  const [category, setCategory] = useState("Subscription");
+  const [amount, setAmount] = useState("");
+  const [currency, setCurrency] = useState("INR");
+  const [date, setDate] = useState(today);
+  const [recurring, setRecurring] = useState(false);
+
+  const submit = () => {
+    if (!label.trim()) return;
+    run(() =>
+      addExpense({
+        label,
+        category,
+        amount: Number(amount) || 0,
+        currency,
+        date,
+        recurring,
+      }),
+    );
+    setLabel("");
+    setAmount("");
+    setRecurring(false);
+  };
+
+  const f =
+    "rounded-[7px] border border-[#e0e5e3] px-2 py-1.5 font-[inherit] text-[12.5px] outline-none focus:border-[#064e3b]";
+
+  return (
+    <div className={`${cols} border-t border-[#eef2f0] px-4 py-2.5`}>
+      <input value={label} onChange={(e) => setLabel(e.target.value)} placeholder="New expense (e.g. Notion)" className={f} />
+      <input value={category} onChange={(e) => setCategory(e.target.value)} list="exp-cats" placeholder="Category" className={f} />
+      <input type="number" min={0} value={amount} onChange={(e) => setAmount(e.target.value)} placeholder="0" className={f} />
+      <select value={currency} onChange={(e) => setCurrency(e.target.value)} className="rounded-[7px] border border-[#e0e5e3] bg-white px-1 py-1.5 text-[12px] outline-none">
+        {CURRENCIES.map((c) => (
+          <option key={c} value={c}>
+            {c}
+          </option>
+        ))}
+      </select>
+      <input type="date" value={date} onChange={(e) => setDate(e.target.value)} className={f} />
+      <label className="flex items-center gap-1.5 text-[11.5px] text-[#71807a]">
+        <input type="checkbox" checked={recurring} onChange={(e) => setRecurring(e.target.checked)} />
+        monthly
+      </label>
+      <button
+        type="button"
+        onClick={submit}
+        disabled={pending}
+        className="cursor-pointer rounded-[7px] border-none bg-[#064e3b] py-1.5 text-[16px] leading-none text-white disabled:opacity-60"
+      >
+        ＋
       </button>
     </div>
   );

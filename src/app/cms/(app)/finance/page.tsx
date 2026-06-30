@@ -17,6 +17,10 @@ export default async function FinancePage() {
     include: { client: { select: { name: true } } },
   });
 
+  const expenses = await prisma.expense.findMany({
+    orderBy: { date: "desc" },
+  });
+
   const ledger = clients.map((c) => ({
     clientId: c.id,
     clientName: c.name,
@@ -46,6 +50,15 @@ export default async function FinancePage() {
     <FinanceSheet
       ledger={ledger}
       invoices={invoiceRows}
+      expenses={expenses.map((e) => ({
+        id: e.id,
+        label: e.label,
+        category: e.category,
+        amount: e.amount,
+        currency: e.currency,
+        date: e.date,
+        recurring: e.recurring,
+      }))}
       clientOptions={clients.map((c) => ({
         id: c.id,
         name: c.name,

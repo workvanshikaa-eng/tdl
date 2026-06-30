@@ -92,6 +92,20 @@ model ClientFinance {
   updatedAt DateTime @updatedAt
 }
 
+/** A business expense (admin-only). Recurring = repeats every month. */
+model Expense {
+  id        String   @id @default(cuid())
+  label     String
+  category  String   @default("Other") // Subscription | Salary | Software | Office | Marketing | Other
+  amount    Float    @default(0)
+  currency  String   @default("INR")
+  date      String // 'YYYY-MM-DD' (for recurring, the start month onward)
+  recurring Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([date])
+}
+
 /** A stored, generatable invoice (admin-only). items = [{description, qty, rate}]. */
 model Invoice {
   id       String @id @default(cuid())
