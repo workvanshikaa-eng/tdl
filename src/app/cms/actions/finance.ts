@@ -67,6 +67,14 @@ export async function createInvoice(
     currency: string;
     items: InvoiceItem[];
     notes?: string;
+    billToName?: string;
+    billToEmail?: string;
+    billToAddress?: string;
+    discount?: number;
+    taxLabel?: string;
+    taxRate?: number;
+    poNumber?: string;
+    paymentTerms?: string;
   },
 ): Promise<{ id?: string; error?: string }> {
   await requireRole("admin");
@@ -76,6 +84,7 @@ export async function createInvoice(
 
   const count = await prisma.invoice.count();
   const number = `INV-${String(count + 1).padStart(4, "0")}`;
+  const billToAddress = data.billToAddress?.trim() || null;
 
   const inv = await prisma.invoice.create({
     data: {
@@ -87,8 +96,26 @@ export async function createInvoice(
       items,
       notes: data.notes?.trim() || null,
       status: "Draft",
+      billToName: data.billToName?.trim() || null,
+      billToEmail: data.billToEmail?.trim() || null,
+      billToAddress,
+      discount: Math.max(0, Number(data.discount) || 0),
+      taxLabel: data.taxLabel?.trim() || "Tax",
+      taxRate: Math.max(0, Number(data.taxRate) || 0),
+      poNumber: data.poNumber?.trim() || null,
+      paymentTerms: data.paymentTerms?.trim() || null,
     },
   });
+
+  // Remember the bill-to address on the client for next time.
+  if (billToAddress) {
+    await prisma.clientFinance.upsert({
+      where: { clientId },
+      create: { clientId, billingAddress: billToAddress },
+      update: { billingAddress: billToAddress },
+    });
+  }
+
   revalidatePath("/cms/finance");
   return { id: inv.id };
 }

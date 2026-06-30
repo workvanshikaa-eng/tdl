@@ -80,12 +80,13 @@ model ClientFinance {
   clientId String @unique
   client   Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
 
-  currency  String  @default("USD")
-  projected Float   @default(0) // total contract value
-  received  Float   @default(0) // how much has come in
-  startDate String? // 'YYYY-MM-DD'
-  endDate   String?
-  notes     String?
+  currency       String  @default("USD")
+  projected      Float   @default(0) // total contract value
+  received       Float   @default(0) // how much has come in
+  startDate      String? // 'YYYY-MM-DD'
+  endDate        String?
+  notes          String?
+  billingAddress String? // remembered bill-to address, auto-fills invoices
 
   updatedAt DateTime @updatedAt
 }
@@ -103,6 +104,19 @@ model Invoice {
   currency  String  @default("USD")
   items     Json
   notes     String?
+
+  // Bill-to snapshot
+  billToName    String?
+  billToEmail   String?
+  billToAddress String?
+
+  // Money breakdown
+  discount Float  @default(0) // flat amount off the subtotal
+  taxLabel String @default("Tax") // e.g. GST / VAT
+  taxRate  Float  @default(0) // percent
+
+  poNumber     String?
+  paymentTerms String?
 
   createdAt DateTime @default(now())
 

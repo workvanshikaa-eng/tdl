@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, useTransition } from "react";
+import { useEffect, useMemo, useState, useTransition } from "react";
 import {
   upsertClientFinance,
   createInvoice,
@@ -9,9 +9,8 @@ import {
 } from "@/app/cms/actions/finance";
 import {
   CURRENCIES,
-  currencySymbol,
   formatMoney,
-  invoiceTotal,
+  invoiceTotals,
   type InvoiceItem,
 } from "@/lib/money";
 
@@ -45,7 +44,7 @@ export default function FinanceSheet({
 }: {
   ledger: LedgerRow[];
   invoices: InvoiceRow[];
-  clientOptions: { id: string; name: string }[];
+  clientOptions: { id: string; name: string; email: string; billingAddress: string }[];
   defaultCurrency: string;
 }) {
   const [pending, start] = useTransition();
@@ -255,7 +254,7 @@ function Invoices({
   run,
 }: {
   invoices: InvoiceRow[];
-  clientOptions: { id: string; name: string }[];
+  clientOptions: { id: string; name: string; email: string; billingAddress: string }[];
   defaultCurrency: string;
   pending: boolean;
   run: (fn: () => Promise<unknown>) => void;
@@ -354,7 +353,7 @@ function NewInvoiceForm({
   run,
   onDone,
 }: {
-  clientOptions: { id: string; name: string }[];
+  clientOptions: { id: string; name: string; email: string; billingAddress: string }[];
   defaultCurrency: string;
   pending: boolean;
   run: (fn: () => Promise<unknown>) => void;
@@ -369,9 +368,26 @@ function NewInvoiceForm({
   const [items, setItems] = useState<InvoiceItem[]>([
     { description: "", qty: 1, rate: 0 },
   ]);
+  // Bill-to + extra fields
+  const [billToName, setBillToName] = useState("");
+  const [billToEmail, setBillToEmail] = useState("");
+  const [billToAddress, setBillToAddress] = useState("");
+  const [poNumber, setPoNumber] = useState("");
+  const [paymentTerms, setPaymentTerms] = useState("");
+  const [discount, setDiscount] = useState(0);
+  const [taxLabel, setTaxLabel] = useState("GST");
+  const [taxRate, setTaxRate] = useState(0);
   const [error, setError] = useState<string | null>(null);
 
-  const total = invoiceTotal(items);
+  // Auto-fill bill-to from the selected client.
+  useEffect(() => {
+    const c = clientOptions.find((o) => o.id === clientId);
+    setBillToName(c?.name ?? "");
+    setBillToEmail(c?.email ?? "");
+    setBillToAddress(c?.billingAddress ?? "");
+  }, [clientId, clientOptions]);
+
+  const t = invoiceTotals(items, discount, taxRate);
 
   const setItem = (idx: number, patch: Partial<InvoiceItem>) =>
     setItems((arr) => arr.map((it, i) => (i === idx ? { ...it, ...patch } : it)));
@@ -385,6 +401,14 @@ function NewInvoiceForm({
         currency,
         items,
         notes,
+        billToName,
+        billToEmail,
+        billToAddress,
+        discount,
+        taxLabel,
+        taxRate,
+        poNumber,
+        paymentTerms,
       });
       if (res?.error) {
         setError(res.error);
@@ -427,6 +451,23 @@ function NewInvoiceForm({
             </option>
           ))}
         </select>
+      </div>
+
+      {/* Bill to */}
+      <div className="mt-2 grid grid-cols-2 gap-2 max-[700px]:grid-cols-1">
+        <input value={billToName} onChange={(e) => setBillToName(e.target.value)} placeholder="Bill to — name / company" className={field} />
+        <input value={billToEmail} onChange={(e) => setBillToEmail(e.target.value)} placeholder="Bill to — email" className={field} />
+      </div>
+      <textarea
+        value={billToAddress}
+        onChange={(e) => setBillToAddress(e.target.value)}
+        placeholder="Bill to — billing address (remembered for next time)"
+        rows={2}
+        className={`${field} mt-2 w-full resize-y`}
+      />
+      <div className="mt-2 grid grid-cols-2 gap-2 max-[700px]:grid-cols-1">
+        <input value={poNumber} onChange={(e) => setPoNumber(e.target.value)} placeholder="PO / reference (optional)" className={field} />
+        <input value={paymentTerms} onChange={(e) => setPaymentTerms(e.target.value)} placeholder="Payment terms (e.g. Net 15)" className={field} />
       </div>
 
       <div className="mt-3 overflow-hidden rounded-[9px] border border-[#eef2f0]">
@@ -483,15 +524,57 @@ function NewInvoiceForm({
         </button>
       </div>
 
-      <div className="mt-3 flex flex-wrap items-end justify-between gap-3">
-        <input
+      <div className="mt-3 grid grid-cols-[1fr_300px] gap-4 max-[760px]:grid-cols-1">
+        <textarea
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
-          placeholder="Notes / payment terms (optional)"
-          className={`${field} min-w-[220px] flex-1`}
+          placeholder="Notes shown on the invoice (optional)"
+          rows={4}
+          className={`${field} w-full resize-y`}
         />
-        <div className="text-[15px] font-bold text-[#064e3b]">
-          Total: {formatMoney(total, currency)}
+        <div className="rounded-[10px] border border-[#eef2f0] bg-[#f8faf9] p-3">
+          <div className="flex items-center justify-between text-[12.5px]">
+            <span className="text-[#71807a]">Subtotal</span>
+            <span className="font-semibold">{formatMoney(t.subtotal, currency)}</span>
+          </div>
+          <div className="mt-2 flex items-center justify-between gap-2">
+            <span className="text-[12.5px] text-[#71807a]">Discount</span>
+            <input
+              type="number"
+              min={0}
+              value={discount || ""}
+              onChange={(e) => setDiscount(Number(e.target.value))}
+              placeholder="0"
+              className={`${field} w-[110px] text-right`}
+            />
+          </div>
+          <div className="mt-2 flex items-center justify-between gap-2">
+            <span className="flex items-center gap-1 text-[12.5px] text-[#71807a]">
+              <input
+                value={taxLabel}
+                onChange={(e) => setTaxLabel(e.target.value)}
+                className={`${field} w-[58px] px-1.5 py-1`}
+              />
+              <input
+                type="number"
+                min={0}
+                value={taxRate || ""}
+                onChange={(e) => setTaxRate(Number(e.target.value))}
+                placeholder="0"
+                className={`${field} w-[52px] px-1.5 py-1 text-right`}
+              />
+              %
+            </span>
+            <span className="text-[12.5px] font-semibold">
+              {formatMoney(t.taxAmount, currency)}
+            </span>
+          </div>
+          <div className="mt-2 flex items-center justify-between border-t border-[#dde3e0] pt-2">
+            <span className="text-[13px] font-bold">Total</span>
+            <span className="text-[16px] font-extrabold text-[#064e3b]">
+              {formatMoney(t.total, currency)}
+            </span>
+          </div>
         </div>
       </div>
 

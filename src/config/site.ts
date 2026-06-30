@@ -23,8 +23,12 @@ export const siteConfig = {
   invoiceFrom: {
     companyName: "The Distribution Lab",
     email: "thedistributionlab@gmail.com",
-    line1: "", // e.g. street / city
-    line2: "", // e.g. GST / tax id
+    phone: "", // e.g. "+91 ..."
+    website: "thedistributionlab.com",
+    address: "", // full address, use commas/newlines
+    taxId: "", // e.g. "GSTIN: 22AAAAA0000A1Z5" or "PAN: ..."
+    /** How clients pay you — shown on every invoice. */
+    paymentInstructions: "", // e.g. "Bank: HDFC · A/C: 1234567890 · IFSC: HDFC0000123 · UPI: you@upi"
     defaultCurrency: "USD",
   },
 } as const;

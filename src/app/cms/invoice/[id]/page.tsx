@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { requireRole } from "@/lib/access";
 import { prisma } from "@/lib/prisma";
 import { siteConfig } from "@/config/site";
-import { formatMoney, invoiceTotal, type InvoiceItem } from "@/lib/money";
+import { formatMoney, invoiceTotals, type InvoiceItem } from "@/lib/money";
 import TdlLogo from "@/components/TdlLogo";
 import PrintButton from "@/components/cms/PrintButton";
 
@@ -24,9 +24,11 @@ export default async function InvoicePrintPage({
   if (!inv) notFound();
 
   const items = (inv.items as unknown as InvoiceItem[]) ?? [];
-  const total = invoiceTotal(items);
+  const t = invoiceTotals(items, inv.discount, inv.taxRate);
   const from = siteConfig.invoiceFrom;
   const cur = inv.currency;
+  const billName = inv.billToName || inv.client.name;
+  const billEmail = inv.billToEmail || inv.client.portalUser?.email || "";
 
   return (
     <div style={{ background: "#f4f6f5", minHeight: "100vh", fontFamily: "var(--font-inter), sans-serif" }}>
@@ -60,8 +62,10 @@ export default async function InvoicePrintPage({
                 {from.companyName}
               </div>
               <div style={{ fontSize: 12.5, color: "#71807a" }}>{from.email}</div>
-              {from.line1 && <div style={{ fontSize: 12.5, color: "#71807a" }}>{from.line1}</div>}
-              {from.line2 && <div style={{ fontSize: 12.5, color: "#71807a" }}>{from.line2}</div>}
+              {from.phone && <div style={{ fontSize: 12.5, color: "#71807a" }}>{from.phone}</div>}
+              {from.website && <div style={{ fontSize: 12.5, color: "#71807a" }}>{from.website}</div>}
+              {from.address && <div style={{ fontSize: 12.5, color: "#71807a", whiteSpace: "pre-line" }}>{from.address}</div>}
+              {from.taxId && <div style={{ fontSize: 12.5, color: "#71807a" }}>{from.taxId}</div>}
             </div>
           </div>
           <div style={{ textAlign: "right" }}>
@@ -83,9 +87,14 @@ export default async function InvoicePrintPage({
             <div style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.5px", color: "#9aa3a0" }}>
               Bill to
             </div>
-            <div style={{ fontSize: 15, fontWeight: 700, marginTop: 4 }}>{inv.client.name}</div>
-            {inv.client.portalUser?.email && (
-              <div style={{ fontSize: 12.5, color: "#71807a" }}>{inv.client.portalUser.email}</div>
+            <div style={{ fontSize: 15, fontWeight: 700, marginTop: 4 }}>{billName}</div>
+            {billEmail && (
+              <div style={{ fontSize: 12.5, color: "#71807a" }}>{billEmail}</div>
+            )}
+            {inv.billToAddress && (
+              <div style={{ fontSize: 12.5, color: "#71807a", whiteSpace: "pre-line", marginTop: 2 }}>
+                {inv.billToAddress}
+              </div>
             )}
           </div>
           <div style={{ textAlign: "right", fontSize: 12.5, color: "#4a5752" }}>
@@ -95,6 +104,16 @@ export default async function InvoicePrintPage({
             {inv.dueDate && (
               <div>
                 <span style={{ color: "#9aa3a0" }}>Due:</span> {inv.dueDate}
+              </div>
+            )}
+            {inv.poNumber && (
+              <div>
+                <span style={{ color: "#9aa3a0" }}>PO:</span> {inv.poNumber}
+              </div>
+            )}
+            {inv.paymentTerms && (
+              <div>
+                <span style={{ color: "#9aa3a0" }}>Terms:</span> {inv.paymentTerms}
               </div>
             )}
           </div>
@@ -122,15 +141,44 @@ export default async function InvoicePrintPage({
           </tbody>
         </table>
 
-        {/* Total */}
+        {/* Totals breakdown */}
         <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 18 }}>
-          <div style={{ width: 260 }}>
-            <div style={{ display: "flex", justifyContent: "space-between", padding: "10px 6px", borderTop: "2px solid #064e3b" }}>
+          <div style={{ width: 300 }}>
+            <div style={{ display: "flex", justifyContent: "space-between", padding: "6px 6px", fontSize: 13 }}>
+              <span style={{ color: "#71807a" }}>Subtotal</span>
+              <span>{formatMoney(t.subtotal, cur)}</span>
+            </div>
+            {t.discount > 0 && (
+              <div style={{ display: "flex", justifyContent: "space-between", padding: "6px 6px", fontSize: 13 }}>
+                <span style={{ color: "#71807a" }}>Discount</span>
+                <span>−{formatMoney(t.discount, cur)}</span>
+              </div>
+            )}
+            {inv.taxRate > 0 && (
+              <div style={{ display: "flex", justifyContent: "space-between", padding: "6px 6px", fontSize: 13 }}>
+                <span style={{ color: "#71807a" }}>
+                  {inv.taxLabel} ({inv.taxRate}%)
+                </span>
+                <span>{formatMoney(t.taxAmount, cur)}</span>
+              </div>
+            )}
+            <div style={{ display: "flex", justifyContent: "space-between", padding: "10px 6px", borderTop: "2px solid #064e3b", marginTop: 4 }}>
               <span style={{ fontSize: 14, fontWeight: 700 }}>Total</span>
-              <span style={{ fontSize: 18, fontWeight: 800, color: "#064e3b" }}>{formatMoney(total, cur)}</span>
+              <span style={{ fontSize: 18, fontWeight: 800, color: "#064e3b" }}>{formatMoney(t.total, cur)}</span>
             </div>
           </div>
         </div>
+
+        {from.paymentInstructions && (
+          <div style={{ marginTop: 24, paddingTop: 18, borderTop: "1px solid #eef2f0" }}>
+            <div style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.5px", color: "#9aa3a0" }}>
+              Payment details
+            </div>
+            <div style={{ fontSize: 13, color: "#4a5752", marginTop: 5, lineHeight: 1.5, whiteSpace: "pre-line" }}>
+              {from.paymentInstructions}
+            </div>
+          </div>
+        )}
 
         {inv.notes && (
           <div style={{ marginTop: 28, paddingTop: 18, borderTop: "1px solid #eef2f0" }}>

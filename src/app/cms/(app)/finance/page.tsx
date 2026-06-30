@@ -1,6 +1,6 @@
 import { requireRole } from "@/lib/access";
 import { prisma } from "@/lib/prisma";
-import { invoiceTotal, type InvoiceItem } from "@/lib/money";
+import { invoiceTotals, type InvoiceItem } from "@/lib/money";
 import FinanceSheet from "@/components/cms/FinanceSheet";
 import { siteConfig } from "@/config/site";
 
@@ -9,7 +9,7 @@ export default async function FinancePage() {
 
   const clients = await prisma.client.findMany({
     orderBy: { createdAt: "asc" },
-    include: { finance: true },
+    include: { finance: true, portalUser: { select: { email: true } } },
   });
 
   const invoices = await prisma.invoice.findMany({
@@ -35,14 +35,23 @@ export default async function FinancePage() {
     issueDate: i.issueDate,
     status: i.status,
     currency: i.currency,
-    total: invoiceTotal((i.items as unknown as InvoiceItem[]) ?? []),
+    total: invoiceTotals(
+      (i.items as unknown as InvoiceItem[]) ?? [],
+      i.discount,
+      i.taxRate,
+    ).total,
   }));
 
   return (
     <FinanceSheet
       ledger={ledger}
       invoices={invoiceRows}
-      clientOptions={clients.map((c) => ({ id: c.id, name: c.name }))}
+      clientOptions={clients.map((c) => ({
+        id: c.id,
+        name: c.name,
+        email: c.portalUser?.email ?? "",
+        billingAddress: c.finance?.billingAddress ?? "",
+      }))}
       defaultCurrency={siteConfig.invoiceFrom.defaultCurrency}
     />
   );
