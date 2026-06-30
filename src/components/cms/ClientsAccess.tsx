@@ -51,8 +51,17 @@ export default function ClientsAccess({ clients }: { clients: ClientCardDTO[] })
                 {c.initials}
               </div>
               <div className="min-w-0 flex-1">
-                <div className="text-[15px] font-semibold">{c.name}</div>
-                <div className="text-[12px] text-[#71807a]">{c.tenure}</div>
+                <input
+                  defaultValue={c.name}
+                  key={`nm-${c.id}-${c.name}`}
+                  onBlur={(e) =>
+                    e.target.value.trim() &&
+                    e.target.value !== c.name &&
+                    run(() => editClient(c.id, "name", e.target.value))
+                  }
+                  className="w-full max-w-[280px] rounded-[6px] border border-transparent bg-transparent px-1 py-0.5 font-[inherit] text-[15px] font-semibold outline-none hover:border-[#e0e5e3] focus:border-[#064e3b] focus:bg-white"
+                />
+                <div className="px-1 text-[12px] text-[#71807a]">{c.tenure}</div>
               </div>
               <div className="mr-1.5 text-right">
                 <div className="text-[19px] font-bold tracking-[-0.5px] text-[#064e3b]">

@@ -63,11 +63,18 @@ export async function addClient(
 
 export async function editClient(
   id: string,
-  field: "service" | "email",
+  field: "service" | "email" | "name",
   value: string,
 ) {
   await requireRole("admin");
-  if (field === "service") {
+  if (field === "name") {
+    const name = value.trim();
+    if (!name) return;
+    await prisma.client.update({
+      where: { id },
+      data: { name, initials: initialsOf(name) },
+    });
+  } else if (field === "service") {
     await prisma.client.update({ where: { id }, data: { service: value } });
   } else {
     // email lives on the linked portal user
