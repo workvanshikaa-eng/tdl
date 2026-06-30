@@ -51,6 +51,7 @@ export default async function FinancePage() {
         name: c.name,
         email: c.portalUser?.email ?? "",
         billingAddress: c.finance?.billingAddress ?? "",
+        billingTaxId: c.finance?.billingTaxId ?? "",
       }))}
       defaultCurrency={siteConfig.invoiceFrom.defaultCurrency}
     />

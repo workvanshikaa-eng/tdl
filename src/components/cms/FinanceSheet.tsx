@@ -44,7 +44,7 @@ export default function FinanceSheet({
 }: {
   ledger: LedgerRow[];
   invoices: InvoiceRow[];
-  clientOptions: { id: string; name: string; email: string; billingAddress: string }[];
+  clientOptions: { id: string; name: string; email: string; billingAddress: string; billingTaxId: string }[];
   defaultCurrency: string;
 }) {
   const [pending, start] = useTransition();
@@ -254,7 +254,7 @@ function Invoices({
   run,
 }: {
   invoices: InvoiceRow[];
-  clientOptions: { id: string; name: string; email: string; billingAddress: string }[];
+  clientOptions: { id: string; name: string; email: string; billingAddress: string; billingTaxId: string }[];
   defaultCurrency: string;
   pending: boolean;
   run: (fn: () => Promise<unknown>) => void;
@@ -353,7 +353,7 @@ function NewInvoiceForm({
   run,
   onDone,
 }: {
-  clientOptions: { id: string; name: string; email: string; billingAddress: string }[];
+  clientOptions: { id: string; name: string; email: string; billingAddress: string; billingTaxId: string }[];
   defaultCurrency: string;
   pending: boolean;
   run: (fn: () => Promise<unknown>) => void;
@@ -372,6 +372,7 @@ function NewInvoiceForm({
   const [billToName, setBillToName] = useState("");
   const [billToEmail, setBillToEmail] = useState("");
   const [billToAddress, setBillToAddress] = useState("");
+  const [billToTaxId, setBillToTaxId] = useState("");
   const [poNumber, setPoNumber] = useState("");
   const [paymentTerms, setPaymentTerms] = useState("");
   const [discount, setDiscount] = useState(0);
@@ -385,6 +386,7 @@ function NewInvoiceForm({
     setBillToName(c?.name ?? "");
     setBillToEmail(c?.email ?? "");
     setBillToAddress(c?.billingAddress ?? "");
+    setBillToTaxId(c?.billingTaxId ?? "");
   }, [clientId, clientOptions]);
 
   const t = invoiceTotals(items, discount, taxRate);
@@ -404,6 +406,7 @@ function NewInvoiceForm({
         billToName,
         billToEmail,
         billToAddress,
+        billToTaxId,
         discount,
         taxLabel,
         taxRate,
@@ -454,16 +457,25 @@ function NewInvoiceForm({
       </div>
 
       {/* Bill to */}
-      <div className="mt-2 grid grid-cols-2 gap-2 max-[700px]:grid-cols-1">
-        <input value={billToName} onChange={(e) => setBillToName(e.target.value)} placeholder="Bill to — name / company" className={field} />
-        <input value={billToEmail} onChange={(e) => setBillToEmail(e.target.value)} placeholder="Bill to — email" className={field} />
+      <div className="mb-1 mt-3 text-[11px] font-semibold uppercase tracking-[0.4px] text-[#71807a]">
+        Invoice to
+      </div>
+      <div className="grid grid-cols-2 gap-2 max-[700px]:grid-cols-1">
+        <input value={billToName} onChange={(e) => setBillToName(e.target.value)} placeholder="Full registered company name" className={field} />
+        <input value={billToEmail} onChange={(e) => setBillToEmail(e.target.value)} placeholder="Email" className={field} />
       </div>
       <textarea
         value={billToAddress}
         onChange={(e) => setBillToAddress(e.target.value)}
-        placeholder="Bill to — billing address (remembered for next time)"
+        placeholder="Registered address (remembered for next time)"
         rows={2}
         className={`${field} mt-2 w-full resize-y`}
+      />
+      <input
+        value={billToTaxId}
+        onChange={(e) => setBillToTaxId(e.target.value)}
+        placeholder="Client GSTIN (if applicable)"
+        className={`${field} mt-2 w-full`}
       />
       <div className="mt-2 grid grid-cols-2 gap-2 max-[700px]:grid-cols-1">
         <input value={poNumber} onChange={(e) => setPoNumber(e.target.value)} placeholder="PO / reference (optional)" className={field} />

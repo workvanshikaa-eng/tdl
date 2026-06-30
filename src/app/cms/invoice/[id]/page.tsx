@@ -96,6 +96,11 @@ export default async function InvoicePrintPage({
                 {inv.billToAddress}
               </div>
             )}
+            {inv.billToTaxId && (
+              <div style={{ fontSize: 12.5, color: "#71807a", marginTop: 2 }}>
+                GSTIN: {inv.billToTaxId}
+              </div>
+            )}
           </div>
           <div style={{ textAlign: "right", fontSize: 12.5, color: "#4a5752" }}>
             <div>
@@ -189,7 +194,13 @@ export default async function InvoicePrintPage({
           </div>
         )}
 
-        <div style={{ marginTop: 40, textAlign: "center", fontSize: 11.5, color: "#9aa3a0" }}>
+        {from.footerNote && (
+          <div style={{ marginTop: 22, fontSize: 11.5, color: "#9aa3a0", fontStyle: "italic" }}>
+            {from.footerNote}
+          </div>
+        )}
+
+        <div style={{ marginTop: 28, textAlign: "center", fontSize: 11.5, color: "#9aa3a0" }}>
           Thank you — {from.companyName}
         </div>
       </div>

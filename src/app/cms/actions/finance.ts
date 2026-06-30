@@ -70,6 +70,7 @@ export async function createInvoice(
     billToName?: string;
     billToEmail?: string;
     billToAddress?: string;
+    billToTaxId?: string;
     discount?: number;
     taxLabel?: string;
     taxRate?: number;
@@ -85,6 +86,7 @@ export async function createInvoice(
   const count = await prisma.invoice.count();
   const number = `INV-${String(count + 1).padStart(4, "0")}`;
   const billToAddress = data.billToAddress?.trim() || null;
+  const billToTaxId = data.billToTaxId?.trim() || null;
 
   const inv = await prisma.invoice.create({
     data: {
@@ -99,6 +101,7 @@ export async function createInvoice(
       billToName: data.billToName?.trim() || null,
       billToEmail: data.billToEmail?.trim() || null,
       billToAddress,
+      billToTaxId,
       discount: Math.max(0, Number(data.discount) || 0),
       taxLabel: data.taxLabel?.trim() || "Tax",
       taxRate: Math.max(0, Number(data.taxRate) || 0),
@@ -107,12 +110,15 @@ export async function createInvoice(
     },
   });
 
-  // Remember the bill-to address on the client for next time.
-  if (billToAddress) {
+  // Remember the bill-to address + GSTIN on the client for next time.
+  if (billToAddress || billToTaxId) {
     await prisma.clientFinance.upsert({
       where: { clientId },
-      create: { clientId, billingAddress: billToAddress },
-      update: { billingAddress: billToAddress },
+      create: { clientId, billingAddress: billToAddress, billingTaxId: billToTaxId },
+      update: {
+        ...(billToAddress ? { billingAddress: billToAddress } : {}),
+        ...(billToTaxId ? { billingTaxId: billToTaxId } : {}),
+      },
     });
   }
 

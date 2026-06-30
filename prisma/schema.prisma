@@ -87,6 +87,7 @@ model ClientFinance {
   endDate        String?
   notes          String?
   billingAddress String? // remembered bill-to address, auto-fills invoices
+  billingTaxId   String? // remembered client GSTIN, auto-fills invoices
 
   updatedAt DateTime @updatedAt
 }
@@ -109,6 +110,7 @@ model Invoice {
   billToName    String?
   billToEmail   String?
   billToAddress String?
+  billToTaxId   String? // client GSTIN, if applicable
 
   // Money breakdown
   discount Float  @default(0) // flat amount off the subtotal

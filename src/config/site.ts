@@ -23,12 +23,15 @@ export const siteConfig = {
   invoiceFrom: {
     companyName: "The Distribution Lab",
     email: "thedistributionlab@gmail.com",
-    phone: "", // e.g. "+91 ..."
+    phone: "+91-9580679832",
     website: "thedistributionlab.com",
     address: "", // full address, use commas/newlines
-    taxId: "", // e.g. "GSTIN: 22AAAAA0000A1Z5" or "PAN: ..."
+    taxId: "PAN: ETEPA7879C",
     /** How clients pay you — shown on every invoice. */
-    paymentInstructions: "", // e.g. "Bank: HDFC · A/C: 1234567890 · IFSC: HDFC0000123 · UPI: you@upi"
+    paymentInstructions:
+      "HDFC Bank\nA/C name: Vanshika Agarwal\nA/C no: 50100663264377\nIFSC: HDFC0002006\nUPI: vanshika0639@okhdfcbank",
+    /** A standing note printed at the bottom of every invoice. */
+    footerNote: "This is a non-GST record. No GST will be filed against this.",
     defaultCurrency: "USD",
   },
 } as const;
