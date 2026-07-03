@@ -76,9 +76,30 @@ export function initialsOf(name: string): string {
   return ((p[0]?.[0] ?? "") + (p[1]?.[0] ?? "")).toUpperCase();
 }
 
-/** % of deliverables marked Done. */
-export function completionPct(deliverables: { status: string }[]): number {
+type DeliverableProgressLike = {
+  status: string;
+  targetCount?: number | null;
+  doneCount?: number | null;
+};
+
+/**
+ * How "complete" one deliverable is, as a 0–1 fraction.
+ * If it has a quantitative count set (e.g. 8 of 22 posts), that count drives
+ * the fraction. Otherwise it falls back to its status (Done = 1, else 0).
+ */
+export function deliverableFraction(d: DeliverableProgressLike): number {
+  if (d.targetCount != null && d.targetCount > 0) {
+    return Math.min(1, (d.doneCount ?? 0) / d.targetCount);
+  }
+  return d.status === "Done" ? 1 : 0;
+}
+
+/**
+ * Overall completion % across deliverables. Each deliverable contributes its
+ * own fraction (quantitative count if set, else Done/not-Done), averaged.
+ */
+export function completionPct(deliverables: DeliverableProgressLike[]): number {
   if (!deliverables.length) return 0;
-  const done = deliverables.filter((d) => d.status === "Done").length;
-  return Math.round((done / deliverables.length) * 100);
+  const total = deliverables.reduce((sum, d) => sum + deliverableFraction(d), 0);
+  return Math.round((total / deliverables.length) * 100);
 }

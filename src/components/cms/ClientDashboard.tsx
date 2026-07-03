@@ -172,7 +172,9 @@ export default function ClientDashboard({
           </div>
           {canEditDeliverables && (
             <div className="mt-2 text-[11.5px] text-[#9aa3a0]">
-              Click a status tag to advance it · click any field to edit.
+              Click a status tag to advance it · click any field to edit. Set a
+              count (e.g. 8 of 22 posts) and it drives this deliverable&apos;s
+              share of the overall % above — not just its status.
             </div>
           )}
         </div>

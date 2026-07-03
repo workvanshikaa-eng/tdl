@@ -1,4 +1,5 @@
 /** Helpers for daily-activity tracking. Month boundaries use IST (Asia/Kolkata). */
+import { deliverableFraction } from "./constants";
 
 const TZ = "Asia/Kolkata";
 
@@ -53,7 +54,11 @@ export function activityPct(
   return Math.min(100, Math.round((monthDone / expected) * 100));
 }
 
-type DeliverableLike = { status: string };
+type DeliverableLike = {
+  status: string;
+  targetCount?: number | null;
+  doneCount?: number | null;
+};
 type ActivityLike = {
   dailyTarget: number;
   logs: { date: string; count: number }[];
@@ -80,9 +85,9 @@ export function headlinePct(
     return { pct, label: "daily targets met this month", mode: "daily" };
   }
   if (deliverables.length) {
-    const done = deliverables.filter((d) => d.status === "Done").length;
+    const total = deliverables.reduce((s, d) => s + deliverableFraction(d), 0);
     return {
-      pct: Math.round((done / deliverables.length) * 100),
+      pct: Math.round((total / deliverables.length) * 100),
       label: "deliverables done",
       mode: "deliverables",
     };
