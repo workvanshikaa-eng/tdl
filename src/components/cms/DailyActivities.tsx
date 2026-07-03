@@ -8,6 +8,19 @@ import {
   setDailyLog,
 } from "@/app/cms/actions/daily";
 
+const ACTIVITY_SUGGESTIONS = [
+  "Articles written",
+  "Repurposes done",
+  "Quora answers posted",
+  "LinkedIn posts",
+  "Comments",
+  "Connection requests",
+  "Outreach messages",
+  "Blog posts",
+  "Reels made",
+  "Emails sent",
+];
+
 export type DailyActivityDTO = {
   id: string;
   name: string;
@@ -219,8 +232,10 @@ export default function DailyActivities({
 
       {canEdit && (
         <div className="mt-2 text-[11.5px] text-[#9aa3a0]">
-          Add the recurring daily quotas for this client (e.g. 20 comments/day).
-          Green = quota met that day. % = total done vs. target so far this month.
+          Add a separate row for each activity (e.g. Articles written · 2/day,
+          Repurposes done · 3/day, Quora answers · 1/day) — each gets its own
+          quota and daily counts. Green = quota met that day; % = done vs. target
+          so far this month.
         </div>
       )}
     </div>
@@ -253,9 +268,15 @@ function AddActivity({
       <input
         value={name}
         onChange={(e) => setName(e.target.value)}
-        placeholder="Activity (e.g. Comments)"
+        list="daily-activity-names"
+        placeholder="e.g. Articles written"
         className="min-w-[160px] flex-1 rounded-[8px] border border-[#e0e5e3] px-[11px] py-[9px] font-[inherit] text-[12.5px] outline-none focus:border-[#064e3b]"
       />
+      <datalist id="daily-activity-names">
+        {ACTIVITY_SUGGESTIONS.map((s) => (
+          <option key={s} value={s} />
+        ))}
+      </datalist>
       <input
         type="number"
         min={1}
