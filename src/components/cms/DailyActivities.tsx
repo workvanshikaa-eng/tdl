@@ -172,7 +172,8 @@ export default function DailyActivities({
                       />
                     </div>
                     <span className="text-[11px] text-[#71807a]">
-                      {a.monthDone}/{a.dailyTarget * daily.daysElapsed} ·{" "}
+                      {a.monthDone} done ·{" "}
+                      {a.dailyTarget * daily.daysElapsed} expected by today ·{" "}
                       <span className="font-semibold text-[#064e3b]">{a.pct}%</span>
                     </span>
                   </div>
@@ -234,8 +235,9 @@ export default function DailyActivities({
         <div className="mt-2 text-[11.5px] text-[#9aa3a0]">
           Add a separate row for each activity (e.g. Articles written · 2/day,
           Repurposes done · 3/day, Quora answers · 1/day) — each gets its own
-          quota and daily counts. Green = quota met that day; % = done vs. target
-          so far this month.
+          quota and daily counts. Green = that day&apos;s quota was met. The %
+          compares total done so far to what&apos;s expected by today (target ×
+          days elapsed) — not the target itself.
         </div>
       )}
     </div>
