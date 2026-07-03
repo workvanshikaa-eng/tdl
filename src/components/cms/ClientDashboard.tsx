@@ -13,12 +13,16 @@ import {
 import { addNote, deleteNote } from "@/app/cms/actions/notes";
 import { addClient } from "@/app/cms/actions/clients";
 import DailyActivities, { type DailyDTO } from "./DailyActivities";
+import DeliverableProgress from "./DeliverableProgress";
 
 export type DeliverableDTO = {
   id: string;
   name: string;
   due: string;
   status: string;
+  unit: string | null;
+  targetCount: number | null;
+  doneCount: number | null;
 };
 export type NoteDTO = {
   id: string;
@@ -136,6 +140,10 @@ export default function ClientDashboard({
                         run(() => editDeliverable(d.id, "due", e.target.value));
                     }}
                     className="w-full rounded-[6px] border border-transparent bg-transparent px-1.5 py-px font-[inherit] text-[11.5px] text-[#9aa3a0] outline-none enabled:hover:border-[#e0e5e3] focus:border-[#064e3b] focus:bg-white"
+                  />
+                  <DeliverableProgress
+                    deliverable={d}
+                    editable={canEditDeliverables}
                   />
                 </div>
                 <StatusPill

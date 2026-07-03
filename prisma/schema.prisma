@@ -177,6 +177,12 @@ model Deliverable {
   due    String @default("Due —")
   status String @default("Not Started") // Not Started | In Progress | Done | Delayed
 
+  // Optional quantitative target, e.g. 22 Medium posts / 12 SEO articles.
+  // When targetCount is set, progress % = doneCount / targetCount.
+  unit        String? // label for the count, e.g. "posts", "articles"
+  targetCount Int?
+  doneCount   Int?
+
   createdAt DateTime @default(now())
 
   @@index([clientId])

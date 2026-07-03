@@ -53,6 +53,9 @@ export async function loadClientDTO(clientId: string): Promise<ClientDTO | null>
       name: d.name,
       due: d.due,
       status: d.status,
+      unit: d.unit,
+      targetCount: d.targetCount,
+      doneCount: d.doneCount,
     })),
     notes: c.notes.map((n) => ({
       id: n.id,

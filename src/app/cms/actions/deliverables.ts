@@ -38,6 +38,36 @@ export async function editDeliverable(
   revalidatePath("/cms", "layout");
 }
 
+/** Update a deliverable's optional quantitative progress (target / done / unit). */
+export async function updateDeliverableProgress(
+  id: string,
+  patch: { unit?: string | null; targetCount?: number | null; doneCount?: number | null },
+) {
+  const d = await prisma.deliverable.findUnique({ where: { id } });
+  if (!d) return;
+  await guard(d.clientId);
+
+  const data: {
+    unit?: string | null;
+    targetCount?: number | null;
+    doneCount?: number | null;
+  } = {};
+  if ("unit" in patch) data.unit = patch.unit?.trim() ? patch.unit.trim() : null;
+  if ("targetCount" in patch)
+    data.targetCount =
+      patch.targetCount == null || Number.isNaN(patch.targetCount)
+        ? null
+        : Math.max(0, Math.floor(patch.targetCount));
+  if ("doneCount" in patch)
+    data.doneCount =
+      patch.doneCount == null || Number.isNaN(patch.doneCount)
+        ? null
+        : Math.max(0, Math.floor(patch.doneCount));
+
+  await prisma.deliverable.update({ where: { id }, data });
+  revalidatePath("/cms", "layout");
+}
+
 export async function deleteDeliverable(id: string) {
   const d = await prisma.deliverable.findUnique({ where: { id } });
   if (!d) return;
