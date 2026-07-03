@@ -34,7 +34,10 @@ export default async function ClientDetailPage({
       client={client}
       canEditDeliverables={canEditDeliverables(user)}
       canAddNote={true}
+      canDeleteNotes={true}
       canEditDaily={true}
+      notesTitle="Notes & client feedback"
+      notePlaceholder="Add a note or reply to the client…"
       picker={pickerClients}
     />
   );

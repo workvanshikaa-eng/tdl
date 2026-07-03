@@ -28,8 +28,11 @@ export default async function ClientPortalPage() {
     <ClientDashboard
       client={client}
       canEditDeliverables={false}
-      canAddNote={false}
+      canAddNote={true}
+      canDeleteNotes={false}
       canEditDaily={false}
+      notesTitle="Updates & feedback"
+      notePlaceholder="Share an update or feedback with your team…"
     />
   );
 }

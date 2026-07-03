@@ -10,18 +10,15 @@ export async function addNote(clientId: string, text: string) {
   const user = await requireUser();
   await assertClientAccess(user, clientId);
 
-  // The client portal posts as "You"; staff post under their own name.
-  const author =
-    user.role === "client"
-      ? { name: "You", initials: "YOU", userId: user.id }
-      : { name: user.name, initials: user.initials, userId: user.id };
-
+  // Attribute the post to its author. Clients post feedback under their own
+  // (company) name so staff can see who wrote it; add a marker for the label.
   await prisma.note.create({
     data: {
       clientId,
-      authorUserId: author.userId,
-      authorName: author.name,
-      authorInitials: author.initials,
+      authorUserId: user.id,
+      authorName:
+        user.role === "client" ? `${user.name} (client)` : user.name,
+      authorInitials: user.initials,
       text: trimmed,
       timeLabel: "Just now",
     },

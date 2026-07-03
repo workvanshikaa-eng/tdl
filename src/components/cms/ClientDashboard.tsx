@@ -44,23 +44,25 @@ export default function ClientDashboard({
   client,
   canEditDeliverables,
   canAddNote,
+  canDeleteNotes,
   canEditDaily,
+  notesTitle,
+  notePlaceholder,
   picker,
 }: {
   client: ClientDTO;
   canEditDeliverables: boolean;
   canAddNote: boolean;
+  canDeleteNotes: boolean;
   canEditDaily: boolean;
+  notesTitle: string;
+  notePlaceholder: string;
   /** Admin client switcher; omit for intern/client views. */
   picker?: { id: string; name: string }[];
 }) {
   const [pending, start] = useTransition();
   const router = useRouter();
   const run = (fn: () => Promise<unknown>) => start(() => void fn());
-
-  const notesTitle = canAddNote
-    ? "Internal Notes & Updates"
-    : "Updates from your team";
 
   return (
     <div>
@@ -186,7 +188,7 @@ export default function ClientDashboard({
                         <span className="font-semibold">{n.author}</span>{" "}
                         <span className="text-[#9aa3a0]">· {n.time}</span>
                       </span>
-                      {canAddNote && (
+                      {canDeleteNotes && (
                         <button
                           type="button"
                           onClick={() => run(() => deleteNote(n.id))}
@@ -204,7 +206,12 @@ export default function ClientDashboard({
               ))}
             </div>
             {canAddNote && (
-              <AddNote clientId={client.id} disabled={pending} run={run} />
+              <AddNote
+                clientId={client.id}
+                placeholder={notePlaceholder}
+                disabled={pending}
+                run={run}
+              />
             )}
           </div>
         </div>
@@ -296,10 +303,12 @@ function AddDeliverable({
 
 function AddNote({
   clientId,
+  placeholder,
   disabled,
   run,
 }: {
   clientId: string;
+  placeholder: string;
   disabled: boolean;
   run: (fn: () => Promise<unknown>) => void;
 }) {
@@ -315,7 +324,7 @@ function AddNote({
         value={value}
         onChange={(e) => setValue(e.target.value)}
         onKeyDown={(e) => e.key === "Enter" && submit()}
-        placeholder="Add an internal note…"
+        placeholder={placeholder}
         className="flex-1 rounded-[8px] border border-[#e0e5e3] px-[11px] py-[9px] font-[inherit] text-[12.5px] outline-none focus:border-[#064e3b]"
       />
       <button
