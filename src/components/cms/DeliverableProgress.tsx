@@ -25,9 +25,13 @@ export function deliverablePct(t: {
 export default function DeliverableProgress({
   deliverable,
   editable,
+  alwaysExpanded = false,
 }: {
   deliverable: DeliverableProgressData;
   editable: boolean;
+  /** Skip the internal toggle and always show the count editor — use when
+   *  an outer container (e.g. an expandable row) already controls visibility. */
+  alwaysExpanded?: boolean;
 }) {
   const [open, setOpen] = useState(false);
   const [pending, start] = useTransition();
@@ -49,7 +53,7 @@ export default function DeliverableProgress({
 
   return (
     <div className="mt-1">
-      {editable ? (
+      {editable && !alwaysExpanded && (
         <button
           type="button"
           onClick={() => setOpen((v) => !v)}
@@ -68,14 +72,19 @@ export default function DeliverableProgress({
             <span>Add a count</span>
           )}
         </button>
-      ) : (
-        hasTarget && (
-          <div className="text-[11px] font-medium text-[#71807a]">
-            {deliverable.doneCount ?? 0}/{deliverable.targetCount}{" "}
-            {deliverable.unit || "done"} ·{" "}
-            <span className="font-semibold text-[#064e3b]">{pct}%</span>
-          </div>
-        )
+      )}
+      {(!editable || alwaysExpanded) && (
+        <div className="text-[11px] font-medium text-[#71807a]">
+          {hasTarget ? (
+            <>
+              {deliverable.doneCount ?? 0}/{deliverable.targetCount}{" "}
+              {deliverable.unit || "done"} ·{" "}
+              <span className="font-semibold text-[#064e3b]">{pct}%</span>
+            </>
+          ) : (
+            alwaysExpanded && <span>No count set — add one below</span>
+          )}
+        </div>
       )}
 
       {hasTarget && (
@@ -87,7 +96,7 @@ export default function DeliverableProgress({
         </div>
       )}
 
-      {editable && open && (
+      {editable && (alwaysExpanded || open) && (
         <div className="mt-2 flex flex-wrap items-center gap-2 rounded-[9px] border border-[#eef2f0] bg-[#f8faf9] px-3 py-2.5">
           <label className="text-[11px] font-medium text-[#71807a]">Done</label>
           <input

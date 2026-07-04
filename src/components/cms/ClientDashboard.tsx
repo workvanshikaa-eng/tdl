@@ -13,7 +13,7 @@ import {
 import { addNote, deleteNote } from "@/app/cms/actions/notes";
 import { addClient } from "@/app/cms/actions/clients";
 import DailyActivities, { type DailyDTO } from "./DailyActivities";
-import DeliverableProgress from "./DeliverableProgress";
+import DeliverableProgress, { deliverablePct } from "./DeliverableProgress";
 
 export type DeliverableDTO = {
   id: string;
@@ -114,57 +114,13 @@ export default function ClientDashboard({
           </div>
           <div className="overflow-hidden rounded-[13px] border border-[#e6eae8] bg-white">
             {client.deliverables.map((d) => (
-              <div
+              <DeliverableRow
                 key={d.id}
-                className="row flex items-center justify-between gap-3 border-b border-[#eef2f0] px-[18px] py-[11px] last:border-b-0"
-              >
-                <div className="min-w-0 flex-1">
-                  <input
-                    defaultValue={d.name}
-                    key={`name-${d.id}-${d.name}`}
-                    disabled={!canEditDeliverables}
-                    onBlur={(e) => {
-                      if (e.target.value !== d.name)
-                        run(() =>
-                          editDeliverable(d.id, "name", e.target.value),
-                        );
-                    }}
-                    className="w-full rounded-[6px] border border-transparent bg-transparent px-1.5 py-1 font-[inherit] text-[13.5px] font-medium text-[#0f1f1a] outline-none enabled:hover:border-[#e0e5e3] focus:border-[#064e3b] focus:bg-white"
-                  />
-                  <input
-                    defaultValue={d.due}
-                    key={`due-${d.id}-${d.due}`}
-                    disabled={!canEditDeliverables}
-                    onBlur={(e) => {
-                      if (e.target.value !== d.due)
-                        run(() => editDeliverable(d.id, "due", e.target.value));
-                    }}
-                    className="w-full rounded-[6px] border border-transparent bg-transparent px-1.5 py-px font-[inherit] text-[11.5px] text-[#9aa3a0] outline-none enabled:hover:border-[#e0e5e3] focus:border-[#064e3b] focus:bg-white"
-                  />
-                  <DeliverableProgress
-                    deliverable={d}
-                    editable={canEditDeliverables}
-                  />
-                </div>
-                <StatusPill
-                  status={d.status}
-                  pending={pending}
-                  onClick={
-                    canEditDeliverables
-                      ? () => run(() => cycleDeliverable(d.id))
-                      : undefined
-                  }
-                />
-                {canEditDeliverables && (
-                  <button
-                    type="button"
-                    onClick={() => run(() => deleteDeliverable(d.id))}
-                    className="delx w-[18px] cursor-pointer border-none bg-transparent text-center text-[17px] text-[#c64242]"
-                  >
-                    ×
-                  </button>
-                )}
-              </div>
+                d={d}
+                canEditDeliverables={canEditDeliverables}
+                pending={pending}
+                run={run}
+              />
             ))}
             {canEditDeliverables && (
               <AddDeliverable clientId={client.id} disabled={pending} run={run} />
@@ -172,9 +128,8 @@ export default function ClientDashboard({
           </div>
           {canEditDeliverables && (
             <div className="mt-2 text-[11.5px] text-[#9aa3a0]">
-              Click a status tag to advance it · click any field to edit. Set a
-              count (e.g. 8 of 22 posts) and it drives this deliverable&apos;s
-              share of the overall % above — not just its status.
+              Tap a deliverable to edit it, set a count (e.g. 8 of 22 posts), or
+              advance its status — the count drives the overall % above.
             </div>
           )}
         </div>
@@ -271,6 +226,104 @@ function ClientPicker({
           </Link>
         );
       })}
+    </div>
+  );
+}
+
+function DeliverableRow({
+  d,
+  canEditDeliverables,
+  pending,
+  run,
+}: {
+  d: DeliverableDTO;
+  canEditDeliverables: boolean;
+  pending: boolean;
+  run: (fn: () => Promise<unknown>) => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const pct = deliverablePct(d);
+  const hasTarget = d.targetCount != null && d.targetCount > 0;
+
+  return (
+    <div className="row border-b border-[#eef2f0] last:border-b-0">
+      <div
+        onClick={() => setOpen((v) => !v)}
+        className="flex cursor-pointer items-center gap-3 px-[18px] py-3"
+      >
+        <span
+          className="flex-shrink-0 text-[11px] text-[#9aa3a0]"
+          style={{
+            display: "inline-block",
+            transition: "transform .15s",
+            transform: open ? "rotate(90deg)" : "none",
+          }}
+        >
+          ▸
+        </span>
+        <span className="min-w-0 flex-1 truncate text-[13.5px] font-medium text-[#0f1f1a]">
+          {d.name}
+        </span>
+        {hasTarget && (
+          <span className="flex-shrink-0 text-[11.5px] font-semibold text-[#064e3b]">
+            {pct}%
+          </span>
+        )}
+        <div onClick={(e) => e.stopPropagation()}>
+          <StatusPill
+            status={d.status}
+            pending={pending}
+            onClick={
+              canEditDeliverables
+                ? () => run(() => cycleDeliverable(d.id))
+                : undefined
+            }
+          />
+        </div>
+      </div>
+
+      {open && (
+        <div className="px-[18px] pb-3.5">
+          <div className="flex items-start gap-2">
+            <div className="min-w-0 flex-1">
+              <input
+                defaultValue={d.name}
+                key={`name-${d.id}-${d.name}`}
+                disabled={!canEditDeliverables}
+                onBlur={(e) => {
+                  if (e.target.value !== d.name)
+                    run(() => editDeliverable(d.id, "name", e.target.value));
+                }}
+                className="w-full rounded-[6px] border border-transparent bg-transparent px-1.5 py-1 font-[inherit] text-[13.5px] font-medium text-[#0f1f1a] outline-none enabled:hover:border-[#e0e5e3] focus:border-[#064e3b] focus:bg-white"
+              />
+              <input
+                defaultValue={d.due}
+                key={`due-${d.id}-${d.due}`}
+                disabled={!canEditDeliverables}
+                onBlur={(e) => {
+                  if (e.target.value !== d.due)
+                    run(() => editDeliverable(d.id, "due", e.target.value));
+                }}
+                className="w-full rounded-[6px] border border-transparent bg-transparent px-1.5 py-px font-[inherit] text-[11.5px] text-[#9aa3a0] outline-none enabled:hover:border-[#e0e5e3] focus:border-[#064e3b] focus:bg-white"
+              />
+              <DeliverableProgress
+                deliverable={d}
+                editable={canEditDeliverables}
+                alwaysExpanded
+              />
+            </div>
+            {canEditDeliverables && (
+              <button
+                type="button"
+                onClick={() => run(() => deleteDeliverable(d.id))}
+                className="w-[18px] flex-shrink-0 cursor-pointer border-none bg-transparent text-center text-[17px] text-[#c64242]"
+              >
+                ×
+              </button>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
