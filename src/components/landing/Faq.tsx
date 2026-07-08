@@ -6,7 +6,7 @@ import SectionLabel from "./SectionLabel";
 const faqs = [
   {
     q: "Do I really work directly with you?",
-    a: "Always. Every audit, strategy call, and decision runs through me — no account managers, no junior team learning on your budget. The Lab is small on purpose.",
+    a: "Always. Every audit, strategy call, and decision runs through me. No account managers, no junior team learning on your budget. The Lab is small on purpose.",
   },
   {
     q: "How fast do I see results?",
@@ -14,11 +14,11 @@ const faqs = [
   },
   {
     q: "Do I need to create the content myself?",
-    a: "No. I ghostwrite in your voice and run it end to end. A short weekly sync keeps it sounding like you — everything else is handled.",
+    a: "No. I ghostwrite in your voice and run it end to end. A short weekly sync keeps it sounding like you. Everything else is handled.",
   },
   {
     q: "Is this a retainer or project-based?",
-    a: "Monthly retainer — distribution compounds, so it works best as an ongoing engine. We start with a 30-minute call to see if it's a fit before anything else.",
+    a: "Monthly retainer. Distribution compounds, so it works best as an ongoing engine. We start with a 30-minute call to see if it is a fit before anything else.",
   },
 ];
 
@@ -98,19 +98,19 @@ export default function Faq() {
     <section
       id="faq"
       className="bg-transparent"
-      style={{ padding: "clamp(58px,7vw,92px) 28px" }}
+      style={{ padding: "clamp(88px,11vw,140px) 24px" }}
     >
       <div className="mx-auto max-w-[880px]">
         <SectionLabel>FAQ</SectionLabel>
         <h2
           data-reveal
           data-reveal-delay="80"
-          className="font-extrabold"
+          className="font-bold"
           style={{
-            letterSpacing: "-0.03em",
-            lineHeight: 1.04,
-            fontSize: "clamp(25px,3vw,36px)",
-            margin: "20px 0 32px",
+            letterSpacing: "-0.035em",
+            lineHeight: 1.05,
+            fontSize: "clamp(30px,4vw,52px)",
+            margin: "20px 0 40px",
             maxWidth: "16ch",
             textWrap: "balance",
           }}

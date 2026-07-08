@@ -47,7 +47,7 @@ const steps = [
   {
     n: "03",
     title: "Execution",
-    body: "We build and run it. Content, outreach, ads, SEO — shipped weekly, optimized monthly.",
+    body: "We build and run it. Content, outreach, ads, and SEO, shipped weekly and optimized monthly.",
     delay: 220,
     icon: (
       <svg
@@ -72,18 +72,18 @@ export default function HowItWorks() {
     <section
       id="how"
       className="bg-transparent"
-      style={{ padding: "clamp(58px,7vw,92px) 28px" }}
+      style={{ padding: "clamp(88px,11vw,140px) 24px" }}
     >
-      <div className="mx-auto max-w-[1180px]">
+      <div className="mx-auto max-w-[1120px]">
         <SectionLabel>How it works</SectionLabel>
         <h2
           data-reveal
           data-reveal-delay="80"
-          className="font-extrabold"
+          className="font-bold"
           style={{
-            letterSpacing: "-0.03em",
-            lineHeight: 1.04,
-            fontSize: "clamp(25px,3vw,36px)",
+            letterSpacing: "-0.035em",
+            lineHeight: 1.05,
+            fontSize: "clamp(30px,4vw,52px)",
             margin: "22px 0 0",
             maxWidth: "16ch",
             textWrap: "balance",
@@ -93,7 +93,7 @@ export default function HowItWorks() {
         </h2>
 
         <div
-          className="mt-12 grid gap-[18px]"
+          className="mt-14 grid gap-6"
           style={{ gridTemplateColumns: "repeat(auto-fit,minmax(280px,1fr))" }}
         >
           {steps.map((s) => (
@@ -101,48 +101,37 @@ export default function HowItWorks() {
               key={s.n}
               data-reveal
               data-reveal-delay={s.delay}
-              className="rounded-[20px] border border-[#E8F2EE] bg-white p-[34px]"
+              className="rounded-[22px] border border-[#e4ece8] bg-white p-9"
+              style={{ boxShadow: "0 2px 10px rgba(6,78,59,0.04)" }}
             >
               <div className="flex items-center gap-3.5">
                 <span className="inline-flex h-12 w-12 flex-[0_0_auto] items-center justify-center rounded-[14px] bg-[#064e3b] text-white">
                   {s.icon}
                 </span>
-                <span className="font-mono text-[13px] text-[#9bb3a8]">
+                <span className="text-[13px] font-semibold text-[#b0c4bb]">
                   {s.n}
                 </span>
-                <span className="h-px flex-1 bg-[#E8F2EE]" />
+                <span className="h-px flex-1 bg-[#eef3f0]" />
               </div>
-              <h3 className="mt-4 text-[19px] font-extrabold tracking-[-0.02em] text-[#064e3b]">
+              <h3 className="mt-6 text-[22px] font-bold tracking-[-0.02em] text-[#064e3b]">
                 {s.title}
               </h3>
-              <p className="mt-2.5 text-[14px] leading-[1.5] text-[#566f66]">
+              <p className="mt-3 text-[15px] leading-[1.6] text-[#56685f]">
                 {s.body}
               </p>
             </div>
           ))}
         </div>
 
-        <div
+        <p
           data-reveal
           data-reveal-delay="120"
-          className="mt-[18px] flex flex-wrap items-center justify-between gap-[18px] rounded-[20px] bg-[#064e3b]"
-          style={{ padding: "clamp(28px,3.4vw,40px)" }}
+          className="mx-auto mt-12 text-center font-semibold text-[#064e3b]"
+          style={{ fontSize: "clamp(17px,2vw,22px)", maxWidth: "40ch", letterSpacing: "-0.01em" }}
         >
-          <p
-            className="m-0 max-w-[28ch] font-bold text-white"
-            style={{
-              fontSize: "clamp(17px,1.8vw,21px)",
-              lineHeight: 1.35,
-              letterSpacing: "-0.02em",
-              textWrap: "balance",
-            }}
-          >
-            Every engagement is run by me. No account managers. No hand-offs.
-          </p>
-          <span className="whitespace-nowrap font-mono text-[12px] text-[#6ee7b7]">
-            — founder-led, always
-          </span>
-        </div>
+          Every engagement is run by me. No account managers, no hand-offs.
+          Founder-led, always.
+        </p>
       </div>
     </section>
   );

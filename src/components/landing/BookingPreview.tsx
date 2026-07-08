@@ -36,11 +36,11 @@ export default function BookingPreview() {
       href={siteConfig.calendlyUrl}
       target="_blank"
       rel="noopener"
-      className="relative block rounded-[22px] bg-white no-underline transition-transform duration-[250ms] hover:-translate-y-[3px]"
+      className="relative block rounded-[22px] border border-[#e4ece8] bg-white no-underline transition-transform duration-[250ms] hover:-translate-y-[3px]"
       style={{
         color: "inherit",
         padding: "clamp(20px,2.4vw,26px)",
-        boxShadow: "0 30px 70px rgba(0,0,0,0.34)",
+        boxShadow: "0 24px 60px rgba(6,78,59,0.12)",
       }}
     >
       <div className="flex items-center gap-3 border-b border-[#eef3f0] pb-[18px]">

@@ -19,16 +19,25 @@ export default function LandingScripts() {
     const cleanups: Array<() => void> = [];
 
     // ---- Nav scroll state ----
+    // At top the nav sits over the dark-green hero (white text, white pill
+    // button); once scrolled into the white sections it flips to a white bar
+    // with dark-green text and a green pill.
     const nav = document.querySelector<HTMLElement>("[data-nav]");
+    const cta = document.querySelector<HTMLElement>("[data-nav-cta]");
     const onScroll = () => {
       if (!nav) return;
       const s = window.scrollY > 40;
-      nav.style.background = s ? "rgba(250,248,244,0.85)" : "transparent";
+      nav.style.background = s ? "rgba(255,255,255,0.9)" : "transparent";
       nav.style.backdropFilter = s ? "saturate(180%) blur(12px)" : "none";
       (nav.style as CSSStyleDeclaration & {
         webkitBackdropFilter: string;
       }).webkitBackdropFilter = nav.style.backdropFilter;
-      nav.style.borderBottomColor = s ? "rgba(6,78,59,0.08)" : "transparent";
+      nav.style.borderBottomColor = s ? "rgba(6,78,59,0.10)" : "transparent";
+      nav.style.color = s ? "#064e3b" : "#ffffff";
+      if (cta) {
+        cta.style.background = s ? "#064e3b" : "#ffffff";
+        cta.style.color = s ? "#ffffff" : "#064e3b";
+      }
     };
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();

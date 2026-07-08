@@ -1,58 +1,41 @@
-import { siteConfig } from "@/config/site";
 import SectionLabel from "./SectionLabel";
-import {
-  Target,
-  Search,
-  Bolt,
-  User,
-  Layers,
-  Pen,
-  PlusCircle,
-} from "./icons";
 
-type Service = {
-  n: string;
-  title: string;
-  body: string;
-  Icon: React.ComponentType<{ width?: number; height?: number }>;
-  delay: number;
-};
-
-const services: Service[] = [
+const cards = [
+  {
+    n: "01",
+    outcome: "Get Pipeline",
+    services: "LinkedIn lead gen + outbound",
+    body: "Targeted outreach and a profile that works like a sales rep, filling your calendar with qualified conversations instead of vanity likes.",
+    icon: (
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="12" cy="12" r="9" />
+        <circle cx="12" cy="12" r="4.5" />
+      </svg>
+    ),
+  },
   {
     n: "02",
-    title: "SEO",
-    body: "Rank for the searches your buyers actually make. Content and technical work that compounds.",
-    Icon: Search,
-    delay: 60,
+    outcome: "Get Visible",
+    services: "LinkedIn personal branding + content",
+    body: "Daily content in your founder voice that builds trust at scale, so buyers already know and rate you before the first call.",
+    icon: (
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 20h9" />
+        <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z" />
+      </svg>
+    ),
   },
   {
     n: "03",
-    title: "Paid Ads",
-    body: "Tight, founder-led ad systems that buy attention without lighting your budget on fire.",
-    Icon: Bolt,
-    delay: 120,
-  },
-  {
-    n: "04",
-    title: "Personal Branding",
-    body: "Build the founder brand that makes buyers trust you before the first call.",
-    Icon: User,
-    delay: 180,
-  },
-  {
-    n: "05",
-    title: "LinkedIn Page Management",
-    body: "Your company page, run like a media channel — consistent, on-brand, always shipping.",
-    Icon: Layers,
-    delay: 60,
-  },
-  {
-    n: "06",
-    title: "Copywriting & Ghostwriting",
-    body: "Words that sound like you on your best day. Posts, pages, and emails that convert.",
-    Icon: Pen,
-    delay: 120,
+    outcome: "Get Found",
+    services: "SEO + AEO + Reddit + Twitter",
+    body: "Rank for the searches your buyers make and show up where they research, including the AI answers that now shape every buying decision.",
+    icon: (
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="11" cy="11" r="7" />
+        <path d="m21 21-4.3-4.3" />
+      </svg>
+    ),
   },
 ];
 
@@ -61,170 +44,67 @@ export default function Services() {
     <section
       id="services"
       className="bg-transparent"
-      style={{ padding: "clamp(20px,3vw,40px) 28px clamp(58px,7vw,92px)" }}
+      style={{ padding: "clamp(88px,11vw,140px) 24px" }}
     >
-      <div className="mx-auto max-w-[1180px]">
+      <div className="mx-auto max-w-[1120px]">
         <SectionLabel>What we do</SectionLabel>
-
-        <div
+        <h2
           data-reveal
           data-reveal-delay="80"
-          className="mt-[22px] flex flex-wrap items-end justify-between gap-5"
-        >
-          <h2
-            className="m-0 font-extrabold"
-            style={{
-              letterSpacing: "-0.03em",
-              lineHeight: 1.04,
-              fontSize: "clamp(25px,3vw,36px)",
-              maxWidth: "16ch",
-              textWrap: "balance",
-            }}
-          >
-            One distribution system. Not a freelancer menu.
-          </h2>
-          <p className="m-0 max-w-[32ch] text-[15px] leading-[1.5] text-[#566f66]">
-            Every channel plugs into one engine — built and run by one person.
-          </p>
-        </div>
-
-        {/* Flagship card */}
-        <a
-          data-reveal
-          data-reveal-delay="120"
-          href={siteConfig.calendlyUrl}
-          target="_blank"
-          rel="noopener"
-          className="relative mt-11 block overflow-hidden rounded-[24px] no-underline transition-[transform,box-shadow] duration-[250ms] hover:-translate-y-[3px]"
+          className="font-bold"
           style={{
-            color: "inherit",
-            background: "#064e3b",
-            padding: "clamp(32px,4vw,52px)",
-            boxShadow: "0 18px 40px rgba(6,78,59,0.14)",
+            letterSpacing: "-0.035em",
+            lineHeight: 1.05,
+            fontSize: "clamp(30px,4vw,52px)",
+            margin: "22px 0 0",
+            maxWidth: "18ch",
+            textWrap: "balance",
           }}
         >
-          <div
-            className="pointer-events-none absolute"
-            style={{
-              top: -120,
-              right: -90,
-              width: 380,
-              height: 380,
-              borderRadius: "50%",
-              background:
-                "radial-gradient(circle,rgba(16,185,129,0.28),transparent 65%)",
-              filter: "blur(10px)",
-            }}
-          />
-          <svg
-            width="240"
-            height="240"
-            viewBox="0 0 240 240"
-            className="pointer-events-none absolute"
-            style={{ top: -24, right: 36, opacity: 0.13 }}
-            fill="none"
-            stroke="#6ee7b7"
-            strokeWidth="1.5"
-          >
-            <circle cx="120" cy="120" r="110" />
-            <circle cx="120" cy="120" r="78" />
-            <circle cx="120" cy="120" r="46" />
-            <circle cx="120" cy="120" r="14" fill="#6ee7b7" stroke="none" />
-          </svg>
-          <div className="relative flex flex-wrap items-end justify-between gap-7">
-            <div className="max-w-[60ch]">
-              <div className="inline-flex items-center gap-2.5">
-                <span
-                  className="inline-flex items-center justify-center rounded-[9px] text-[#6ee7b7]"
-                  style={{
-                    width: 30,
-                    height: 30,
-                    background: "rgba(255,255,255,0.12)",
-                  }}
-                >
-                  <Target />
+          Three outcomes. One distribution engine.
+        </h2>
+        <p
+          className="mt-5 text-[17px] leading-[1.55] text-[#56685f]"
+          style={{ maxWidth: "50ch" }}
+        >
+          Not a menu of services to pick from. One system built around the result
+          you actually want.
+        </p>
+
+        <div
+          className="mt-14 grid gap-6"
+          style={{ gridTemplateColumns: "repeat(auto-fit,minmax(300px,1fr))" }}
+        >
+          {cards.map((c, i) => (
+            <div
+              key={c.n}
+              data-reveal
+              data-reveal-delay={i * 100}
+              className="flex flex-col rounded-[22px] border border-[#e4ece8] bg-white p-9 transition-[transform,border-color,box-shadow] duration-200 hover:-translate-y-1 hover:border-[#bfe0d3]"
+              style={{ boxShadow: "0 2px 10px rgba(6,78,59,0.04)" }}
+            >
+              <div className="flex items-center justify-between">
+                <span className="inline-flex h-12 w-12 items-center justify-center rounded-[14px] bg-[#064e3b] text-white">
+                  {c.icon}
                 </span>
-                <span className="font-mono text-[12.5px] font-medium uppercase tracking-[0.08em] text-[#6ee7b7]">
-                  The flagship service
+                <span className="text-[13px] font-semibold text-[#b0c4bb]">
+                  {c.n}
                 </span>
               </div>
               <h3
-                className="mt-3 font-extrabold text-white"
-                style={{
-                  letterSpacing: "-0.03em",
-                  fontSize: "clamp(23px,2.6vw,32px)",
-                  lineHeight: 1.06,
-                }}
+                className="mt-7 font-bold text-[#064e3b]"
+                style={{ fontSize: "clamp(24px,2.6vw,30px)", letterSpacing: "-0.02em" }}
               >
-                LinkedIn Lead Generation
+                {c.outcome}
               </h3>
-              <p
-                className="mt-3 max-w-[48ch] leading-[1.5]"
-                style={{
-                  fontSize: "clamp(15px,1.5vw,16px)",
-                  color: "rgba(255,255,255,0.78)",
-                }}
-              >
-                Your profile becomes a pipeline machine — daily content in your
-                voice, targeted outreach, inbound that books real calls. Not
-                vanity likes.
-              </p>
-            </div>
-            <span className="inline-flex items-center gap-[9px] whitespace-nowrap rounded-full bg-white px-[22px] py-[13px] text-[15px] font-bold text-[#064e3b]">
-              Start here <span style={{ lineHeight: 0, fontSize: 17 }}>→</span>
-            </span>
-          </div>
-        </a>
-
-        {/* Services grid */}
-        <div
-          className="mt-4 grid gap-4"
-          style={{
-            gridTemplateColumns: "repeat(auto-fit,minmax(270px,1fr))",
-          }}
-        >
-          {services.map((s) => (
-            <div
-              key={s.n}
-              data-reveal
-              data-reveal-delay={s.delay}
-              className="rounded-[18px] border border-[#d3e6dc] bg-white p-[30px] transition-[transform,border-color,box-shadow] duration-200 hover:-translate-y-[3px] hover:border-[#bfe0d3]"
-              style={{ boxShadow: "0 2px 6px rgba(6,78,59,0.04)" }}
-            >
-              <div className="flex items-center justify-between">
-                <span className="inline-flex h-[46px] w-[46px] items-center justify-center rounded-[13px] bg-[#064e3b] text-white">
-                  <s.Icon />
-                </span>
-                <span className="font-mono text-[13px] font-medium text-[#9bb3a8]">
-                  {s.n}
-                </span>
+              <div className="mt-1.5 text-[14px] font-semibold uppercase tracking-[0.06em] text-[#0a6b54]">
+                {c.services}
               </div>
-              <h3 className="mt-3.5 text-[17px] font-extrabold tracking-[-0.02em] text-[#064e3b]">
-                {s.title}
-              </h3>
-              <p className="mt-[9px] text-[14px] leading-[1.5] text-[#566f66]">
-                {s.body}
+              <p className="mt-4 text-[15px] leading-[1.6] text-[#56685f]">
+                {c.body}
               </p>
             </div>
           ))}
-
-          {/* "All of it" tile */}
-          <div
-            data-reveal
-            data-reveal-delay="180"
-            className="flex flex-col justify-center rounded-[18px] p-[30px]"
-            style={{ background: "#E8F2EE", border: "1px dashed #b6d6c8" }}
-          >
-            <span className="mb-4 inline-flex h-[46px] w-[46px] items-center justify-center rounded-[13px] bg-[#0a6b54] text-white">
-              <PlusCircle />
-            </span>
-            <h3 className="m-0 text-[17px] font-extrabold tracking-[-0.02em] text-[#064e3b]">
-              All of it. As one engine.
-            </h3>
-            <p className="mt-[9px] text-[14px] leading-[1.5] text-[#566f66]">
-              No menu. We build the whole stack around your goal.
-            </p>
-          </div>
         </div>
       </div>
     </section>

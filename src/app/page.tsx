@@ -1,13 +1,10 @@
 import Nav from "@/components/landing/Nav";
 import Hero from "@/components/landing/Hero";
-import StackMarquee from "@/components/landing/StackMarquee";
-import Problem from "@/components/landing/Problem";
+import StatsBar from "@/components/landing/StatsBar";
+import PullQuote from "@/components/landing/PullQuote";
 import Services from "@/components/landing/Services";
-import Audience from "@/components/landing/Audience";
+import CaseStudy from "@/components/landing/CaseStudy";
 import HowItWorks from "@/components/landing/HowItWorks";
-import About from "@/components/landing/About";
-import Proof from "@/components/landing/Proof";
-import Testimonials from "@/components/landing/Testimonials";
 import Faq from "@/components/landing/Faq";
 import CtaFooter from "@/components/landing/CtaFooter";
 import LandingScripts from "@/components/landing/LandingScripts";
@@ -18,7 +15,7 @@ export default function LandingPage() {
     <div
       className="tdl-grid-bg"
       style={{
-        fontFamily: "var(--font-manrope), sans-serif",
+        fontFamily: "var(--font-inter), system-ui, sans-serif",
         color: "#0f2e25",
         overflowX: "hidden",
       }}
@@ -30,14 +27,11 @@ export default function LandingPage() {
 
       <Nav />
       <Hero />
-      <StackMarquee />
-      <Problem />
+      <StatsBar />
+      <PullQuote />
       <Services />
-      <Audience />
+      <CaseStudy />
       <HowItWorks />
-      <About />
-      <Proof />
-      <Testimonials />
       <Faq />
       <CtaFooter />
 

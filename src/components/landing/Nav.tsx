@@ -1,11 +1,9 @@
 import { siteConfig } from "@/config/site";
-import TdlLogo from "@/components/TdlLogo";
 
 const links = [
   { href: "#services", label: "Services" },
+  { href: "#results", label: "Results" },
   { href: "#how", label: "How it works" },
-  { href: "#about", label: "About" },
-  { href: "#proof", label: "Proof" },
 ];
 
 export default function Nav() {
@@ -18,30 +16,27 @@ export default function Nav() {
         left: 0,
         right: 0,
         zIndex: 100,
-        color: "#064e3b",
+        color: "#ffffff",
         background: "transparent",
         borderBottom: "1px solid transparent",
         transition: "background .3s ease, color .3s ease, border-color .3s ease",
       }}
     >
-      <div className="mx-auto flex h-[72px] max-w-[1180px] items-center justify-between gap-6 px-7">
+      <div className="mx-auto flex h-[74px] max-w-[1120px] items-center justify-between gap-6 px-6">
         <a
           href="#top"
-          className="flex items-center gap-2.5 no-underline"
+          className="text-[17px] font-bold tracking-[-0.02em] no-underline"
           style={{ color: "inherit" }}
         >
-          <TdlLogo size={28} />
-          <span className="text-[16px] font-extrabold tracking-[-0.02em]">
-            {siteConfig.name}
-          </span>
+          {siteConfig.name}
         </a>
 
-        <div className="hidden items-center gap-[30px] min-[761px]:flex">
+        <div className="hidden items-center gap-9 min-[761px]:flex">
           {links.map((l) => (
             <a
               key={l.href}
               href={l.href}
-              className="text-[15px] font-semibold no-underline opacity-85 transition-opacity hover:opacity-100"
+              className="text-[15px] font-medium no-underline opacity-80 transition-opacity hover:opacity-100"
               style={{ color: "inherit" }}
             >
               {l.label}
@@ -54,7 +49,8 @@ export default function Nav() {
           href={siteConfig.calendlyUrl}
           target="_blank"
           rel="noopener"
-          className="whitespace-nowrap rounded-full border border-[#064e3b] bg-[#064e3b] px-[18px] py-2.5 text-[14px] font-bold text-white no-underline transition-colors"
+          className="whitespace-nowrap rounded-full px-[19px] py-2.5 text-[14px] font-semibold no-underline transition-colors"
+          style={{ background: "#ffffff", color: "#064e3b" }}
         >
           Book a call
         </a>
