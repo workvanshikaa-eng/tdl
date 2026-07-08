@@ -3,30 +3,29 @@ import { siteConfig } from "@/config/site";
 const links = [
   { href: "#services", label: "Services" },
   { href: "#results", label: "Results" },
-  { href: "#how", label: "How it works" },
+  { href: "#about", label: "About" },
 ];
 
 export default function Nav() {
   return (
     <nav
-      data-nav
       style={{
         position: "fixed",
         top: 0,
         left: 0,
         right: 0,
         zIndex: 100,
-        color: "#ffffff",
-        background: "transparent",
-        borderBottom: "1px solid transparent",
-        transition: "background .3s ease, color .3s ease, border-color .3s ease",
+        background: "rgba(255,255,255,0.8)",
+        backdropFilter: "saturate(180%) blur(12px)",
+        WebkitBackdropFilter: "saturate(180%) blur(12px)",
+        borderBottom: "1px solid #eef0ee",
       }}
     >
-      <div className="mx-auto flex h-[74px] max-w-[1120px] items-center justify-between gap-6 px-6">
+      <div className="mx-auto flex h-[68px] max-w-[1080px] items-center justify-between gap-6 px-6">
         <a
           href="#top"
-          className="text-[17px] font-bold tracking-[-0.02em] no-underline"
-          style={{ color: "inherit" }}
+          className="text-[16px] font-semibold tracking-[-0.01em] no-underline"
+          style={{ color: "#0d0d0d" }}
         >
           {siteConfig.name}
         </a>
@@ -36,8 +35,8 @@ export default function Nav() {
             <a
               key={l.href}
               href={l.href}
-              className="text-[15px] font-medium no-underline opacity-80 transition-opacity hover:opacity-100"
-              style={{ color: "inherit" }}
+              className="text-[14px] font-medium no-underline transition-colors"
+              style={{ color: "#6b7280" }}
             >
               {l.label}
             </a>
@@ -45,12 +44,11 @@ export default function Nav() {
         </div>
 
         <a
-          data-nav-cta
           href={siteConfig.calendlyUrl}
           target="_blank"
           rel="noopener"
-          className="whitespace-nowrap rounded-full px-[19px] py-2.5 text-[14px] font-semibold no-underline transition-colors"
-          style={{ background: "#ffffff", color: "#064e3b" }}
+          className="whitespace-nowrap rounded-full px-[18px] py-2.5 text-[14px] font-medium text-white no-underline"
+          style={{ background: "#064e3b" }}
         >
           Book a call
         </a>

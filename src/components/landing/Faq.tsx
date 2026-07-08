@@ -38,51 +38,50 @@ function FaqItem({
   return (
     <div
       style={{
-        borderTop: "1px solid #d3e6dc",
-        ...(last ? { borderBottom: "1px solid #d3e6dc" } : {}),
+        borderTop: "1px solid #eceeed",
+        ...(last ? { borderBottom: "1px solid #eceeed" } : {}),
       }}
     >
       <button
         type="button"
         onClick={onToggle}
         aria-expanded={open}
-        className="flex w-full cursor-pointer items-center justify-between gap-4 border-none bg-none py-[22px] text-left font-[inherit]"
+        className="flex w-full cursor-pointer items-center justify-between gap-4 border-none py-6 text-left font-[inherit]"
         style={{ background: "none", border: "none" }}
       >
-        <span
-          className="font-bold text-[#064e3b]"
-          style={{ fontSize: "clamp(16px,1.8vw,19px)", letterSpacing: "-0.01em" }}
-        >
+        <span style={{ fontSize: "17px", fontWeight: 500, color: "#0d0d0d" }}>
           {q}
         </span>
         <span
-          className="inline-flex h-[30px] w-[30px] flex-[0_0_auto] items-center justify-center rounded-[9px] bg-[#064e3b] text-white transition-transform duration-300"
-          style={{ transform: open ? "rotate(45deg)" : "none" }}
+          style={{
+            flex: "0 0 auto",
+            color: "#6b7280",
+            fontSize: "20px",
+            lineHeight: 1,
+            transform: open ? "rotate(45deg)" : "none",
+            transition: "transform .25s ease",
+          }}
         >
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2.4"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <path d="M12 5v14M5 12h14" />
-          </svg>
+          +
         </span>
       </button>
       <div
-        className="overflow-hidden transition-[grid-template-rows] duration-[320ms]"
         style={{
           display: "grid",
           gridTemplateRows: open ? "1fr" : "0fr",
-          transitionTimingFunction: "cubic-bezier(.16,.84,.44,1)",
+          transition: "grid-template-rows .3s ease",
         }}
       >
-        <div className="min-h-0 overflow-hidden">
-          <p className="m-0 mb-[22px] max-w-[62ch] text-[15px] leading-[1.6] text-[#566f66]">
+        <div style={{ minHeight: 0, overflow: "hidden" }}>
+          <p
+            style={{
+              fontSize: "16px",
+              lineHeight: 1.7,
+              color: "#374151",
+              margin: "0 0 24px",
+              maxWidth: "62ch",
+            }}
+          >
             {a}
           </p>
         </div>
@@ -92,30 +91,25 @@ function FaqItem({
 }
 
 export default function Faq() {
-  const [openIdx, setOpenIdx] = useState(0);
+  const [openIdx, setOpenIdx] = useState(-1);
 
   return (
     <section
       id="faq"
-      className="bg-transparent"
-      style={{ padding: "clamp(88px,11vw,140px) 24px" }}
+      style={{ background: "#ffffff", padding: "clamp(120px,14vw,160px) 24px" }}
     >
-      <div className="mx-auto max-w-[880px]">
+      <div className="mx-auto max-w-[780px]">
         <SectionLabel>FAQ</SectionLabel>
         <h2
-          data-reveal
-          data-reveal-delay="80"
-          className="font-bold"
           style={{
-            letterSpacing: "-0.035em",
-            lineHeight: 1.05,
-            fontSize: "clamp(30px,4vw,52px)",
-            margin: "20px 0 40px",
-            maxWidth: "16ch",
-            textWrap: "balance",
+            fontSize: "clamp(22px,2.6vw,26px)",
+            fontWeight: 600,
+            letterSpacing: "-0.015em",
+            color: "#0d0d0d",
+            margin: "18px 0 32px",
           }}
         >
-          The questions founders actually ask.
+          Questions founders actually ask.
         </h2>
 
         {faqs.map((f, i) => (
