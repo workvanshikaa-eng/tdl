@@ -1,14 +1,12 @@
 import Nav from "@/components/landing/Nav";
 import Hero from "@/components/landing/Hero";
 import StatsBar from "@/components/landing/StatsBar";
-import Problem from "@/components/landing/Problem";
-import PullQuote from "@/components/landing/PullQuote";
+import Work from "@/components/landing/Work";
 import Services from "@/components/landing/Services";
-import CaseStudy from "@/components/landing/CaseStudy";
+import PullQuote from "@/components/landing/PullQuote";
 import About from "@/components/landing/About";
-import HowItWorks from "@/components/landing/HowItWorks";
-import Faq from "@/components/landing/Faq";
 import CtaFooter from "@/components/landing/CtaFooter";
+import ScrollReveal from "@/components/landing/ScrollReveal";
 import CalendlyLoader from "@/components/landing/CalendlyLoader";
 
 export default function LandingPage() {
@@ -21,18 +19,21 @@ export default function LandingPage() {
         overflowX: "hidden",
       }}
     >
+      {/* No-JS fallback: reveal animated content */}
+      <noscript>
+        <style>{`[data-reveal]{opacity:1 !important;transform:none !important;}`}</style>
+      </noscript>
+
       <Nav />
       <Hero />
       <StatsBar />
-      <Problem />
-      <PullQuote />
+      <Work />
       <Services />
-      <CaseStudy />
+      <PullQuote />
       <About />
-      <HowItWorks />
-      <Faq />
       <CtaFooter />
 
+      <ScrollReveal />
       <CalendlyLoader />
     </div>
   );

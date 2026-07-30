@@ -1,27 +1,23 @@
 import { siteConfig } from "@/config/site";
 
 const links = [
-  { href: "#services", label: "Services" },
-  { href: "#results", label: "Results" },
+  { href: "#work", label: "Work" },
   { href: "#about", label: "About" },
+  { href: "#contact", label: "Contact" },
 ];
 
 export default function Nav() {
   return (
     <nav
       style={{
-        position: "fixed",
+        position: "sticky",
         top: 0,
-        left: 0,
-        right: 0,
         zIndex: 100,
-        background: "rgba(255,255,255,0.8)",
-        backdropFilter: "saturate(180%) blur(12px)",
-        WebkitBackdropFilter: "saturate(180%) blur(12px)",
-        borderBottom: "1px solid #eef0ee",
+        background: "#ffffff",
+        borderBottom: "1px solid #f3f4f6",
       }}
     >
-      <div className="mx-auto flex h-[68px] max-w-[1080px] items-center justify-between gap-6 px-6">
+      <div className="mx-auto flex h-[68px] max-w-[1200px] items-center justify-between gap-6 px-6">
         <a
           href="#top"
           className="text-[16px] font-semibold tracking-[-0.01em] no-underline"
@@ -35,8 +31,8 @@ export default function Nav() {
             <a
               key={l.href}
               href={l.href}
-              className="text-[14px] font-medium no-underline transition-colors"
-              style={{ color: "#6b7280" }}
+              className="text-[14px] font-medium no-underline"
+              style={{ color: "#374151" }}
             >
               {l.label}
             </a>
@@ -47,10 +43,10 @@ export default function Nav() {
           href={siteConfig.calendlyUrl}
           target="_blank"
           rel="noopener"
-          className="whitespace-nowrap rounded-full px-[18px] py-2.5 text-[14px] font-medium text-white no-underline"
-          style={{ background: "#064e3b" }}
+          className="whitespace-nowrap rounded-full px-5 py-2.5 text-[14px] font-medium text-white no-underline transition-colors hover:bg-[#0a7c5c]"
+          style={{ background: "#064e3b", letterSpacing: "0.05em" }}
         >
-          Book a call
+          Start a Project
         </a>
       </div>
     </nav>

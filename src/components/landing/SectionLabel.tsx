@@ -1,19 +1,13 @@
-/** A small, restrained section label (small caps). */
+/** Small-caps section label (accent green). */
 export default function SectionLabel({
   children,
-  light = false,
 }: {
   children: React.ReactNode;
-  light?: boolean;
 }) {
   return (
     <div
       className="font-semibold uppercase"
-      style={{
-        fontSize: "11px",
-        letterSpacing: "0.1em",
-        color: light ? "rgba(255,255,255,0.6)" : "#6b7280",
-      }}
+      style={{ fontSize: "11px", letterSpacing: "0.15em", color: "#0a7c5c" }}
     >
       {children}
     </div>

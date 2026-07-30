@@ -75,6 +75,39 @@ body {
 }
 
 /* ============================================================
+   Landing: subtle scroll reveal + card hover
+   ============================================================ */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity 0.5s ease,
+    transform 0.5s ease;
+  will-change: opacity, transform;
+}
+[data-reveal].revealed {
+  opacity: 1;
+  transform: none;
+}
+
+.tdl-card {
+  transition:
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+.tdl-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(6, 78, 59, 0.09);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* ============================================================
    Landing page keyframes
    ============================================================ */
 @keyframes tdl-rise {

@@ -1,92 +1,112 @@
 import { siteConfig } from "@/config/site";
 
+const socials = [
+  { label: "LinkedIn", href: siteConfig.linkedinUrl },
+  { label: "Twitter", href: siteConfig.twitterUrl },
+  { label: "Instagram", href: siteConfig.instagramUrl },
+];
+
 export default function CtaFooter() {
   const year = new Date().getFullYear();
 
   return (
-    <footer style={{ background: "#ffffff" }}>
-      {/* Final CTA */}
-      <div
-        style={{ padding: "clamp(120px,15vw,180px) 24px" }}
+    <>
+      {/* Footer CTA */}
+      <section
+        id="contact"
+        style={{ background: "#f9fafb", padding: "100px 24px" }}
         className="text-center"
       >
-        <div className="mx-auto max-w-[780px]">
+        <div className="mx-auto max-w-[720px]" data-reveal>
           <h2
             style={{
-              fontSize: "clamp(30px,4vw,44px)",
+              fontSize: "clamp(30px,4.4vw,40px)",
               fontWeight: 600,
-              lineHeight: 1.12,
+              lineHeight: 1.15,
               letterSpacing: "-0.02em",
               color: "#0d0d0d",
               margin: 0,
-              maxWidth: "18ch",
-              marginLeft: "auto",
-              marginRight: "auto",
             }}
           >
-            Stop being the best-kept secret in your category.
+            Ready to build your pipeline?
           </h2>
           <p
             style={{
               fontSize: "17px",
               lineHeight: 1.7,
               color: "#6b7280",
-              margin: "24px auto 0",
+              margin: "20px auto 0",
               maxWidth: "52ch",
             }}
           >
-            A 30-minute call. No deck, no pitch. Just a straight read on where your
-            distribution is leaking, and the first thing I would fix.
+            Let&apos;s talk about where you are and what distribution should look
+            like for your product.
           </p>
-
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-6">
+          <div className="mt-9">
             <a
               href={siteConfig.calendlyUrl}
               target="_blank"
               rel="noopener"
-              className="inline-flex items-center rounded-full px-8 py-[16px] text-[15px] font-medium text-white no-underline"
+              className="inline-flex items-center rounded-full px-8 py-[16px] text-[15px] font-medium text-white no-underline transition-colors hover:bg-[#0a7c5c]"
               style={{ background: "#064e3b" }}
             >
-              Book a call
-            </a>
-            <a
-              href={`mailto:${siteConfig.contactEmail}`}
-              className="text-[15px] font-medium no-underline"
-              style={{ color: "#6b7280" }}
-            >
-              or email me
+              Start a Project
             </a>
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* Footer bar */}
-      <div style={{ borderTop: "1px solid #eef0ee" }}>
-        <div className="mx-auto flex max-w-[1080px] flex-wrap items-center justify-between gap-4 px-6 py-8">
-          <span style={{ fontSize: "15px", fontWeight: 600, color: "#0d0d0d" }}>
-            {siteConfig.name}
-          </span>
-          <div className="flex flex-wrap items-center gap-6 text-[14px] font-medium">
-            <a
-              href={siteConfig.instagramUrl}
-              target="_blank"
-              rel="noopener"
-              className="no-underline"
-              style={{ color: "#6b7280" }}
-            >
-              {siteConfig.instagramHandle}
-            </a>
+      {/* Footer */}
+      <footer style={{ background: "#ffffff", borderTop: "1px solid #f3f4f6" }}>
+        <div className="mx-auto grid max-w-[1200px] gap-8 px-6 py-14 min-[721px]:grid-cols-2">
+          <div>
+            <div style={{ fontSize: "16px", fontWeight: 600, color: "#0d0d0d" }}>
+              {siteConfig.name}
+            </div>
+            <div style={{ fontSize: "14px", color: "#6b7280", marginTop: "8px" }}>
+              Distribution as a service.
+            </div>
+          </div>
+          <div className="min-[721px]:text-right">
             <a
               href={`mailto:${siteConfig.contactEmail}`}
               className="no-underline"
-              style={{ color: "#6b7280" }}
+              style={{ fontSize: "14px", color: "#374151" }}
             >
               {siteConfig.contactEmail}
             </a>
-            <span style={{ color: "#9aa9a2" }}>© {year}</span>
+            <div className="mt-4 flex gap-5 min-[721px]:justify-end">
+              {socials.map((s) => (
+                <a
+                  key={s.label}
+                  href={s.href}
+                  target="_blank"
+                  rel="noopener"
+                  className="no-underline"
+                  style={{ fontSize: "14px", color: "#6b7280" }}
+                >
+                  {s.label}
+                </a>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
-    </footer>
+
+        <div style={{ borderTop: "1px solid #f3f4f6" }}>
+          <div className="mx-auto flex max-w-[1200px] flex-wrap items-center justify-between gap-3 px-6 py-6">
+            <span style={{ fontSize: "13px", color: "#9aa9a2" }}>
+              © {year} {siteConfig.name}
+            </span>
+            <a
+              href="/privacy"
+              className="no-underline"
+              style={{ fontSize: "13px", color: "#9aa9a2" }}
+            >
+              Privacy Policy
+            </a>
+          </div>
+        </div>
+      </footer>
+    </>
   );
 }

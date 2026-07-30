@@ -15,9 +15,11 @@ export const siteConfig = {
   /** Public contact email. */
   contactEmail: "thedistributionlab@gmail.com",
 
-  /** Social. */
+  /** Social. Update these handles/URLs to your real profiles. */
   instagramHandle: "@thedistributionlab",
   instagramUrl: "https://instagram.com/thedistributionlab",
+  linkedinUrl: "https://www.linkedin.com/company/the-distribution-lab",
+  twitterUrl: "https://twitter.com/thedistlab",
 
   /** "From" details auto-filled onto generated invoices. Edit these freely. */
   invoiceFrom: {
