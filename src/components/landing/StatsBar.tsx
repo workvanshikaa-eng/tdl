@@ -1,7 +1,7 @@
 const stats = [
   { value: "198,434", label: "impressions in 28 days" },
-  { value: "5+", label: "sales calls booked per week" },
   { value: "3,388%", label: "growth vs prior month" },
+  { value: "5+", label: "sales calls booked per week" },
 ];
 
 export default function StatsBar() {
@@ -9,7 +9,7 @@ export default function StatsBar() {
     <section
       style={{
         background: "#ffffff",
-        padding: "60px 24px",
+        padding: "56px 24px",
         borderTop: "1px solid #f3f4f6",
         borderBottom: "1px solid #f3f4f6",
       }}
@@ -25,7 +25,7 @@ export default function StatsBar() {
           >
             <div
               style={{
-                fontSize: "44px",
+                fontSize: "48px",
                 fontWeight: 700,
                 letterSpacing: "-0.03em",
                 lineHeight: 1,

@@ -1,7 +1,7 @@
 export default function PullQuote() {
   return (
-    <section style={{ background: "#064e3b", padding: "100px 24px" }}>
-      <div className="mx-auto max-w-[700px] text-center" data-reveal>
+    <section style={{ background: "#064e3b", padding: "120px 24px" }}>
+      <div className="mx-auto max-w-[680px] text-center" data-reveal>
         <p
           style={{
             fontSize: "clamp(22px,3vw,28px)",
