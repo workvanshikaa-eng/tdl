@@ -3,94 +3,110 @@ import SectionLabel from "@/components/landing/SectionLabel";
 import StatsBar from "@/components/landing/StatsBar";
 import PullQuote from "@/components/landing/PullQuote";
 import FooterCta from "@/components/landing/FooterCta";
+import Spark from "@/components/landing/Spark";
 
 const featured = [
   {
-    client: "AI HR SaaS (name withheld)",
-    stat: "198,434 impressions",
-    subStat: "28 days. Zero ad spend.",
-    outcome: "First paying customer came through inbound.",
+    tag: "Client / AI HR SaaS",
+    stat: "198,434",
+    statLabel: "impressions in 28 days",
+    outcome:
+      "Full LinkedIn management from scratch. First paying customer came through inbound. Zero ad spend.",
   },
   {
-    client: "Mockzy",
-    stat: "50,000 organic reach",
-    subStat: "0 ad spend. 0 influencers.",
+    tag: "Client / Mockzy",
+    stat: "50,000+",
+    statLabel: "organic reach",
     outcome:
-      "Flatlined at under 100 impressions. We fixed the distribution. It compounded.",
+      "Flatlined under 100 impressions per post. We rebuilt the distribution. It compounded fast.",
   },
 ];
 
-const serviceRows = [
-  { n: "01", title: "Get Pipeline", desc: "LinkedIn lead generation and full outbound management" },
-  { n: "02", title: "Get Visible", desc: "LinkedIn personal branding and content ghostwriting" },
-  { n: "03", title: "Get Found", desc: "SEO, AEO, Reddit, and Twitter marketing" },
+const services = [
+  {
+    n: "01",
+    title: "Get Pipeline",
+    items: [
+      "ICP research & targeting",
+      "LinkedIn lead generation",
+      "Full outbound management",
+      "Inbox & call booking",
+    ],
+  },
+  {
+    n: "02",
+    title: "Get Visible",
+    items: [
+      "Founder personal branding",
+      "Content ghostwriting",
+      "Post design & scheduling",
+      "Engagement systems",
+    ],
+  },
+  {
+    n: "03",
+    title: "Get Found",
+    items: [
+      "SEO & answer-engine optimisation",
+      "Reddit marketing",
+      "Twitter / X growth",
+      "Community distribution",
+    ],
+  },
 ];
 
-const arrow = <span style={{ fontSize: 15, lineHeight: 0 }}>→</span>;
+const mono: React.CSSProperties = {
+  fontFamily: "var(--font-jetbrains), ui-monospace, monospace",
+  textTransform: "uppercase",
+  letterSpacing: "0.14em",
+};
+
+const linkMono: React.CSSProperties = { ...mono, fontSize: "12px", color: "#064e3b" };
 
 export default function Homepage() {
   return (
     <>
       {/* Hero */}
-      <section style={{ background: "#ffffff", padding: "160px 24px 120px" }}>
-        <div className="mx-auto grid max-w-[1200px] items-center gap-16 min-[861px]:grid-cols-[1.15fr_0.85fr]">
-          <div data-reveal>
-            <h1
-              style={{
-                fontSize: "clamp(40px,6vw,56px)",
-                fontWeight: 600,
-                lineHeight: 1.1,
-                letterSpacing: "-0.02em",
-                color: "#0d0d0d",
-                margin: 0,
-                maxWidth: "15ch",
-              }}
-            >
-              Distribution for founders who are done being invisible.
-            </h1>
-            <p
-              style={{
-                fontSize: "18px",
-                lineHeight: 1.6,
-                color: "#6b7280",
-                margin: "26px 0 0",
-                maxWidth: "520px",
-              }}
-            >
-              We build the content, outbound, and distribution systems that turn
-              early-stage B2B SaaS products into pipelines.
-            </p>
-            <div className="mt-10 flex flex-wrap items-center gap-7">
-              <Link
-                href="/contact"
-                className="inline-flex items-center rounded-full px-7 py-[15px] text-[15px] font-medium text-white no-underline transition-colors hover:bg-[#0a7c5c]"
-                style={{ background: "#064e3b" }}
-              >
-                Start a Project
-              </Link>
-              <Link
-                href="/work"
-                className="inline-flex items-center gap-1.5 text-[15px] font-medium no-underline"
-                style={{ color: "#064e3b" }}
-              >
-                See our work {arrow}
-              </Link>
-            </div>
-          </div>
-          <div
-            aria-hidden
-            className="hidden justify-self-center min-[861px]:block"
-            style={{ width: "100%", maxWidth: 420 }}
+      <section style={{ background: "#ffffff", padding: "clamp(90px,14vh,150px) 24px clamp(80px,12vh,120px)" }}>
+        <div className="mx-auto max-w-[1200px]" data-reveal>
+          <SectionLabel>Distribution as a service</SectionLabel>
+          <h1
+            style={{
+              fontSize: "clamp(44px,9vw,104px)",
+              fontWeight: 600,
+              lineHeight: 1.02,
+              letterSpacing: "-0.035em",
+              color: "#0d0d0d",
+              margin: "28px 0 0",
+              maxWidth: "16ch",
+            }}
           >
-            <div
-              style={{
-                aspectRatio: "1 / 1",
-                borderRadius: "50%",
-                background: "#e6f4ef",
-                opacity: 0.2,
-                width: "100%",
-              }}
-            />
+            Distribution for founders done being invisible.
+          </h1>
+          <p
+            style={{
+              fontSize: "clamp(17px,2.2vw,20px)",
+              lineHeight: 1.6,
+              color: "#6b7280",
+              margin: "32px 0 0",
+              maxWidth: "560px",
+            }}
+          >
+            We build the content, outbound, and distribution systems that turn
+            early-stage B2B SaaS products into booked pipeline.
+          </p>
+          <div className="mt-11 flex flex-wrap items-center gap-8">
+            <Link
+              href="/contact"
+              className="inline-flex items-center gap-2 rounded-full px-7 py-[15px] text-white no-underline transition-colors hover:bg-[#0a7c5c]"
+              style={{ ...mono, fontSize: "13px", background: "#064e3b" }}
+            >
+              <Spark size={12} color="#ffffff" />
+              Start a Project
+            </Link>
+            <Link href="/work" className="inline-flex items-center gap-2 no-underline" style={linkMono}>
+              See our work →
+            </Link>
           </div>
         </div>
       </section>
@@ -98,123 +114,154 @@ export default function Homepage() {
       <StatsBar />
 
       {/* Featured work */}
-      <section style={{ background: "#ffffff", padding: "100px 24px" }}>
+      <section style={{ background: "#ffffff", padding: "clamp(80px,12vh,120px) 24px" }}>
         <div className="mx-auto max-w-[1200px]">
-          <div data-reveal>
-            <SectionLabel>Work</SectionLabel>
-            <h2
-              style={{
-                fontSize: "clamp(28px,4vw,36px)",
-                fontWeight: 600,
-                letterSpacing: "-0.02em",
-                color: "#0d0d0d",
-                margin: "16px 0 0",
-              }}
-            >
-              Results that speak.
-            </h2>
-          </div>
-          <div className="mt-12 grid gap-6 min-[721px]:grid-cols-2">
-            {featured.map((c, i) => (
-              <div
-                key={c.client}
-                data-reveal
-                data-reveal-delay={i * 100}
-                className="tdl-card"
+          <div className="flex flex-wrap items-end justify-between gap-6" data-reveal>
+            <div>
+              <SectionLabel>Featured work</SectionLabel>
+              <h2
                 style={{
-                  background: "#f9fafb",
-                  borderRadius: 8,
-                  borderTop: "4px solid #064e3b",
-                  padding: 32,
+                  fontSize: "clamp(30px,5vw,52px)",
+                  fontWeight: 600,
+                  letterSpacing: "-0.03em",
+                  color: "#0d0d0d",
+                  margin: "18px 0 0",
                 }}
               >
-                <div style={{ fontSize: "13px", fontWeight: 600, color: "#6b7280" }}>
-                  {c.client}
-                </div>
+                Results that speak.
+              </h2>
+            </div>
+            <Link href="/work" className="no-underline" style={linkMono}>
+              See all work →
+            </Link>
+          </div>
+
+          <div className="mt-14 grid gap-6 min-[721px]:grid-cols-2">
+            {featured.map((c, i) => (
+              <Link
+                key={c.tag}
+                href="/work"
+                data-reveal
+                data-reveal-delay={i * 100}
+                className="group block overflow-hidden no-underline"
+                style={{ borderRadius: 12, background: "#f4faf7", border: "1px solid #e3f0ea" }}
+              >
+                {/* Tinted media band */}
                 <div
+                  className="flex items-center justify-center"
                   style={{
-                    fontSize: "28px",
-                    fontWeight: 600,
-                    letterSpacing: "-0.02em",
-                    color: "#064e3b",
-                    margin: "16px 0 0",
+                    background: "linear-gradient(135deg,#e6f4ef 0%,#d4ebe1 100%)",
+                    height: 240,
                   }}
                 >
-                  {c.stat}
+                  <div className="text-center">
+                    <div
+                      style={{
+                        fontSize: "clamp(40px,6vw,64px)",
+                        fontWeight: 600,
+                        letterSpacing: "-0.03em",
+                        lineHeight: 1,
+                        color: "#064e3b",
+                      }}
+                    >
+                      {c.stat}
+                    </div>
+                    <div style={{ ...mono, fontSize: "11px", color: "#0a7c5c", marginTop: 12 }}>
+                      {c.statLabel}
+                    </div>
+                  </div>
                 </div>
-                <div style={{ fontSize: "14px", color: "#6b7280", margin: "8px 0 0" }}>
-                  {c.subStat}
+                <div style={{ padding: "28px 30px 32px" }}>
+                  <div style={{ ...mono, fontSize: "11px", color: "#6b7280" }}>{c.tag}</div>
+                  <p style={{ fontSize: "16px", lineHeight: 1.65, color: "#374151", margin: "14px 0 0" }}>
+                    {c.outcome}
+                  </p>
                 </div>
-                <p style={{ fontSize: "15px", lineHeight: 1.65, color: "#374151", margin: "18px 0 0" }}>
-                  {c.outcome}
-                </p>
-              </div>
+              </Link>
             ))}
-          </div>
-          <div className="mt-10" data-reveal>
-            <Link
-              href="/work"
-              className="inline-flex items-center gap-1.5 text-[15px] font-medium no-underline"
-              style={{ color: "#064e3b" }}
-            >
-              See all work {arrow}
-            </Link>
           </div>
         </div>
       </section>
 
-      {/* What we do */}
-      <section style={{ background: "#ffffff", padding: "100px 24px" }}>
+      {/* What we do — numbered services */}
+      <section style={{ background: "#f9fafb", padding: "clamp(80px,12vh,120px) 24px" }}>
         <div className="mx-auto max-w-[1200px]">
-          <div data-reveal>
-            <SectionLabel>Services</SectionLabel>
-            <h2
+          <div className="max-w-[640px]" data-reveal>
+            <SectionLabel>What we do</SectionLabel>
+            <p
               style={{
-                fontSize: "clamp(28px,4vw,36px)",
-                fontWeight: 600,
-                letterSpacing: "-0.02em",
+                fontSize: "clamp(20px,2.6vw,26px)",
+                fontWeight: 500,
+                lineHeight: 1.4,
+                letterSpacing: "-0.01em",
                 color: "#0d0d0d",
-                margin: "16px 0 0",
+                margin: "20px 0 0",
               }}
             >
-              One system. Three outcomes.
-            </h2>
-            <p style={{ fontSize: "17px", lineHeight: 1.7, color: "#6b7280", margin: "14px 0 0", maxWidth: "56ch" }}>
-              Content, outbound, and distribution, handled end to end.
+              Content, outbound, and distribution, handled end to end, run as one
+              system instead of five disconnected tactics.
             </p>
           </div>
 
-          <div className="mx-auto mt-10 max-w-[880px]">
-            {serviceRows.map((r, i) => (
-              <Link
-                key={r.n}
-                href="/services"
+          <div className="mt-16 space-y-20">
+            {services.map((s, si) => (
+              <div
+                key={s.n}
                 data-reveal
-                data-reveal-delay={i * 80}
-                className="flex items-center gap-5 border-none py-6 no-underline transition-colors hover:bg-[#f9fafb]"
-                style={{ borderBottom: "1px solid #e5e7eb" }}
+                className="grid gap-6 min-[861px]:grid-cols-[0.9fr_1.1fr] min-[861px]:gap-16"
               >
-                <span style={{ fontSize: "13px", fontWeight: 700, color: "#064e3b" }}>{r.n}</span>
-                <span className="min-w-0 flex-1">
-                  <span className="block" style={{ fontSize: "18px", fontWeight: 600, color: "#0d0d0d" }}>
-                    {r.title}
+                <div className="flex items-baseline gap-6">
+                  <span
+                    style={{
+                      fontSize: "clamp(30px,4vw,48px)",
+                      fontWeight: 600,
+                      color: "#cfe6dc",
+                      letterSpacing: "-0.02em",
+                      lineHeight: 1,
+                    }}
+                  >
+                    {s.n}
                   </span>
-                  <span className="mt-1 block" style={{ fontSize: "15px", color: "#6b7280" }}>
-                    {r.desc}
-                  </span>
-                </span>
-                <span style={{ flex: "0 0 auto", color: "#064e3b", fontSize: 16, lineHeight: 0 }}>→</span>
-              </Link>
+                  <h3
+                    style={{
+                      fontSize: "clamp(32px,5vw,60px)",
+                      fontWeight: 600,
+                      letterSpacing: "-0.03em",
+                      lineHeight: 1,
+                      color: "#0d0d0d",
+                      margin: 0,
+                    }}
+                  >
+                    {s.title}
+                  </h3>
+                </div>
+
+                <ul style={{ listStyle: "none", margin: 0, padding: 0 }}>
+                  {s.items.map((it, ii) => (
+                    <li
+                      key={it}
+                      className="flex items-center justify-between gap-4"
+                      style={{
+                        ...mono,
+                        fontSize: "13px",
+                        color: "#374151",
+                        padding: "18px 0",
+                        borderTop: ii === 0 ? "1px solid #dfe3e0" : "none",
+                        borderBottom: "1px solid #dfe3e0",
+                      }}
+                    >
+                      <span>{it}</span>
+                      <Spark size={9} color={si === 0 && ii === 0 ? "#0a7c5c" : "#c3d3cb"} />
+                    </li>
+                  ))}
+                </ul>
+              </div>
             ))}
           </div>
 
-          <div className="mx-auto mt-8 max-w-[880px]" data-reveal>
-            <Link
-              href="/services"
-              className="inline-flex items-center gap-1.5 text-[15px] font-medium no-underline"
-              style={{ color: "#064e3b" }}
-            >
-              View all services {arrow}
+          <div className="mt-16" data-reveal>
+            <Link href="/services" className="no-underline" style={linkMono}>
+              View all services →
             </Link>
           </div>
         </div>
@@ -223,7 +270,7 @@ export default function Homepage() {
       <PullQuote />
 
       {/* About tease */}
-      <section style={{ background: "#ffffff", padding: "100px 24px" }}>
+      <section style={{ background: "#ffffff", padding: "clamp(80px,12vh,120px) 24px" }}>
         <div
           data-reveal
           className="mx-auto grid max-w-[1200px] items-center gap-14 min-[861px]:grid-cols-[0.8fr_1.1fr]"
@@ -231,48 +278,43 @@ export default function Homepage() {
           <div
             style={{
               aspectRatio: "4 / 5",
-              borderRadius: 8,
-              background: "#f9fafb",
+              borderRadius: 12,
+              background: "linear-gradient(135deg,#f4faf7 0%,#e6f4ef 100%)",
               display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              color: "#9aa9a2",
-              fontSize: "13px",
+              alignItems: "flex-end",
+              padding: 24,
             }}
           >
-            Vanshika Agarwal
+            <span style={{ ...mono, fontSize: "11px", color: "#0a7c5c" }}>Vanshika Agarwal</span>
           </div>
           <div>
             <SectionLabel>About</SectionLabel>
             <h2
               style={{
-                fontSize: "clamp(26px,3.4vw,32px)",
+                fontSize: "clamp(28px,4vw,44px)",
                 fontWeight: 600,
-                letterSpacing: "-0.02em",
+                letterSpacing: "-0.03em",
+                lineHeight: 1.05,
                 color: "#0d0d0d",
-                margin: "16px 0 0",
+                margin: "18px 0 0",
               }}
             >
               Built by a founder, for founders.
             </h2>
-            <div className="mt-6 space-y-5" style={{ maxWidth: "56ch" }}>
+            <div className="mt-7 space-y-5" style={{ maxWidth: "56ch" }}>
               <p style={{ fontSize: "17px", lineHeight: 1.7, color: "#374151", margin: 0 }}>
                 The Distribution Lab is run by Vanshika Agarwal. She started TDL
-                because she understood tech and distribution before she
-                understood how rare that combination is.
+                because she understood tech and distribution before she understood
+                how rare that combination is.
               </p>
               <p style={{ fontSize: "17px", lineHeight: 1.7, color: "#374151", margin: 0 }}>
                 We work with seed to Series A B2B SaaS founders in the US, UK, and
                 UAE. Small team, real work, no account managers.
               </p>
             </div>
-            <div className="mt-7">
-              <Link
-                href="/about"
-                className="inline-flex items-center gap-1.5 text-[15px] font-medium no-underline"
-                style={{ color: "#064e3b" }}
-              >
-                More about us {arrow}
+            <div className="mt-8">
+              <Link href="/about" className="no-underline" style={linkMono}>
+                More about us →
               </Link>
             </div>
           </div>

@@ -1,43 +1,52 @@
 import Link from "next/link";
+import Spark from "./Spark";
+import SectionLabel from "./SectionLabel";
 
 /** Pre-footer conversion band ("Ready to build your pipeline?"). */
 export default function FooterCta() {
   return (
-    <section
-      style={{ background: "#f9fafb", padding: "120px 24px" }}
-      className="text-center"
-    >
-      <div className="mx-auto max-w-[720px]" data-reveal>
+    <section style={{ background: "#f9fafb", padding: "130px 24px" }} className="text-center">
+      <div className="mx-auto max-w-[900px]" data-reveal>
+        <div className="flex justify-center">
+          <SectionLabel>Start a project</SectionLabel>
+        </div>
         <h2
           style={{
-            fontSize: "clamp(30px,4.6vw,44px)",
+            fontSize: "clamp(34px,6vw,64px)",
             fontWeight: 600,
-            lineHeight: 1.15,
-            letterSpacing: "-0.02em",
+            lineHeight: 1.05,
+            letterSpacing: "-0.03em",
             color: "#0d0d0d",
-            margin: 0,
+            margin: "22px 0 0",
           }}
         >
           Ready to build your pipeline?
         </h2>
         <p
           style={{
-            fontSize: "17px",
+            fontSize: "18px",
             lineHeight: 1.7,
             color: "#6b7280",
-            margin: "20px auto 0",
-            maxWidth: "52ch",
+            margin: "22px auto 0",
+            maxWidth: "48ch",
           }}
         >
-          Let us talk about where you are and what distribution should look like
-          for your product.
+          Tell us where you are and what you are trying to build. We will tell you
+          if we can help.
         </p>
-        <div className="mt-9">
+        <div className="mt-10">
           <Link
             href="/contact"
-            className="inline-flex items-center rounded-full px-8 py-[16px] text-[15px] font-medium text-white no-underline transition-colors hover:bg-[#0a7c5c]"
-            style={{ background: "#064e3b" }}
+            className="inline-flex items-center gap-2 rounded-full px-8 py-[16px] text-white no-underline transition-colors hover:bg-[#0a7c5c]"
+            style={{
+              background: "#064e3b",
+              fontFamily: "var(--font-jetbrains), ui-monospace, monospace",
+              textTransform: "uppercase",
+              letterSpacing: "0.14em",
+              fontSize: "13px",
+            }}
           >
+            <Spark size={12} color="#ffffff" />
             Start a Project
           </Link>
         </div>

@@ -1,7 +1,7 @@
 const stats = [
-  { value: "198,434", label: "impressions in 28 days" },
-  { value: "3,388%", label: "growth vs prior month" },
-  { value: "5+", label: "sales calls booked per week" },
+  { value: "198,434", label: "Impressions in 28 days" },
+  { value: "3,388%", label: "Growth vs prior month" },
+  { value: "5+", label: "Calls booked per week" },
 ];
 
 export default function StatsBar() {
@@ -9,9 +9,9 @@ export default function StatsBar() {
     <section
       style={{
         background: "#ffffff",
-        padding: "56px 24px",
-        borderTop: "1px solid #f3f4f6",
-        borderBottom: "1px solid #f3f4f6",
+        padding: "64px 24px",
+        borderTop: "1px solid #eceeec",
+        borderBottom: "1px solid #eceeec",
       }}
     >
       <div
@@ -21,12 +21,12 @@ export default function StatsBar() {
         {stats.map((s, i) => (
           <div
             key={i}
-            className={`text-center ${i > 0 ? "min-[721px]:border-l min-[721px]:border-[#f3f4f6]" : ""}`}
+            className={`text-center ${i > 0 ? "min-[721px]:border-l min-[721px]:border-[#eceeec]" : ""}`}
           >
             <div
               style={{
-                fontSize: "48px",
-                fontWeight: 700,
+                fontSize: "clamp(40px,5vw,54px)",
+                fontWeight: 600,
                 letterSpacing: "-0.03em",
                 lineHeight: 1,
                 color: "#064e3b",
@@ -34,7 +34,16 @@ export default function StatsBar() {
             >
               {s.value}
             </div>
-            <div style={{ fontSize: "13px", color: "#6b7280", marginTop: "10px" }}>
+            <div
+              className="uppercase"
+              style={{
+                fontFamily: "var(--font-jetbrains), ui-monospace, monospace",
+                fontSize: "11px",
+                letterSpacing: "0.14em",
+                color: "#6b7280",
+                marginTop: "14px",
+              }}
+            >
               {s.label}
             </div>
           </div>
