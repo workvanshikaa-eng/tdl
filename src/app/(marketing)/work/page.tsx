@@ -22,6 +22,13 @@ const flagship = {
 
 const cases = [
   {
+    label: "SEO / Search Console audit",
+    client: "TurtlePic",
+    metrics: ["93K impressions / 90d", "2.3% CTR", "272 URLs audited"],
+    body: "A six-day Search Console audit. The traffic was already there, the pages ranked, nobody clicked. Full diagnosis and a delivery plan.",
+    href: "/work/turtlepic",
+  },
+  {
     label: "Content and distribution",
     client: "Mockzy (mockzy.app)",
     metrics: ["50,000+ organic reach", "0 ad spend", "0 influencers"],
@@ -120,35 +127,47 @@ export default function WorkPage() {
       {/* Other cases */}
       <section style={{ background: "#ffffff", padding: "0 24px clamp(80px,12vh,120px)" }}>
         <div className="mx-auto max-w-[1200px]">
-          <div className="grid gap-6 min-[721px]:grid-cols-2">
-            {cases.map((c, i) => (
-              <div
-                key={c.client}
-                data-reveal
-                data-reveal-delay={i * 80}
-                className="tdl-card flex flex-col"
-                style={{
-                  background: "#ffffff",
-                  border: "1px solid #e5e7eb",
-                  borderTop: "4px solid #064e3b",
-                  borderRadius: 10,
-                  padding: 32,
-                }}
-              >
-                <div style={{ ...mono, fontSize: "11px", color: "#0a7c5c" }}>{c.label}</div>
-                <div style={{ fontSize: "18px", fontWeight: 600, color: "#0d0d0d", margin: "12px 0 0" }}>
-                  {c.client}
+          <div className="grid gap-6 min-[721px]:grid-cols-3">
+            {cases.map((c, i) => {
+              const href = (c as { href?: string }).href;
+              const cardStyle = {
+                background: "#ffffff",
+                border: "1px solid #e5e7eb",
+                borderTop: "4px solid #064e3b",
+                borderRadius: 10,
+                padding: 32,
+              } as const;
+              const inner = (
+                <>
+                  <div style={{ ...mono, fontSize: "11px", color: "#0a7c5c" }}>{c.label}</div>
+                  <div style={{ fontSize: "18px", fontWeight: 600, color: "#0d0d0d", margin: "12px 0 0" }}>
+                    {c.client}
+                  </div>
+                  <div className="mt-5 flex flex-col gap-2">
+                    {c.metrics.map((m) => (
+                      <div key={m} style={{ fontSize: "17px", fontWeight: 600, color: "#064e3b", letterSpacing: "-0.01em" }}>
+                        {m}
+                      </div>
+                    ))}
+                  </div>
+                  <p style={{ fontSize: "15px", lineHeight: 1.7, color: "#374151", margin: "18px 0 0" }}>{c.body}</p>
+                  {href && (
+                    <span className="mt-5 inline-flex items-center gap-1.5 no-underline" style={{ ...mono, fontSize: "11px", letterSpacing: "0.14em", textTransform: "uppercase", color: "#064e3b" }}>
+                      Read the audit →
+                    </span>
+                  )}
+                </>
+              );
+              return href ? (
+                <Link key={c.client} href={href} data-reveal data-reveal-delay={i * 80} className="tdl-card flex flex-col no-underline" style={cardStyle}>
+                  {inner}
+                </Link>
+              ) : (
+                <div key={c.client} data-reveal data-reveal-delay={i * 80} className="tdl-card flex flex-col" style={cardStyle}>
+                  {inner}
                 </div>
-                <div className="mt-5 flex flex-col gap-2">
-                  {c.metrics.map((m) => (
-                    <div key={m} style={{ fontSize: "17px", fontWeight: 600, color: "#064e3b", letterSpacing: "-0.01em" }}>
-                      {m}
-                    </div>
-                  ))}
-                </div>
-                <p style={{ fontSize: "15px", lineHeight: 1.7, color: "#374151", margin: "18px 0 0" }}>{c.body}</p>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
           <p

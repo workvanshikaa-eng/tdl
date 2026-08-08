@@ -37,7 +37,7 @@ export default function ClientMarquee() {
           marginBottom: "28px",
         }}
       >
-        Founders who stopped being invisible
+        Trusted by forward-thinking teams
       </div>
 
       {/* Edge fade mask */}
