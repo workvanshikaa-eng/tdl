@@ -3,6 +3,7 @@ import SectionLabel from "@/components/landing/SectionLabel";
 import StatsBar from "@/components/landing/StatsBar";
 import PullQuote from "@/components/landing/PullQuote";
 import FooterCta from "@/components/landing/FooterCta";
+import ClientMarquee from "@/components/landing/ClientMarquee";
 import Spark from "@/components/landing/Spark";
 
 const featured = [
@@ -112,6 +113,8 @@ export default function Homepage() {
           </div>
         </div>
       </section>
+
+      <ClientMarquee />
 
       <StatsBar />
 

@@ -22,12 +22,6 @@ const flagship = {
 
 const cases = [
   {
-    label: "LinkedIn management",
-    client: "AI HR SaaS (name withheld, NDA)",
-    metrics: ["198,434 impressions", "3,388% growth", "5+ calls per week"],
-    body: "Full LinkedIn management from scratch. Content, outbound, engagement. First paying customer came through inbound while we were live. Zero ad spend.",
-  },
-  {
     label: "Content and distribution",
     client: "Mockzy (mockzy.app)",
     metrics: ["50,000+ organic reach", "0 ad spend", "0 influencers"],
@@ -126,7 +120,7 @@ export default function WorkPage() {
       {/* Other cases */}
       <section style={{ background: "#ffffff", padding: "0 24px clamp(80px,12vh,120px)" }}>
         <div className="mx-auto max-w-[1200px]">
-          <div className="grid gap-6 min-[721px]:grid-cols-3">
+          <div className="grid gap-6 min-[721px]:grid-cols-2">
             {cases.map((c, i) => (
               <div
                 key={c.client}
