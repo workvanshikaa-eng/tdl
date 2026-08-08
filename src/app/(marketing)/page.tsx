@@ -7,11 +7,12 @@ import Spark from "@/components/landing/Spark";
 
 const featured = [
   {
-    tag: "Client / AI HR SaaS",
-    stat: "198,434",
-    statLabel: "impressions in 28 days",
+    tag: "Client / TalentGPT",
+    stat: "35+",
+    statLabel: "meetings booked / month",
     outcome:
-      "Full LinkedIn management from scratch. First paying customer came through inbound. Zero ad spend.",
+      "Rebuilt founder Sahib Chawla's LinkedIn around recruiter frustration, not feature pitches. Reach jumped 2,654% and meetings compounded from zero to 35+ a month.",
+    href: "/work/talentgpt",
   },
   {
     tag: "Client / Mockzy",
@@ -19,6 +20,7 @@ const featured = [
     statLabel: "organic reach",
     outcome:
       "Flatlined under 100 impressions per post. We rebuilt the distribution. It compounded fast.",
+    href: "/work",
   },
 ];
 
@@ -140,7 +142,7 @@ export default function Homepage() {
             {featured.map((c, i) => (
               <Link
                 key={c.tag}
-                href="/work"
+                href={c.href}
                 data-reveal
                 data-reveal-delay={i * 100}
                 className="group block overflow-hidden no-underline"

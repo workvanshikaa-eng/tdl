@@ -1,7 +1,7 @@
 const stats = [
-  { value: "198,434", label: "Impressions in 28 days" },
-  { value: "3,388%", label: "Growth vs prior month" },
-  { value: "5+", label: "Calls booked per week" },
+  { value: "240,677", label: "Impressions in 4 months" },
+  { value: "2,654%", label: "Growth vs prior period" },
+  { value: "35+", label: "Meetings booked per month" },
 ];
 
 export default function StatsBar() {
