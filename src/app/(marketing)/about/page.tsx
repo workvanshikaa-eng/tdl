@@ -1,4 +1,5 @@
 import SectionLabel from "@/components/landing/SectionLabel";
+import FounderPhoto from "@/components/landing/FounderPhoto";
 import FooterCta from "@/components/landing/FooterCta";
 
 export const metadata = { title: "About" };
@@ -46,20 +47,7 @@ export default function AboutPage() {
           data-reveal
           className="mx-auto grid max-w-[1200px] items-start gap-14 min-[861px]:grid-cols-[0.8fr_1.1fr]"
         >
-          <div
-            style={{
-              aspectRatio: "4 / 5",
-              borderRadius: 8,
-              background: "#f9fafb",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              color: "#9aa9a2",
-              fontSize: "13px",
-            }}
-          >
-            Vanshika Agarwal
-          </div>
+          <FounderPhoto />
           <div>
             <h2 style={{ fontSize: "24px", fontWeight: 600, color: "#0d0d0d", margin: 0 }}>
               Vanshika Agarwal, Founder

@@ -4,6 +4,7 @@ import StatsBar from "@/components/landing/StatsBar";
 import PullQuote from "@/components/landing/PullQuote";
 import FooterCta from "@/components/landing/FooterCta";
 import ClientMarquee from "@/components/landing/ClientMarquee";
+import FounderPhoto from "@/components/landing/FounderPhoto";
 import Spark from "@/components/landing/Spark";
 
 const featured = [
@@ -280,18 +281,7 @@ export default function Homepage() {
           data-reveal
           className="mx-auto grid max-w-[1200px] items-center gap-14 min-[861px]:grid-cols-[0.8fr_1.1fr]"
         >
-          <div
-            style={{
-              aspectRatio: "4 / 5",
-              borderRadius: 12,
-              background: "linear-gradient(135deg,#f4faf7 0%,#e6f4ef 100%)",
-              display: "flex",
-              alignItems: "flex-end",
-              padding: 24,
-            }}
-          >
-            <span style={{ ...mono, fontSize: "11px", color: "#0a7c5c" }}>Vanshika Agarwal</span>
-          </div>
+          <FounderPhoto />
           <div>
             <SectionLabel>About</SectionLabel>
             <h2
