@@ -1,4 +1,5 @@
 import SectionLabel from "@/components/landing/SectionLabel";
+import ChannelPills from "@/components/landing/ChannelPills";
 import ServicesAccordion from "@/components/landing/ServicesAccordion";
 import FooterCta from "@/components/landing/FooterCta";
 
@@ -13,32 +14,40 @@ const steps = [
 export default function ServicesPage() {
   return (
     <>
-      {/* Hero */}
-      <section style={{ background: "#ffffff", padding: "120px 24px 80px" }}>
+      {/* Block 1: channel pills */}
+      <section style={{ background: "#ffffff", padding: "120px 24px 40px" }}>
         <div className="mx-auto max-w-[1200px]" data-reveal>
-          <h1
-            style={{
-              fontSize: "clamp(38px,5.4vw,52px)",
-              fontWeight: 600,
-              lineHeight: 1.1,
-              letterSpacing: "-0.02em",
-              color: "#0d0d0d",
-              margin: 0,
-            }}
-          >
-            Three channels. One system. Run by us.
-          </h1>
-          <p style={{ fontSize: "18px", lineHeight: 1.7, color: "#6b7280", margin: "22px 0 0", maxWidth: "56ch" }}>
-            LinkedIn, Reddit, and Twitter are where your buyers live. We build your
-            presence there so you compound instead of cold pitching forever.
-          </p>
+          <SectionLabel>Services</SectionLabel>
+          <div className="mt-8">
+            <ChannelPills />
+          </div>
         </div>
       </section>
 
-      {/* Accordion */}
-      <section style={{ background: "#ffffff", padding: "0 24px 100px" }}>
+      {/* Block 2: full accordion */}
+      <section style={{ background: "#ffffff", padding: "70px 24px 100px" }}>
         <div className="mx-auto max-w-[1200px]">
-          <ServicesAccordion />
+          <div data-reveal>
+            <h1
+              style={{
+                fontSize: "clamp(38px,5.4vw,52px)",
+                fontWeight: 600,
+                lineHeight: 1.1,
+                letterSpacing: "-0.02em",
+                color: "#0d0d0d",
+                margin: 0,
+              }}
+            >
+              One system. Three outcomes.
+            </h1>
+            <p style={{ fontSize: "18px", lineHeight: 1.7, color: "#6b7280", margin: "22px 0 0", maxWidth: "56ch" }}>
+              We handle the full distribution stack so you can focus on building the
+              product.
+            </p>
+          </div>
+          <div className="mt-12">
+            <ServicesAccordion />
+          </div>
         </div>
       </section>
 

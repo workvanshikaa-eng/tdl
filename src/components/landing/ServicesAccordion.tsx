@@ -5,21 +5,40 @@ import { useState } from "react";
 const items = [
   {
     n: "01",
-    title: "LinkedIn",
-    subtext: "Your buyers are on LinkedIn every day.",
-    body: "If your profile looks abandoned and your posts get 80 impressions, you are invisible to the exact people who should be buying from you. We fix the profile, write the content, run the outbound, and manage the inbox. You show up to calls.",
+    title: "Get Pipeline",
+    subtext: "LinkedIn lead generation and full outbound management",
+    details: [
+      "ICP research and targeting",
+      "LinkedIn profile optimisation",
+      "Outbound sequence writing",
+      "Full inbox management",
+      "Weekly reporting on connections, reply rates, and meetings booked",
+      "Ongoing A/B testing of messaging",
+    ],
   },
   {
     n: "02",
-    title: "Reddit",
-    subtext: "Your ICP is on Reddit right now asking questions your product answers.",
-    body: "Nobody is there representing you. We participate in the right communities, answer the right threads, and make sure when someone searches for your solution, your name comes up. Naturally. Not spammily.",
+    title: "Get Visible",
+    subtext: "LinkedIn personal branding and content ghostwriting",
+    details: [
+      "LinkedIn profile audit and full rewrite",
+      "Monthly content calendar",
+      "Ghostwritten posts in your voice",
+      "Engagement strategy",
+      "Follower growth and inbound lead tracking",
+    ],
   },
   {
     n: "03",
-    title: "Twitter / X",
-    subtext: "Twitter still moves fast in B2B SaaS.",
-    body: "A single thread from the right founder can do more pipeline in 24 hours than a month of cold email. We build your presence, write in your voice, and make sure you are part of the conversations your buyers are having.",
+    title: "Get Found",
+    subtext: "SEO, AEO, Reddit, and Twitter marketing",
+    details: [
+      "Keyword research and content gap analysis",
+      "Long-form SEO articles written and published",
+      "AEO optimisation for ChatGPT, Perplexity, and Google AI",
+      "Reddit community participation",
+      "Twitter content and engagement strategy",
+    ],
   },
 ];
 
@@ -76,18 +95,40 @@ export default function ServicesAccordion() {
               }}
             >
               <div style={{ minHeight: 0, overflow: "hidden" }}>
-                <p
+                <ul
                   style={{
-                    fontSize: "16px",
-                    lineHeight: 1.7,
-                    color: "#374151",
+                    listStyle: "none",
                     margin: "0 0 24px",
                     padding: "0 0 0 34px",
-                    maxWidth: "64ch",
+                    maxWidth: "62ch",
                   }}
                 >
-                  {it.body}
-                </p>
+                  {it.details.map((d) => (
+                    <li
+                      key={d}
+                      className="flex items-start gap-3"
+                      style={{
+                        fontSize: "16px",
+                        lineHeight: 1.6,
+                        color: "#374151",
+                        padding: "5px 0",
+                      }}
+                    >
+                      <span
+                        aria-hidden
+                        style={{
+                          marginTop: 9,
+                          flex: "0 0 auto",
+                          width: 5,
+                          height: 5,
+                          borderRadius: "50%",
+                          background: "#0a7c5c",
+                        }}
+                      />
+                      {d}
+                    </li>
+                  ))}
+                </ul>
               </div>
             </div>
           </div>
