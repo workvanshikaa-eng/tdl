@@ -6,7 +6,7 @@ const stats = [
 
 export default function StatsBar() {
   return (
-    <section style={{ background: "#0d0d0d", padding: "80px 24px" }}>
+    <section style={{ background: "#064e3b", padding: "80px 24px" }}>
       <div
         data-reveal
         className="mx-auto grid max-w-[1200px] grid-cols-3 max-[720px]:grid-cols-1 max-[720px]:gap-12"
@@ -14,7 +14,7 @@ export default function StatsBar() {
         {stats.map((s, i) => (
           <div
             key={i}
-            className={`text-center ${i > 0 ? "min-[721px]:border-l min-[721px]:border-[#1f1f1f]" : ""}`}
+            className={`text-center ${i > 0 ? "min-[721px]:border-l min-[721px]:border-[rgba(255,255,255,0.14)]" : ""}`}
           >
             <div
               style={{
@@ -33,7 +33,7 @@ export default function StatsBar() {
                 fontFamily: "var(--font-jetbrains), ui-monospace, monospace",
                 fontSize: "13px",
                 letterSpacing: "0.08em",
-                color: "#6b7280",
+                color: "rgba(255,255,255,0.6)",
                 marginTop: "16px",
               }}
             >

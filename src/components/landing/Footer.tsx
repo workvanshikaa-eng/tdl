@@ -20,7 +20,7 @@ const heading: React.CSSProperties = {
   fontSize: "11px",
   letterSpacing: "0.18em",
   textTransform: "uppercase",
-  color: "#6b7280",
+  color: "rgba(255,255,255,0.5)",
 };
 
 const pill: React.CSSProperties = {
@@ -28,18 +28,18 @@ const pill: React.CSSProperties = {
   fontSize: "11px",
   letterSpacing: "0.1em",
   textTransform: "uppercase",
-  color: "#6b7280",
-  border: "1px solid #333333",
+  color: "rgba(255,255,255,0.6)",
+  border: "1px solid rgba(255,255,255,0.22)",
   borderRadius: 9999,
   padding: "5px 14px",
   whiteSpace: "nowrap",
 };
 
-const bottomText: React.CSSProperties = { fontSize: "12px", color: "#6b7280" };
+const bottomText: React.CSSProperties = { fontSize: "12px", color: "rgba(255,255,255,0.55)" };
 
 export default function Footer() {
   return (
-    <footer style={{ background: "#0d0d0d" }}>
+    <footer style={{ background: "#064e3b" }}>
       {/* Top: four columns */}
       <div className="mx-auto grid max-w-[1200px] gap-12 px-6 py-[72px] min-[641px]:grid-cols-2 min-[961px]:grid-cols-4">
         {/* Column 1 */}
@@ -47,7 +47,7 @@ export default function Footer() {
           <div style={{ fontSize: "18px", fontWeight: 700, color: "#ffffff" }}>
             {siteConfig.name}
           </div>
-          <div style={{ fontSize: "13px", color: "#6b7280", marginTop: 10 }}>
+          <div style={{ fontSize: "13px", color: "rgba(255,255,255,0.6)", marginTop: 10 }}>
             Distribution as a service.
           </div>
           <div className="mt-5 flex flex-wrap gap-2">
@@ -65,7 +65,7 @@ export default function Footer() {
                 key={l.href}
                 href={l.href}
                 className="no-underline transition-colors hover:text-white"
-                style={{ fontSize: "14px", color: "#9ca3af" }}
+                style={{ fontSize: "14px", color: "rgba(255,255,255,0.7)" }}
               >
                 {l.label}
               </Link>
@@ -91,7 +91,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener"
                 className="no-underline transition-colors hover:text-white"
-                style={{ fontSize: "14px", color: "#9ca3af" }}
+                style={{ fontSize: "14px", color: "rgba(255,255,255,0.7)" }}
               >
                 {s.label}
               </a>
@@ -120,7 +120,7 @@ export default function Footer() {
       </div>
 
       {/* Bottom bar */}
-      <div style={{ background: "#080808" }}>
+      <div style={{ background: "#053f2e" }}>
         <div className="mx-auto flex max-w-[1200px] flex-wrap items-center justify-between gap-4 px-6 py-6">
           <span style={bottomText}>2024-2026 The Distribution Lab</span>
           <span
@@ -128,7 +128,7 @@ export default function Footer() {
               fontFamily: "var(--font-jetbrains), ui-monospace, monospace",
               fontSize: "11px",
               letterSpacing: "0.18em",
-              color: "#6b7280",
+              color: "rgba(255,255,255,0.5)",
             }}
           >
             Founder-led . Distribution . B2B SaaS
@@ -147,7 +147,7 @@ export default function Footer() {
               fontWeight: 800,
               letterSpacing: "-0.03em",
               lineHeight: 1,
-              color: "#1a1a1a",
+              color: "#0a5a44",
               textAlign: "center",
               whiteSpace: "nowrap",
             }}

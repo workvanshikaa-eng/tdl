@@ -109,7 +109,7 @@ export default function TurtlepicAudit() {
 
         {/* Signature readout panel */}
         <div className="mx-auto mt-16 max-w-[1000px]" data-reveal>
-          <div style={{ background: "#0d0d0d", borderRadius: 12, overflow: "hidden" }}>
+          <div style={{ background: "#064e3b", borderRadius: 12, overflow: "hidden" }}>
             <div className="flex items-center gap-2.5" style={{ padding: "13px 22px", borderBottom: "1px solid rgba(255,255,255,0.1)" }}>
               <span style={{ width: 7, height: 7, borderRadius: "50%", background: "rgba(255,255,255,0.22)" }} />
               <span style={{ width: 7, height: 7, borderRadius: "50%", background: "rgba(255,255,255,0.22)" }} />

@@ -62,9 +62,9 @@ export default function ClientMarquee() {
         >
           {groups.map((g) => (
             <div key={g} style={{ display: "flex", alignItems: "center", flex: "0 0 auto" }}>
-              {clients.map((name) => (
+              {[...clients, ...clients, ...clients].map((name, idx) => (
                 <div
-                  key={g + name}
+                  key={`${g}-${idx}`}
                   style={{ display: "flex", alignItems: "center", flex: "0 0 auto" }}
                 >
                   <span
