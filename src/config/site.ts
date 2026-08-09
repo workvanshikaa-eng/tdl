@@ -17,9 +17,9 @@ export const siteConfig = {
 
   /** Social. Update these handles/URLs to your real profiles. */
   instagramHandle: "@thedistributionlab",
-  instagramUrl: "https://instagram.com/thedistributionlab",
-  linkedinUrl: "https://www.linkedin.com/company/the-distribution-lab",
-  twitterUrl: "https://twitter.com/thedistlab",
+  instagramUrl: "https://www.instagram.com/thedistributionlab/",
+  linkedinUrl: "https://www.linkedin.com/company/thedistributionlab/",
+  twitterUrl: "https://x.com/LabDistribution",
 
   /** "From" details auto-filled onto generated invoices. Edit these freely. */
   invoiceFrom: {
