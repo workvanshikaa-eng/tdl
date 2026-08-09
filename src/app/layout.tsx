@@ -41,6 +41,11 @@ export const metadata: Metadata = {
     siteName: siteConfig.name,
     type: "website",
   },
+  verification: {
+    other: {
+      "msvalidate.01": "DFC31F7E38B90F45BD7648A905BC663E",
+    },
+  },
 };
 
 export default function RootLayout({
