@@ -1,6 +1,7 @@
 import Nav from "@/components/landing/Nav";
 import Footer from "@/components/landing/Footer";
 import ScrollReveal from "@/components/landing/ScrollReveal";
+import FloatingCta from "@/components/landing/FloatingCta";
 
 export default function MarketingLayout({
   children,
@@ -11,7 +12,7 @@ export default function MarketingLayout({
     <div
       style={{
         fontFamily: "var(--font-inter), system-ui, sans-serif",
-        background: "#ffffff",
+        background: "#f5f5f0",
         color: "#0d0d0d",
         overflowX: "hidden",
       }}
@@ -24,6 +25,7 @@ export default function MarketingLayout({
       <main>{children}</main>
       <Footer />
       <ScrollReveal />
+      <FloatingCta />
     </div>
   );
 }

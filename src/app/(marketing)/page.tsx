@@ -58,9 +58,9 @@ export default function Homepage() {
   return (
     <>
       {/* Hero */}
-      <section style={{ background: "#ffffff", padding: "clamp(90px,14vh,150px) 24px clamp(80px,12vh,120px)" }}>
+      <section className="tdl-hero-grid" style={{ background: "#f5f5f0", padding: "clamp(90px,14vh,150px) 24px clamp(80px,12vh,120px)" }}>
         <div className="mx-auto max-w-[1200px]" data-reveal>
-          <SectionLabel>Founder-led distribution</SectionLabel>
+          <SectionLabel num="01">Founder-led distribution</SectionLabel>
           <h1
             style={{
               fontSize: "clamp(44px,9vw,104px)",
@@ -99,6 +99,23 @@ export default function Homepage() {
               See our work →
             </Link>
           </div>
+          <div className="mt-8 flex flex-wrap gap-2">
+            {["LinkedIn", "Reddit", "Twitter / X", "Organic only"].map((t) => (
+              <span
+                key={t}
+                style={{
+                  border: "1px solid #d1d5db",
+                  borderRadius: 9999,
+                  padding: "4px 14px",
+                  fontSize: "12px",
+                  color: "#6b7280",
+                  letterSpacing: "0.04em",
+                }}
+              >
+                {t}
+              </span>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -107,11 +124,11 @@ export default function Homepage() {
       <StatsBar />
 
       {/* Featured work */}
-      <section style={{ background: "#ffffff", padding: "clamp(80px,12vh,120px) 24px" }}>
+      <section style={{ background: "#f5f5f0", padding: "clamp(80px,12vh,120px) 24px" }}>
         <div className="mx-auto max-w-[1200px]">
           <div className="flex flex-wrap items-end justify-between gap-6" data-reveal>
             <div>
-              <SectionLabel>Featured work</SectionLabel>
+              <SectionLabel num="02">Featured work</SectionLabel>
               <h2
                 style={{
                   fontSize: "clamp(30px,5vw,52px)",
@@ -185,7 +202,7 @@ export default function Homepage() {
       <section style={{ background: "#f9fafb", padding: "clamp(80px,12vh,120px) 24px" }}>
         <div className="mx-auto max-w-[1200px]">
           <div className="max-w-[680px]" data-reveal>
-            <SectionLabel>What we do</SectionLabel>
+            <SectionLabel num="03">What we do</SectionLabel>
             <h2
               style={{
                 fontSize: "clamp(28px,4vw,44px)",
@@ -264,14 +281,14 @@ export default function Homepage() {
       <PullQuote />
 
       {/* About tease */}
-      <section style={{ background: "#ffffff", padding: "clamp(80px,12vh,120px) 24px" }}>
+      <section style={{ background: "#f5f5f0", padding: "clamp(80px,12vh,120px) 24px" }}>
         <div
           data-reveal
           className="mx-auto grid max-w-[1200px] items-center gap-14 min-[861px]:grid-cols-[0.8fr_1.1fr]"
         >
           <FounderPhoto />
           <div>
-            <SectionLabel>About</SectionLabel>
+            <SectionLabel num="04">About</SectionLabel>
             <h2
               style={{
                 fontSize: "clamp(28px,4vw,44px)",
@@ -299,6 +316,23 @@ export default function Homepage() {
                 US, UK, UAE.
               </p>
             </div>
+            <div className="mt-7 flex flex-wrap gap-2">
+              {["Founder-led", "End-to-end execution"].map((t) => (
+                <span
+                  key={t}
+                  style={{
+                    border: "1px solid #d1d5db",
+                    borderRadius: 9999,
+                    padding: "4px 14px",
+                    fontSize: "12px",
+                    color: "#6b7280",
+                    letterSpacing: "0.04em",
+                  }}
+                >
+                  {t}
+                </span>
+              ))}
+            </div>
             <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-4">
               <Link href="/about" className="no-underline" style={linkMono}>
                 More about us →
@@ -310,10 +344,10 @@ export default function Homepage() {
       </section>
 
       {/* FAQ */}
-      <section style={{ background: "#ffffff", padding: "clamp(80px,12vh,120px) 24px" }}>
+      <section style={{ background: "#f5f5f0", padding: "clamp(80px,12vh,120px) 24px" }}>
         <div className="mx-auto max-w-[820px]">
           <div data-reveal>
-            <SectionLabel>FAQ</SectionLabel>
+            <SectionLabel num="05">FAQ</SectionLabel>
             <h2
               style={{
                 fontSize: "clamp(28px,4vw,44px)",

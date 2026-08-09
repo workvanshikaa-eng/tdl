@@ -77,7 +77,7 @@ export default function TurtlepicAudit() {
   return (
     <>
       {/* Hero */}
-      <section style={{ background: "#ffffff", padding: "clamp(80px,12vh,120px) 24px 0" }}>
+      <section style={{ background: "#f5f5f0", padding: "clamp(80px,12vh,120px) 24px 0" }}>
         <div className="mx-auto max-w-[1000px]" data-reveal>
           <div className="flex items-center gap-4">
             <SectionLabel>Audit / AI SaaS / India</SectionLabel>
@@ -147,7 +147,7 @@ export default function TurtlepicAudit() {
       </section>
 
       {/* Spec strip */}
-      <section style={{ background: "#ffffff", padding: "clamp(56px,8vh,80px) 24px 0" }}>
+      <section style={{ background: "#f5f5f0", padding: "clamp(56px,8vh,80px) 24px 0" }}>
         <div
           className="mx-auto max-w-[1000px] grid gap-8 min-[601px]:grid-cols-4"
           style={{ borderTop: "1px solid #e5e7eb", borderBottom: "1px solid #e5e7eb", padding: "34px 0" }}
@@ -165,7 +165,7 @@ export default function TurtlepicAudit() {
       </section>
 
       {/* The brief */}
-      <section style={{ background: "#ffffff", padding: "clamp(70px,10vh,100px) 24px" }}>
+      <section style={{ background: "#f5f5f0", padding: "clamp(70px,10vh,100px) 24px" }}>
         <div className="mx-auto max-w-[680px]">
           <div data-reveal>
             <SectionLabel>The brief we were given</SectionLabel>
@@ -266,7 +266,7 @@ export default function TurtlepicAudit() {
       </section>
 
       {/* Method */}
-      <section style={{ background: "#ffffff", padding: "clamp(80px,12vh,110px) 24px" }}>
+      <section style={{ background: "#f5f5f0", padding: "clamp(80px,12vh,110px) 24px" }}>
         <div className="mx-auto max-w-[1000px]">
           <div className="max-w-[680px]" data-reveal>
             <SectionLabel>Method</SectionLabel>
@@ -295,7 +295,7 @@ export default function TurtlepicAudit() {
       </section>
 
       {/* Deliverables */}
-      <section style={{ background: "#ffffff", padding: "0 24px clamp(80px,12vh,110px)" }}>
+      <section style={{ background: "#f5f5f0", padding: "0 24px clamp(80px,12vh,110px)" }}>
         <div className="mx-auto max-w-[680px]">
           <div data-reveal>
             <SectionLabel>What was built</SectionLabel>
@@ -319,7 +319,7 @@ export default function TurtlepicAudit() {
 
           <div
             data-reveal
-            style={{ marginTop: 44, background: "#ffffff", border: "1px solid #e5e7eb", borderLeft: "2px solid #064e3b", padding: "26px 30px" }}
+            style={{ marginTop: 44, background: "#f5f5f0", border: "1px solid #e5e7eb", borderLeft: "2px solid #064e3b", padding: "26px 30px" }}
           >
             <div style={{ ...mono, fontSize: "11px", letterSpacing: "0.16em", textTransform: "uppercase", color: "#0a7c5c", marginBottom: 12 }}>
               On results

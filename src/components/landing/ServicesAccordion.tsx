@@ -55,7 +55,7 @@ export default function ServicesAccordion() {
               type="button"
               onClick={() => setOpen(isOpen ? -1 : i)}
               aria-expanded={isOpen}
-              className="flex w-full cursor-pointer items-center gap-5 border-none py-6 text-left transition-colors hover:bg-[#f9fafb]"
+              className="flex w-full cursor-pointer items-center gap-5 border-none py-6 text-left transition-colors hover:bg-[#ffffff]"
               style={{ background: "transparent" }}
             >
               <span style={{ fontSize: "13px", fontWeight: 700, color: "#064e3b" }}>
@@ -98,9 +98,10 @@ export default function ServicesAccordion() {
                 <ul
                   style={{
                     listStyle: "none",
-                    margin: "0 0 24px",
-                    padding: "0 0 0 34px",
+                    margin: "0 0 24px 20px",
+                    padding: "4px 0 4px 24px",
                     maxWidth: "62ch",
+                    borderLeft: "3px solid #064e3b",
                   }}
                 >
                   {it.details.map((d) => (

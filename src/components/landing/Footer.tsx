@@ -1,4 +1,13 @@
+import Link from "next/link";
 import { siteConfig } from "@/config/site";
+
+const navLinks = [
+  { label: "Home", href: "/" },
+  { label: "Work", href: "/work" },
+  { label: "About", href: "/about" },
+  { label: "Services", href: "/services" },
+  { label: "Contact", href: "/contact" },
+];
 
 const socials = [
   { label: "LinkedIn", href: siteConfig.linkedinUrl },
@@ -6,65 +15,145 @@ const socials = [
   { label: "Instagram", href: siteConfig.instagramUrl },
 ];
 
-const mono: React.CSSProperties = {
+const heading: React.CSSProperties = {
   fontFamily: "var(--font-jetbrains), ui-monospace, monospace",
+  fontSize: "11px",
+  letterSpacing: "0.18em",
   textTransform: "uppercase",
-  letterSpacing: "0.14em",
-  fontSize: "12px",
+  color: "#6b7280",
 };
 
-export default function Footer() {
-  const year = new Date().getFullYear();
+const pill: React.CSSProperties = {
+  fontFamily: "var(--font-jetbrains), ui-monospace, monospace",
+  fontSize: "11px",
+  letterSpacing: "0.1em",
+  textTransform: "uppercase",
+  color: "#6b7280",
+  border: "1px solid #333333",
+  borderRadius: 9999,
+  padding: "5px 14px",
+  whiteSpace: "nowrap",
+};
 
+const bottomText: React.CSSProperties = { fontSize: "12px", color: "#6b7280" };
+
+export default function Footer() {
   return (
-    <footer style={{ background: "#ffffff", borderTop: "1px solid #eceeec" }}>
-      <div className="mx-auto grid max-w-[1200px] gap-8 px-6 py-[64px] min-[721px]:grid-cols-2">
+    <footer style={{ background: "#0d0d0d" }}>
+      {/* Top: four columns */}
+      <div className="mx-auto grid max-w-[1200px] gap-12 px-6 py-[72px] min-[641px]:grid-cols-2 min-[961px]:grid-cols-4">
+        {/* Column 1 */}
         <div>
-          <div style={{ fontSize: "18px", fontWeight: 600, color: "#0d0d0d" }}>
+          <div style={{ fontSize: "18px", fontWeight: 700, color: "#ffffff" }}>
             {siteConfig.name}
-            <sup style={{ fontSize: "10px", color: "#0a7c5c", marginLeft: 2 }}>®</sup>
           </div>
-          <div style={{ ...mono, color: "#6b7280", marginTop: "12px" }}>
-            Distribution as a service
+          <div style={{ fontSize: "13px", color: "#6b7280", marginTop: 10 }}>
+            Distribution as a service.
+          </div>
+          <div className="mt-5 flex flex-wrap gap-2">
+            <span style={pill}>Est. 2024</span>
+            <span style={pill}>Remote. Global</span>
           </div>
         </div>
-        <div className="min-[721px]:text-right">
+
+        {/* Column 2 */}
+        <div>
+          <div style={heading}>Navigation</div>
+          <div className="mt-5 flex flex-col gap-3">
+            {navLinks.map((l) => (
+              <Link
+                key={l.href}
+                href={l.href}
+                className="no-underline transition-colors hover:text-white"
+                style={{ fontSize: "14px", color: "#9ca3af" }}
+              >
+                {l.label}
+              </Link>
+            ))}
+          </div>
+        </div>
+
+        {/* Column 3 */}
+        <div>
+          <div style={heading}>Contact</div>
           <a
             href={`mailto:${siteConfig.contactEmail}`}
-            className="no-underline"
-            style={{ fontSize: "15px", color: "#0d0d0d" }}
+            className="mt-5 block no-underline"
+            style={{ fontSize: "14px", color: "#ffffff" }}
           >
             {siteConfig.contactEmail}
           </a>
-          <div className="mt-5 flex gap-6 min-[721px]:justify-end">
+          <div className="mt-4 flex flex-col gap-3">
             {socials.map((s) => (
               <a
                 key={s.label}
                 href={s.href}
                 target="_blank"
                 rel="noopener"
-                className="no-underline transition-colors hover:text-[#064e3b]"
-                style={{ ...mono, fontSize: "11px", color: "#6b7280" }}
+                className="no-underline transition-colors hover:text-white"
+                style={{ fontSize: "14px", color: "#9ca3af" }}
               >
                 {s.label}
               </a>
             ))}
           </div>
         </div>
+
+        {/* Column 4 */}
+        <div>
+          <div style={heading}>Start a project</div>
+          <Link
+            href="/contact"
+            className="tdl-footer-cta mt-5 inline-flex items-center rounded-full no-underline"
+            style={{
+              border: "1px solid #ffffff",
+              color: "#ffffff",
+              background: "transparent",
+              padding: "11px 24px",
+              fontSize: "14px",
+              fontWeight: 500,
+            }}
+          >
+            Start a Project
+          </Link>
+        </div>
       </div>
 
-      <div style={{ borderTop: "1px solid #eceeec" }}>
-        <div className="mx-auto flex max-w-[1200px] flex-wrap items-center justify-between gap-3 px-6 py-6">
-          <span style={{ ...mono, fontSize: "11px", color: "#9aa9a2" }}>
-            © {year} {siteConfig.name}
-          </span>
-          <a
-            href="/privacy"
-            className="no-underline"
-            style={{ ...mono, fontSize: "11px", color: "#9aa9a2" }}
+      {/* Bottom bar */}
+      <div style={{ background: "#080808" }}>
+        <div className="mx-auto flex max-w-[1200px] flex-wrap items-center justify-between gap-4 px-6 py-6">
+          <span style={bottomText}>2024-2026 The Distribution Lab</span>
+          <span
+            style={{
+              fontFamily: "var(--font-jetbrains), ui-monospace, monospace",
+              fontSize: "11px",
+              letterSpacing: "0.18em",
+              color: "#6b7280",
+            }}
           >
-            Privacy
+            Founder-led . Distribution . B2B SaaS
+          </span>
+          <a href={`mailto:${siteConfig.contactEmail}`} className="no-underline" style={bottomText}>
+            {siteConfig.contactEmail}
           </a>
+        </div>
+
+        {/* Oversized brand statement */}
+        <div style={{ overflow: "hidden", padding: "8px 0 20px" }}>
+          <div
+            aria-hidden
+            style={{
+              fontSize: "10vw",
+              fontWeight: 800,
+              letterSpacing: "-0.03em",
+              lineHeight: 1,
+              color: "#1a1a1a",
+              textAlign: "center",
+              whiteSpace: "nowrap",
+            }}
+          >
+            The Distribution Lab
+          </div>
         </div>
       </div>
     </footer>

@@ -45,7 +45,7 @@ body {
 }
 
 body {
-  background: #ffffff;
+  background: #f5f5f0;
   color: var(--tdl-ink);
   font-family: var(--font-inter), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -95,9 +95,14 @@ body {
     box-shadow 0.2s ease,
     transform 0.2s ease;
 }
+.tdl-card {
+  transition:
+    box-shadow 0.25s ease,
+    transform 0.25s ease;
+}
 .tdl-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
 }
 
 /* Nav link: underline slides in from the left on hover */
@@ -111,12 +116,12 @@ body {
   position: absolute;
   left: 0;
   bottom: -5px;
-  height: 1.5px;
+  height: 1px;
   width: 100%;
   background: #064e3b;
   transform: scaleX(0);
   transform-origin: left;
-  transition: transform 0.2s ease;
+  transition: transform 0.3s ease;
 }
 .nav-link:hover,
 .nav-link[data-active="true"] {
@@ -176,6 +181,120 @@ body {
 /* Marquee track — pause on hover of the parent .tdl-mq */
 .tdl-mq:hover .tdl-mq-track {
   animation-play-state: paused;
+}
+
+/* ============================================================
+   Crestify-style enhancements
+   ============================================================ */
+
+/* Hero: subtle 12-column vertical grid texture (fixed, not animated) */
+.tdl-hero-grid {
+  position: relative;
+}
+.tdl-hero-grid::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(
+    to right,
+    rgba(6, 78, 59, 0.04) 1px,
+    transparent 1px
+  );
+  background-size: calc(100% / 12) 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+.tdl-hero-grid > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Pull quote: subtle repeating dot texture */
+.tdl-dots {
+  position: relative;
+}
+.tdl-dots::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(10, 124, 92, 0.2) 1px, transparent 1px);
+  background-size: 28px 28px;
+  pointer-events: none;
+}
+.tdl-dots > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Section-label underline: draws in when its section scrolls into view */
+.tdl-seclabel-underline {
+  display: block;
+  height: 1px;
+  width: 100%;
+  margin-top: 6px;
+  background: #064e3b;
+  transform: scaleX(1);
+  transform-origin: left;
+  transition: transform 0.6s ease;
+}
+[data-reveal]:not(.revealed) .tdl-seclabel-underline {
+  transform: scaleX(0);
+}
+
+/* Scroll progress bar — sits behind nav content, fills left to right */
+.tdl-progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 2px;
+  width: 100%;
+  transform: scaleX(0);
+  transform-origin: left;
+  background: #064e3b;
+  z-index: 0;
+}
+
+/* Floating CTA — fades/slides in after the hero */
+.tdl-fab {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 90;
+  opacity: 0;
+  transform: translateY(12px);
+  pointer-events: none;
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease,
+    background-color 0.2s ease,
+    scale 0.2s ease;
+}
+.tdl-fab.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+.tdl-fab:hover {
+  background: #0a7c5c;
+  scale: 1.02;
+}
+
+/* Footer outline CTA button */
+.tdl-footer-cta {
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+.tdl-footer-cta:hover {
+  background: #064e3b !important;
+  border-color: #064e3b !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tdl-seclabel-underline,
+  .tdl-fab {
+    transition: none;
+  }
 }
 
 /* ============================================================

@@ -6,30 +6,23 @@ const stats = [
 
 export default function StatsBar() {
   return (
-    <section
-      style={{
-        background: "#ffffff",
-        padding: "64px 24px",
-        borderTop: "1px solid #eceeec",
-        borderBottom: "1px solid #eceeec",
-      }}
-    >
+    <section style={{ background: "#0d0d0d", padding: "80px 24px" }}>
       <div
         data-reveal
-        className="mx-auto grid max-w-[1200px] grid-cols-3 max-[720px]:grid-cols-1 max-[720px]:gap-10"
+        className="mx-auto grid max-w-[1200px] grid-cols-3 max-[720px]:grid-cols-1 max-[720px]:gap-12"
       >
         {stats.map((s, i) => (
           <div
             key={i}
-            className={`text-center ${i > 0 ? "min-[721px]:border-l min-[721px]:border-[#eceeec]" : ""}`}
+            className={`text-center ${i > 0 ? "min-[721px]:border-l min-[721px]:border-[#1f1f1f]" : ""}`}
           >
             <div
               style={{
-                fontSize: "clamp(40px,5vw,54px)",
-                fontWeight: 600,
+                fontSize: "clamp(44px,7vw,64px)",
+                fontWeight: 700,
                 letterSpacing: "-0.03em",
                 lineHeight: 1,
-                color: "#064e3b",
+                color: "#ffffff",
               }}
             >
               {s.value}
@@ -38,10 +31,10 @@ export default function StatsBar() {
               className="uppercase"
               style={{
                 fontFamily: "var(--font-jetbrains), ui-monospace, monospace",
-                fontSize: "11px",
-                letterSpacing: "0.14em",
+                fontSize: "13px",
+                letterSpacing: "0.08em",
                 color: "#6b7280",
-                marginTop: "14px",
+                marginTop: "16px",
               }}
             >
               {s.label}

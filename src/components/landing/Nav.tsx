@@ -22,12 +22,21 @@ const monoLabel: React.CSSProperties = {
 export default function Nav() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
+  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
+    const onScroll = () => {
+      setScrolled(window.scrollY > 8);
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      setProgress(max > 0 ? Math.min(window.scrollY / max, 1) : 0);
+    };
     window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll, { passive: true });
     onScroll();
-    return () => window.removeEventListener("scroll", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
   }, []);
 
   return (
@@ -36,13 +45,21 @@ export default function Nav() {
         position: "sticky",
         top: 0,
         zIndex: 100,
-        background: scrolled ? "rgba(255,255,255,0.85)" : "#ffffff",
+        background: scrolled ? "rgba(245,245,240,0.85)" : "#f5f5f0",
         backdropFilter: scrolled ? "saturate(180%) blur(10px)" : "none",
-        borderBottom: `1px solid ${scrolled ? "#eceeec" : "transparent"}`,
+        borderBottom: `1px solid ${scrolled ? "#e4e2da" : "transparent"}`,
         transition: "background 0.25s ease, border-color 0.25s ease",
       }}
     >
-      <div className="mx-auto flex h-[72px] max-w-[1200px] items-center justify-between gap-6 px-6">
+      <span
+        className="tdl-progress"
+        aria-hidden
+        style={{ transform: `scaleX(${progress})` }}
+      />
+      <div
+        className="mx-auto flex h-[72px] max-w-[1200px] items-center justify-between gap-6 px-6"
+        style={{ position: "relative", zIndex: 1 }}
+      >
         <Link
           href="/"
           className="no-underline"

@@ -22,7 +22,7 @@ export default function AboutPage() {
   return (
     <>
       {/* Hero */}
-      <section style={{ background: "#ffffff", padding: "120px 24px 80px" }}>
+      <section style={{ background: "#f5f5f0", padding: "120px 24px 80px" }}>
         <div className="mx-auto max-w-[1200px]" data-reveal>
           <h1
             style={{
@@ -43,7 +43,7 @@ export default function AboutPage() {
       </section>
 
       {/* Story */}
-      <section style={{ background: "#ffffff", padding: "40px 24px 100px" }}>
+      <section style={{ background: "#f5f5f0", padding: "40px 24px 100px" }}>
         <div
           data-reveal
           className="mx-auto grid max-w-[1200px] items-start gap-14 min-[861px]:grid-cols-[0.8fr_1.1fr]"
@@ -66,10 +66,10 @@ export default function AboutPage() {
       </section>
 
       {/* Values */}
-      <section style={{ background: "#ffffff", padding: "0 24px 100px" }}>
+      <section style={{ background: "#f5f5f0", padding: "0 24px 100px" }}>
         <div className="mx-auto max-w-[1200px]">
           <div data-reveal>
-            <SectionLabel>Values</SectionLabel>
+            <SectionLabel num="01">Values</SectionLabel>
           </div>
           <div className="mx-auto mt-8 max-w-[880px]">
             {values.map((v, i) => (

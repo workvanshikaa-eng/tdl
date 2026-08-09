@@ -15,9 +15,9 @@ export default function ServicesPage() {
   return (
     <>
       {/* Block 1: channel pills */}
-      <section style={{ background: "#ffffff", padding: "120px 24px 40px" }}>
+      <section style={{ background: "#f5f5f0", padding: "120px 24px 40px" }}>
         <div className="mx-auto max-w-[1200px]" data-reveal>
-          <SectionLabel>Services</SectionLabel>
+          <SectionLabel num="01">Services</SectionLabel>
           <div className="mt-8">
             <ChannelPills />
           </div>
@@ -25,7 +25,7 @@ export default function ServicesPage() {
       </section>
 
       {/* Block 2: full accordion */}
-      <section style={{ background: "#ffffff", padding: "70px 24px 100px" }}>
+      <section style={{ background: "#f5f5f0", padding: "70px 24px 100px" }}>
         <div className="mx-auto max-w-[1200px]">
           <div data-reveal>
             <h1
@@ -55,7 +55,7 @@ export default function ServicesPage() {
       <section style={{ background: "#f9fafb", padding: "100px 24px" }}>
         <div className="mx-auto max-w-[1200px]">
           <div data-reveal>
-            <SectionLabel>How we work</SectionLabel>
+            <SectionLabel num="02">How we work</SectionLabel>
           </div>
           <div className="mt-12 grid gap-x-12 gap-y-14 min-[721px]:grid-cols-3">
             {steps.map((s, i) => (

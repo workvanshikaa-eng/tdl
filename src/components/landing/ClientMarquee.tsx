@@ -19,9 +19,9 @@ export default function ClientMarquee() {
   return (
     <section
       style={{
-        background: "#ffffff",
-        borderTop: "1px solid #eceeec",
-        borderBottom: "1px solid #eceeec",
+        background: "#f5f5f0",
+        borderTop: "1px solid #e4e2da",
+        borderBottom: "1px solid #e4e2da",
         padding: "40px 0",
       }}
     >
@@ -69,17 +69,17 @@ export default function ClientMarquee() {
                 >
                   <span
                     style={{
-                      fontSize: "clamp(20px,2.6vw,30px)",
-                      fontWeight: 600,
-                      letterSpacing: "-0.02em",
+                      fontSize: "15px",
+                      fontWeight: 500,
+                      letterSpacing: "0.01em",
                       color: "#0d0d0d",
-                      padding: "0 34px",
+                      padding: "0 22px",
                       whiteSpace: "nowrap",
                     }}
                   >
                     {name}
                   </span>
-                  <Spark size={12} color="#cfe6dc" />
+                  <Spark size={11} color="#064e3b" />
                 </div>
               ))}
             </div>

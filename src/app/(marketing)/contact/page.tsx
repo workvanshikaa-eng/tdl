@@ -5,7 +5,7 @@ export const metadata = { title: "Contact" };
 
 export default function ContactPage() {
   return (
-    <section style={{ background: "#ffffff", padding: "120px 24px 100px" }}>
+    <section style={{ background: "#f5f5f0", padding: "120px 24px 100px" }}>
       <div className="mx-auto max-w-[600px] text-center" data-reveal>
         <h1
           style={{

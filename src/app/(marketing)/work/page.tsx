@@ -22,6 +22,8 @@ const flagship = {
 
 const cases = [
   {
+    metric: "93K",
+    metricLabel: "Impressions, 90 days",
     label: "SEO / Search Console audit",
     client: "TurtlePic",
     metrics: ["93K impressions / 90d", "2.3% CTR", "272 URLs audited"],
@@ -29,12 +31,16 @@ const cases = [
     href: "/work/turtlepic",
   },
   {
+    metric: "50K+",
+    metricLabel: "Organic reach",
     label: "Content and distribution",
     client: "Mockzy (mockzy.app)",
     metrics: ["50,000+ organic reach", "0 ad spend", "0 influencers"],
     body: "Product was at under 100 impressions per post. We engineered a content architecture around the build-in-public community. It compounded fast.",
   },
   {
+    metric: "0",
+    metricLabel: "Ad spend",
     label: "Community and distribution",
     client: "Sked Club (sked.club)",
     metrics: ["High-intent leads", "Community building", "0 ad spend"],
@@ -46,9 +52,9 @@ export default function WorkPage() {
   return (
     <>
       {/* Hero */}
-      <section style={{ background: "#ffffff", padding: "clamp(80px,12vh,120px) 24px 60px" }}>
+      <section style={{ background: "#f5f5f0", padding: "clamp(80px,12vh,120px) 24px 60px" }}>
         <div className="mx-auto max-w-[1200px]" data-reveal>
-          <SectionLabel>Selected work</SectionLabel>
+          <SectionLabel num="01">Selected work</SectionLabel>
           <h1
             style={{
               fontSize: "clamp(40px,7vw,80px)",
@@ -69,7 +75,7 @@ export default function WorkPage() {
       </section>
 
       {/* Flagship case */}
-      <section style={{ background: "#ffffff", padding: "0 24px clamp(60px,8vh,80px)" }}>
+      <section style={{ background: "#f5f5f0", padding: "0 24px clamp(60px,8vh,80px)" }}>
         <Link
           href={flagship.href}
           data-reveal
@@ -125,7 +131,7 @@ export default function WorkPage() {
       </section>
 
       {/* Other cases */}
-      <section style={{ background: "#ffffff", padding: "0 24px clamp(80px,12vh,120px)" }}>
+      <section style={{ background: "#f5f5f0", padding: "0 24px clamp(80px,12vh,120px)" }}>
         <div className="mx-auto max-w-[1200px]">
           <div className="grid gap-6 min-[721px]:grid-cols-3">
             {cases.map((c, i) => {
@@ -133,12 +139,16 @@ export default function WorkPage() {
               const cardStyle = {
                 background: "#ffffff",
                 border: "1px solid #e5e7eb",
-                borderTop: "4px solid #064e3b",
-                borderRadius: 10,
+                borderTop: "3px solid #064e3b",
+                borderRadius: 6,
                 padding: 32,
               } as const;
               const inner = (
                 <>
+                  <div style={{ fontSize: "36px", fontWeight: 700, letterSpacing: "-0.02em", lineHeight: 1, color: "#064e3b" }}>
+                    {c.metric}
+                  </div>
+                  <div style={{ fontSize: "12px", color: "#6b7280", margin: "6px 0 20px" }}>{c.metricLabel}</div>
                   <div style={{ ...mono, fontSize: "11px", color: "#0a7c5c" }}>{c.label}</div>
                   <div style={{ fontSize: "18px", fontWeight: 600, color: "#0d0d0d", margin: "12px 0 0" }}>
                     {c.client}

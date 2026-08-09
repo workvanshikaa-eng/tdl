@@ -5,7 +5,7 @@ import SectionLabel from "./SectionLabel";
 /** Pre-footer conversion band ("Ready to build your pipeline?"). */
 export default function FooterCta() {
   return (
-    <section style={{ background: "#f9fafb", padding: "130px 24px" }} className="text-center">
+    <section style={{ background: "#0d0d0d", padding: "130px 24px" }} className="text-center">
       <div className="mx-auto max-w-[900px]" data-reveal>
         <div className="flex justify-center">
           <SectionLabel>Start a project</SectionLabel>
@@ -16,7 +16,7 @@ export default function FooterCta() {
             fontWeight: 600,
             lineHeight: 1.05,
             letterSpacing: "-0.03em",
-            color: "#0d0d0d",
+            color: "#ffffff",
             margin: "22px 0 0",
           }}
         >
@@ -44,6 +44,7 @@ export default function FooterCta() {
               textTransform: "uppercase",
               letterSpacing: "0.14em",
               fontSize: "13px",
+              boxShadow: "0 0 24px rgba(6,78,59,0.4)",
             }}
           >
             <Spark size={12} color="#ffffff" />

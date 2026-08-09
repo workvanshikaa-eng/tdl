@@ -112,7 +112,7 @@ export default function TalentGptCaseStudy() {
   return (
     <>
       {/* Hero */}
-      <section style={{ background: "#ffffff", padding: "clamp(80px,12vh,120px) 24px 60px" }}>
+      <section style={{ background: "#f5f5f0", padding: "clamp(80px,12vh,120px) 24px 60px" }}>
         <div className="mx-auto max-w-[1000px]" data-reveal>
           <div className="flex items-center gap-4">
             <SectionLabel>Case study / LinkedIn</SectionLabel>
@@ -147,7 +147,7 @@ export default function TalentGptCaseStudy() {
       </section>
 
       {/* Hero metrics band */}
-      <section style={{ background: "#ffffff", padding: "0 24px 20px" }}>
+      <section style={{ background: "#f5f5f0", padding: "0 24px 20px" }}>
         <div
           data-reveal
           className="mx-auto grid max-w-[1000px] gap-px overflow-hidden min-[601px]:grid-cols-4"
@@ -173,7 +173,7 @@ export default function TalentGptCaseStudy() {
       </section>
 
       {/* The challenge */}
-      <section style={{ background: "#ffffff", padding: "clamp(70px,10vh,100px) 24px 0" }}>
+      <section style={{ background: "#f5f5f0", padding: "clamp(70px,10vh,100px) 24px 0" }}>
         <div className="mx-auto max-w-[720px]" data-reveal>
           <SectionLabel>The challenge</SectionLabel>
           <p style={{ fontSize: "19px", lineHeight: 1.75, color: "#374151", margin: "24px 0 0" }}>
@@ -188,7 +188,7 @@ export default function TalentGptCaseStudy() {
       </section>
 
       {/* Strategy */}
-      <section style={{ background: "#ffffff", padding: "clamp(70px,10vh,100px) 24px 0" }}>
+      <section style={{ background: "#f5f5f0", padding: "clamp(70px,10vh,100px) 24px 0" }}>
         <div className="mx-auto max-w-[1000px]">
           <div className="max-w-[720px]" data-reveal>
             <SectionLabel>Strategy & solution</SectionLabel>
