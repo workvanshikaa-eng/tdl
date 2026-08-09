@@ -41,6 +41,10 @@ export default function ContactPage() {
         Or email{" "}
         <a href={`mailto:${siteConfig.contactEmail}`} style={{ color: "#064e3b" }}>
           {siteConfig.contactEmail}
+        </a>{" "}
+        or call{" "}
+        <a href={`tel:${siteConfig.phoneTel}`} style={{ color: "#064e3b" }}>
+          {siteConfig.phone}
         </a>
       </p>
     </section>

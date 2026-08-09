@@ -13,7 +13,11 @@ export const siteConfig = {
   calendlyUrl: "https://calendly.com/vanshicka/30min",
 
   /** Public contact email. */
-  contactEmail: "thedistributionlab@gmail.com",
+  contactEmail: "hello@thedistributionlab.com",
+
+  /** Public contact phone. */
+  phone: "+91 9936269906",
+  phoneTel: "+919936269906",
 
   /** Social. Update these handles/URLs to your real profiles. */
   instagramHandle: "@thedistributionlab",

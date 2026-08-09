@@ -99,23 +99,6 @@ export default function Homepage() {
               See our work →
             </Link>
           </div>
-          <div className="mt-8 flex flex-wrap gap-2">
-            {["LinkedIn", "Reddit", "Twitter / X", "Organic only"].map((t) => (
-              <span
-                key={t}
-                style={{
-                  border: "1px solid #d1d5db",
-                  borderRadius: 9999,
-                  padding: "4px 14px",
-                  fontSize: "12px",
-                  color: "#6b7280",
-                  letterSpacing: "0.04em",
-                }}
-              >
-                {t}
-              </span>
-            ))}
-          </div>
         </div>
       </section>
 

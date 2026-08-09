@@ -83,6 +83,13 @@ export default function Footer() {
           >
             {siteConfig.contactEmail}
           </a>
+          <a
+            href={`tel:${siteConfig.phoneTel}`}
+            className="mt-2 block no-underline"
+            style={{ fontSize: "14px", color: "rgba(255,255,255,0.7)" }}
+          >
+            {siteConfig.phone}
+          </a>
           <div className="mt-4 flex flex-col gap-3">
             {socials.map((s) => (
               <a
