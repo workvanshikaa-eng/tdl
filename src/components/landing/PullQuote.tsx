@@ -17,8 +17,8 @@ export default function PullQuote() {
             margin: 0,
           }}
         >
-          Marketing is a tax you pay for being boring. Distribution is an asset
-          you build for being smart.
+          Your product is not the reason founders stay unknown. Their
+          distribution is.
         </p>
       </div>
     </section>

@@ -20,7 +20,7 @@ export default function FooterCta() {
             margin: "22px 0 0",
           }}
         >
-          Ready to build your pipeline?
+          Your buyers are online right now. Are you?
         </h2>
         <p
           style={{
@@ -28,11 +28,11 @@ export default function FooterCta() {
             lineHeight: 1.7,
             color: "#6b7280",
             margin: "22px auto 0",
-            maxWidth: "48ch",
+            maxWidth: "50ch",
           }}
         >
-          Tell us where you are and what you are trying to build. We will tell you
-          if we can help.
+          Tell us about your product. We will tell you where your distribution is
+          broken and what we would do about it.
         </p>
         <div className="mt-10">
           <Link

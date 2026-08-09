@@ -5,6 +5,7 @@ import PullQuote from "@/components/landing/PullQuote";
 import FooterCta from "@/components/landing/FooterCta";
 import ClientMarquee from "@/components/landing/ClientMarquee";
 import FounderPhoto from "@/components/landing/FounderPhoto";
+import FaqAccordion from "@/components/landing/FaqAccordion";
 import Spark from "@/components/landing/Spark";
 
 const featured = [
@@ -13,7 +14,7 @@ const featured = [
     stat: "35+",
     statLabel: "meetings booked / month",
     outcome:
-      "Rebuilt founder Sahib Chawla's LinkedIn around recruiter frustration, not feature pitches. Reach jumped 2,654% and meetings compounded from zero to 35+ a month.",
+      "Sahib was getting ignored on LinkedIn. We rebuilt his entire presence around the pain recruiters actually feel, not the features TalentGPT has. Reach jumped 2,654%. Meetings went from zero to 35 a month. His buyers started coming to him.",
     href: "/work/talentgpt",
   },
   {
@@ -21,7 +22,7 @@ const featured = [
     stat: "50,000+",
     statLabel: "organic reach",
     outcome:
-      "Flatlined under 100 impressions per post. We rebuilt the distribution. It compounded fast.",
+      "Under 100 impressions per post. Great product, invisible founder. We rebuilt the distribution from scratch around the build-in-public community. 50,000 organic reach. Zero ad spend. Zero influencers.",
     href: "/work",
   },
 ];
@@ -29,33 +30,18 @@ const featured = [
 const services = [
   {
     n: "01",
-    title: "Get Pipeline",
-    items: [
-      "ICP research & targeting",
-      "LinkedIn lead generation",
-      "Full outbound management",
-      "Inbox & call booking",
-    ],
+    title: "LinkedIn",
+    desc: "Your buyers are on LinkedIn every day. If your profile looks abandoned and your posts get 80 impressions, you are invisible to the exact people who should be buying from you. We fix the profile, write the content, run the outbound, and manage the inbox. You show up to calls.",
   },
   {
     n: "02",
-    title: "Get Visible",
-    items: [
-      "Founder personal branding",
-      "Content ghostwriting",
-      "Post design & scheduling",
-      "Engagement systems",
-    ],
+    title: "Reddit",
+    desc: "Your ICP is on Reddit right now asking questions your product answers. Nobody is there representing you. We participate in the right communities, answer the right threads, and make sure when someone searches for your solution, your name comes up. Naturally. Not spammily.",
   },
   {
     n: "03",
-    title: "Get Found",
-    items: [
-      "SEO & answer-engine optimisation",
-      "Reddit marketing",
-      "Twitter / X growth",
-      "Community distribution",
-    ],
+    title: "Twitter / X",
+    desc: "Twitter still moves fast in B2B SaaS. A single thread from the right founder can do more pipeline in 24 hours than a month of cold email. We build your presence, write in your voice, and make sure you are part of the conversations your buyers are having.",
   },
 ];
 
@@ -73,7 +59,7 @@ export default function Homepage() {
       {/* Hero */}
       <section style={{ background: "#ffffff", padding: "clamp(90px,14vh,150px) 24px clamp(80px,12vh,120px)" }}>
         <div className="mx-auto max-w-[1200px]" data-reveal>
-          <SectionLabel>Distribution as a service</SectionLabel>
+          <SectionLabel>Founder-led distribution</SectionLabel>
           <h1
             style={{
               fontSize: "clamp(44px,9vw,104px)",
@@ -85,7 +71,7 @@ export default function Homepage() {
               maxWidth: "16ch",
             }}
           >
-            Distribution for founders done being invisible.
+            Your product works. Nobody knows it exists.
           </h1>
           <p
             style={{
@@ -96,8 +82,9 @@ export default function Homepage() {
               maxWidth: "560px",
             }}
           >
-            We build the content, outbound, and distribution systems that turn
-            early-stage B2B SaaS products into booked pipeline.
+            Most B2B SaaS founders build for 12 months and distribute for 12 days.
+            We fix that. We build your distribution presence on LinkedIn, Reddit,
+            and Twitter so your buyers find you before you have to find them.
           </p>
           <div className="mt-11 flex flex-wrap items-center gap-8">
             <Link
@@ -130,12 +117,17 @@ export default function Homepage() {
                   fontSize: "clamp(30px,5vw,52px)",
                   fontWeight: 600,
                   letterSpacing: "-0.03em",
+                  lineHeight: 1.08,
                   color: "#0d0d0d",
                   margin: "18px 0 0",
+                  maxWidth: "18ch",
                 }}
               >
-                Results that speak.
+                What happens when distribution actually runs.
               </h2>
+              <p style={{ fontSize: "17px", lineHeight: 1.6, color: "#6b7280", margin: "16px 0 0" }}>
+                Not impressions for vanity. Pipeline for revenue.
+              </p>
             </div>
             <Link href="/work" className="no-underline" style={linkMono}>
               See all work →
@@ -192,25 +184,35 @@ export default function Homepage() {
       {/* What we do — numbered services */}
       <section style={{ background: "#f9fafb", padding: "clamp(80px,12vh,120px) 24px" }}>
         <div className="mx-auto max-w-[1200px]">
-          <div className="max-w-[640px]" data-reveal>
+          <div className="max-w-[680px]" data-reveal>
             <SectionLabel>What we do</SectionLabel>
-            <p
+            <h2
               style={{
-                fontSize: "clamp(20px,2.6vw,26px)",
-                fontWeight: 500,
-                lineHeight: 1.4,
-                letterSpacing: "-0.01em",
+                fontSize: "clamp(28px,4vw,44px)",
+                fontWeight: 600,
+                lineHeight: 1.08,
+                letterSpacing: "-0.03em",
                 color: "#0d0d0d",
-                margin: "20px 0 0",
+                margin: "18px 0 0",
               }}
             >
-              Content, outbound, and distribution, handled end to end, run as one
-              system instead of five disconnected tactics.
+              Three channels. One system. Run by us.
+            </h2>
+            <p
+              style={{
+                fontSize: "17px",
+                lineHeight: 1.65,
+                color: "#6b7280",
+                margin: "16px 0 0",
+              }}
+            >
+              LinkedIn, Reddit, and Twitter are where your buyers live. We build
+              your presence there so you compound instead of cold pitching forever.
             </p>
           </div>
 
           <div className="mt-16 space-y-20">
-            {services.map((s, si) => (
+            {services.map((s) => (
               <div
                 key={s.n}
                 data-reveal
@@ -242,25 +244,11 @@ export default function Homepage() {
                   </h3>
                 </div>
 
-                <ul style={{ listStyle: "none", margin: 0, padding: 0 }}>
-                  {s.items.map((it, ii) => (
-                    <li
-                      key={it}
-                      className="flex items-center justify-between gap-4"
-                      style={{
-                        ...mono,
-                        fontSize: "13px",
-                        color: "#374151",
-                        padding: "18px 0",
-                        borderTop: ii === 0 ? "1px solid #dfe3e0" : "none",
-                        borderBottom: "1px solid #dfe3e0",
-                      }}
-                    >
-                      <span>{it}</span>
-                      <Spark size={9} color={si === 0 && ii === 0 ? "#0a7c5c" : "#c3d3cb"} />
-                    </li>
-                  ))}
-                </ul>
+                <div style={{ borderTop: "1px solid #dfe3e0", paddingTop: 20 }}>
+                  <p style={{ fontSize: "17px", lineHeight: 1.7, color: "#374151", margin: 0, maxWidth: "56ch" }}>
+                    {s.desc}
+                  </p>
+                </div>
               </div>
             ))}
           </div>
@@ -294,17 +282,21 @@ export default function Homepage() {
                 margin: "18px 0 0",
               }}
             >
-              Built by a founder, for founders.
+              I built this because I kept seeing the same thing.
             </h2>
             <div className="mt-7 space-y-5" style={{ maxWidth: "56ch" }}>
               <p style={{ fontSize: "17px", lineHeight: 1.7, color: "#374151", margin: 0 }}>
-                The Distribution Lab is run by Vanshika Agarwal. She started TDL
-                because she understood tech and distribution before she understood
-                how rare that combination is.
+                Great product. Dead pipeline. Founder posting into the void and
+                wondering why nobody was showing up.
               </p>
               <p style={{ fontSize: "17px", lineHeight: 1.7, color: "#374151", margin: 0 }}>
-                We work with seed to Series A B2B SaaS founders in the US, UK, and
-                UAE. Small team, real work, no account managers.
+                I am Vanshika. I understand SaaS and I understand distribution.
+                Most people understand one or the other. I built TDL in the gap.
+              </p>
+              <p style={{ fontSize: "17px", lineHeight: 1.7, color: "#374151", margin: 0 }}>
+                We work with seed to Series A B2B SaaS founders. First month is
+                Rs. 30,000. We prove it works before we talk about what comes next.
+                US, UK, UAE.
               </p>
             </div>
             <div className="mt-8">
@@ -313,6 +305,28 @@ export default function Homepage() {
               </Link>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section style={{ background: "#ffffff", padding: "clamp(80px,12vh,120px) 24px" }}>
+        <div className="mx-auto max-w-[820px]">
+          <div data-reveal>
+            <SectionLabel>FAQ</SectionLabel>
+            <h2
+              style={{
+                fontSize: "clamp(28px,4vw,44px)",
+                fontWeight: 600,
+                lineHeight: 1.08,
+                letterSpacing: "-0.03em",
+                color: "#0d0d0d",
+                margin: "18px 0 40px",
+              }}
+            >
+              Questions founders actually ask.
+            </h2>
+          </div>
+          <FaqAccordion />
         </div>
       </section>
 

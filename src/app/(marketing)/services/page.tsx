@@ -26,11 +26,11 @@ export default function ServicesPage() {
               margin: 0,
             }}
           >
-            One system. Three outcomes.
+            Three channels. One system. Run by us.
           </h1>
           <p style={{ fontSize: "18px", lineHeight: 1.7, color: "#6b7280", margin: "22px 0 0", maxWidth: "56ch" }}>
-            We handle the full distribution stack so you can focus on building the
-            product.
+            LinkedIn, Reddit, and Twitter are where your buyers live. We build your
+            presence there so you compound instead of cold pitching forever.
           </p>
         </div>
       </section>

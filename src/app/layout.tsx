@@ -27,15 +27,15 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   title: {
-    default: `${siteConfig.name} — Turn your product into booked pipeline`,
+    default: `${siteConfig.name} — Founder-led distribution for B2B SaaS`,
     template: `%s · ${siteConfig.name}`,
   },
   description:
-    "Done-for-you distribution for B2B SaaS founders. One operator, not an agency. LinkedIn lead gen, SEO, paid ads and personal branding — run as one engine.",
+    "Your product is ready. Your pipeline is not. We build founder-led distribution on LinkedIn, Reddit, and Twitter for B2B SaaS founders at seed and Series A.",
   openGraph: {
-    title: `${siteConfig.name} — Turn your product into booked pipeline`,
+    title: `${siteConfig.name} — Founder-led distribution for B2B SaaS`,
     description:
-      "Done-for-you distribution for B2B SaaS founders. One operator, not an agency.",
+      "Your product is ready. Your pipeline is not. We build founder-led distribution on LinkedIn, Reddit, and Twitter for B2B SaaS founders at seed and Series A.",
     url: siteConfig.url,
     siteName: siteConfig.name,
     type: "website",
