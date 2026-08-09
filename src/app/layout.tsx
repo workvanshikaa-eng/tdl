@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Manrope, JetBrains_Mono, Inter } from "next/font/google";
 import "./globals.css";
 import { siteConfig } from "@/config/site";
+
+const GA_ID = "G-5Y19Z7W8VS";
 
 const manrope = Manrope({
   variable: "--font-manrope",
@@ -60,6 +63,16 @@ export default function RootLayout({
       className={`${manrope.variable} ${jetbrainsMono.variable} ${inter.variable} antialiased`}
     >
       <body>{children}</body>
+      <Script
+        src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
+        strategy="afterInteractive"
+      />
+      <Script id="gtag-init" strategy="afterInteractive">
+        {`window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', '${GA_ID}');`}
+      </Script>
     </html>
   );
 }
