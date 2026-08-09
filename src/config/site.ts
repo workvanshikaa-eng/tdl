@@ -21,6 +21,13 @@ export const siteConfig = {
   linkedinUrl: "https://www.linkedin.com/company/thedistributionlab/",
   twitterUrl: "https://x.com/LabDistribution",
 
+  /** Founder's personal social profiles (shown under the founder section). */
+  founderSocials: {
+    linkedinUrl: "https://www.linkedin.com/in/vanshikaa-agarwal/",
+    instagramUrl: "https://www.instagram.com/vanshickaa/",
+    twitterUrl: "https://x.com/novanshicka",
+  },
+
   /** "From" details auto-filled onto generated invoices. Edit these freely. */
   invoiceFrom: {
     companyName: "The Distribution Lab",

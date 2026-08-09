@@ -5,6 +5,7 @@ import PullQuote from "@/components/landing/PullQuote";
 import FooterCta from "@/components/landing/FooterCta";
 import ClientMarquee from "@/components/landing/ClientMarquee";
 import FounderPhoto from "@/components/landing/FounderPhoto";
+import FounderSocials from "@/components/landing/FounderSocials";
 import FaqAccordion from "@/components/landing/FaqAccordion";
 import Spark from "@/components/landing/Spark";
 
@@ -298,10 +299,11 @@ export default function Homepage() {
                 US, UK, UAE.
               </p>
             </div>
-            <div className="mt-8">
+            <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-4">
               <Link href="/about" className="no-underline" style={linkMono}>
                 More about us →
               </Link>
+              <FounderSocials />
             </div>
           </div>
         </div>

@@ -1,5 +1,6 @@
 import SectionLabel from "@/components/landing/SectionLabel";
 import FounderPhoto from "@/components/landing/FounderPhoto";
+import FounderSocials from "@/components/landing/FounderSocials";
 import FooterCta from "@/components/landing/FooterCta";
 
 export const metadata = { title: "About" };
@@ -59,6 +60,7 @@ export default function AboutPage() {
                 </p>
               ))}
             </div>
+            <FounderSocials className="mt-8" />
           </div>
         </div>
       </section>
