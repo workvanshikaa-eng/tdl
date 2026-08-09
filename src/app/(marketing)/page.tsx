@@ -71,7 +71,7 @@ export default function Homepage() {
               maxWidth: "16ch",
             }}
           >
-            Your product works. Nobody knows it exists.
+            Founder Distribution for B2B SaaS.
           </h1>
           <p
             style={{
@@ -82,9 +82,8 @@ export default function Homepage() {
               maxWidth: "560px",
             }}
           >
-            Most B2B SaaS founders build for 12 months and distribute for 12 days.
-            We fix that. We build your distribution presence on LinkedIn, Reddit,
-            and Twitter so your buyers find you before you have to find them.
+            We build and run your LinkedIn, Reddit, and Twitter presence. You close
+            the meetings we generate.
           </p>
           <div className="mt-11 flex flex-wrap items-center gap-8">
             <Link
