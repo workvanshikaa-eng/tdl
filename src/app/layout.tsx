@@ -42,6 +42,7 @@ export const metadata: Metadata = {
     type: "website",
   },
   verification: {
+    google: "kaw2_GXfHdqBx1VIo_j0aTW88WVuWC8i6_SOdF4IKb8",
     other: {
       "msvalidate.01": "DFC31F7E38B90F45BD7648A905BC663E",
     },
